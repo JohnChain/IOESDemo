@@ -24,7 +24,7 @@
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,10,1,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,20,1,1,1">
         <property name="spacing">
          <number>10</number>
         </property>
@@ -51,7 +51,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="edtURL">
           <property name="text">
            <string>http://192.168.1.222:9098/images/recog</string>
           </property>
@@ -67,14 +67,14 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QLineEdit" name="lineEdit_2">
+           <widget class="QLineEdit" name="edtImagePath">
             <property name="text">
              <string/>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btnBraws">
             <property name="text">
              <string>浏览</string>
             </property>
@@ -83,7 +83,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QListWidget" name="listImages">
           <item>
            <property name="text">
             <string>widget1</string>
@@ -97,16 +97,34 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,1">
           <item>
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="label_6">
             <property name="text">
              <string>图片总数：</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="lblTotalImageNum">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>已识别数：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblParsedImageNumber">
             <property name="text">
              <string>0</string>
             </property>
@@ -117,21 +135,21 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="btnStartTask">
             <property name="text">
              <string>提交任务</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="btnStopTask">
             <property name="text">
              <string>终止任务</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="btnDumpResult">
             <property name="text">
              <string>导出结果</string>
             </property>
@@ -162,42 +180,42 @@
          <number>8</number>
         </property>
         <item>
-         <widget class="QGraphicsView" name="graphicsView"/>
+         <widget class="QGraphicsView" name="gvPreview"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QCheckBox" name="checkBox_4">
-            <property name="text">
-             <string>车辆</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="cbxPerson">
             <property name="text">
              <string>行人</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox_3">
+           <widget class="QCheckBox" name="cbxBody">
             <property name="text">
              <string>身体</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox_2">
+           <widget class="QCheckBox" name="cbxFace">
             <property name="text">
              <string>人脸</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox_5">
+           <widget class="QCheckBox" name="cbxBike">
             <property name="text">
-             <string>骑行</string>
+             <string>非机动车</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbxCar">
+            <property name="text">
+             <string>机动车</string>
             </property>
            </widget>
           </item>
@@ -206,10 +224,10 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1">
           <item>
-           <widget class="QTextBrowser" name="textBrowser"/>
+           <widget class="QTextBrowser" name="mtxtResponse"/>
           </item>
           <item>
-           <widget class="QTextBrowser" name="textBrowser_2"/>
+           <widget class="QTextBrowser" name="mtxtParseResult"/>
           </item>
          </layout>
         </item>
