@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/local/bin/python
 import sys
-
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -10,14 +8,11 @@ from PyQt5.QtWidgets import *
 from utils import *
 import IOESDemo
 
-version = "version: 20190904001"
-
-class IOESDemoApp(QtWidgets.QMainWindow, IOESDemo.Ui_IOESDemo):
+class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
         self.setupUi(self)
         self.statusBar().showMessage(version)
-
         self.registEvent()
         self.initStates()
         
@@ -30,9 +25,14 @@ class IOESDemoApp(QtWidgets.QMainWindow, IOESDemo.Ui_IOESDemo):
        self.btnStopTask.clicked.connect(self.stopTask)
        self.btnDumpResult.clicked.connect(self.dumpResult)
        self.btnBraws.clicked.connect(self.brawsImage)
+       self.listImages.itemClicked.connect(self.previewImage)
 
-    def startTask(self):
-        pixmap = QPixmap("IOESDemo/face/face2.jpg")
+    def previewImage(self, item):
+        fullPath = self.edtImagePath.text() + "/" + item.text()
+        self.updateImage(fullPath)
+
+    def updateImage(self, image_path):
+        pixmap = QPixmap(image_path)
         #scaledPixmap = pixmap.scaled(500, 1000)
         #self.pixmap_item = QGraphicsPixmapItem(scaledPixmap)
         self.pixmap_item = QGraphicsPixmapItem(pixmap)
@@ -41,19 +41,19 @@ class IOESDemoApp(QtWidgets.QMainWindow, IOESDemo.Ui_IOESDemo):
         self.scene.addItem(self.pixmap_item)
         self.gvPreview.setScene(self.scene)
 
+    def startTask(self):
+        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
+
     def stopTask(self):
         scene = QGraphicsScene(self.gvPreview)
         scene.addText("Hello, world!")
         self.gvPreview.setScene(scene)
 
     def dumpResult(self):
-        print(self.gvPreview.size())
-
-    def getDirPath(self):
-        return QtWidgets.QFileDialog.getExistingDirectory(self, "图片路径", "")
+        return
 
     def brawsImage(self):
-        dir_path = self.getDirPath()
+        dir_path = getDirPath(self, "图片路径")
         if dir_path == "":
             return
         self.edtImagePath.setText(dir_path)
@@ -65,7 +65,7 @@ class IOESDemoApp(QtWidgets.QMainWindow, IOESDemo.Ui_IOESDemo):
         self.lblTotalImageNum.setText("%d" %len(imageNames))
 
 def main():
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     form = IOESDemoApp()
     form.show()
     app.exec_()

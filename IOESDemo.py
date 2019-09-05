@@ -145,7 +145,7 @@ class Ui_IOESDemo(object):
 
     def retranslateUi(self, IOESDemo):
         _translate = QtCore.QCoreApplication.translate
-        IOESDemo.setWindowTitle(_translate("IOESDemo", "MainWindow"))
+        IOESDemo.setWindowTitle(_translate("IOESDemo", "IOESDemo"))
         self.label.setText(_translate("IOESDemo", "算法服务URL地址"))
         self.edtURL.setText(_translate("IOESDemo", "http://192.168.1.222:9098/images/recog"))
         self.label_2.setText(_translate("IOESDemo", "本地图片路径"))
