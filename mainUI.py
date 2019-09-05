@@ -12,7 +12,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
         self.setupUi(self)
-        self.statusBar().showMessage(version)
+        self.statusBar().showMessage(VERSION)
         self.registEvent()
         self.initStates()
         
@@ -28,8 +28,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
        self.listImages.itemClicked.connect(self.previewImage)
 
     def previewImage(self, item):
-        fullPath = self.edtImagePath.text() + "/" + item.text()
-        self.updateImage(fullPath)
+        full_path = self.edtImagePath.text() + "/" + item.text()
+        self.updateImage(full_path)
 
     def updateImage(self, image_path):
         pixmap = QPixmap(image_path)
@@ -45,12 +45,16 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def stopTask(self):
-        scene = QGraphicsScene(self.gvPreview)
-        scene.addText("Hello, world!")
-        self.gvPreview.setScene(scene)
+        return
 
     def dumpResult(self):
-        return
+        scene = self.gvPreview.scene()
+        if scene != None:
+            scene.addRect(getRect(124, 34, 344, 433), PEN_HEAD)
+            scene.addRect(getRect(217, 144, 191, 260), PEN_FACE)
+            scene.addRect(getRect(14, 30, 612, 571), PEN_PERSON)
+            scene.addRect(getRect(14, 30, 0, 0), PEN_PERSON)
+            scene.addRect(getRect(14, 30, 0, 0), PEN_PERSON)
 
     def brawsImage(self):
         dir_path = getDirPath(self, "图片路径")
