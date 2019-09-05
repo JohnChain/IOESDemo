@@ -1,7 +1,10 @@
 import os
+import base64
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+
+
 
 VERSION = "version: 20190905001"
 SAMPLEJSON = """{
@@ -31,3 +34,23 @@ def getRect(x, y, h, w):
 
 def getDirPath(base, title):
     return QFileDialog.getExistingDirectory(base, title, "")
+
+def toBase64(plainStr):
+    return base64.b64encode(plainStr).decode('utf-8')
+
+def fromBase64(b64Str):
+    return base64.b64decode(b64Str)
+
+def fileBase64(fileName):
+    base64_data = ""
+    with open(fileName, 'rb') as fileObj:
+        image_data = fileObj.read()
+        base64_data = toBase64(image_data)
+    return base64_data
+
+def genBody(filePath, id):
+    jsonStr = fileBase64(filePath)
+    output = {"Face": 1, "SubClass": 1}
+    imageList = {"ImageID": id}
+    imageList["Data"] = fileBase64(filePath)
+    mdir = {"Output": output, "ImageList": [imageList]}

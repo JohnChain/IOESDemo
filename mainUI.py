@@ -6,6 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from utils import *
+from HttpOps import HttpOps
 import IOESDemo
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
@@ -28,8 +29,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
        self.listImages.itemClicked.connect(self.previewImage)
 
     def previewImage(self, item):
-        full_path = self.edtImagePath.text() + "/" + item.text()
+        full_path = self.getFilePath(item.text())
         self.updateImage(full_path)
+
+    def getFilePath(self, fileName):
+        return self.edtImagePath.text() + "/" + fileName
 
     def updateImage(self, image_path):
         pixmap = QPixmap(image_path)
@@ -42,10 +46,39 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.gvPreview.setScene(self.scene)
 
     def startTask(self):
-        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
+        url = self.edtURL.text()
+        itemNum = self.listImages.count()
+        if url == "" or itemNum == 0:
+            return
+        output = {"Face": 1, "SubClass": 1}
+        tempCount = 0 # 辅助计算8张图片一组
+        imageList = []
+        for row in range(itemNum):
+            tempCount = tempCount + 1
+            if tempCount > 8:
+                mdir = {"Output": output, "ImageList": imageList}
+                httpOps = HttpOps()
+                httpOps.post(url, mdir)
+                tempCount = 0
+                imageList = []
+            item = self.listImages.item(row)
+            fileName = item.text()
+
+            imageCell = {"ImageID": fileName}
+            filePath = self.getFilePath(fileName)
+            imageCell["Data"] = fileBase64(filePath)
+            imageList.append(imageCell)
+
+        if len(imageList) > 0:
+            mdir = {"Output": output, "ImageList": imageList}
+            httpOps = HttpOps()
+            print("%s" %(httpOps.post(url, mdir)))
+            tempCount = 0
+            imageList = []
+        return
 
     def stopTask(self):
-        return
+        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def dumpResult(self):
         scene = self.gvPreview.scene()
