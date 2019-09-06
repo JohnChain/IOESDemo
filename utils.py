@@ -19,10 +19,19 @@ JVIA_VEHICLE = "2"  #!< 车辆
 JVIA_FACE = "3"  #!< 人臉
 JVIA_BIKE = "4"  #!< 人骑车
 
+FaceBoundingBox = "FaceBoundingBox"
+HeadBoundingBox = "HeadBoundingBox"
+UpperBoundingBox = "UpperBoundingBox"
+LowerBoundingBox = "LowerBoundingBox"
+
 TYPE_2_PEN = {
     JVIA_HUMAN : PEN_PERSON,
     JVIA_VEHICLE : PEN_VEHICLE,
-    JVIA_BIKE : PEN_NON_VEHICLE
+    JVIA_BIKE : PEN_NON_VEHICLE,
+    FaceBoundingBox: PEN_FACE,
+    HeadBoundingBox: PEN_HEAD,
+    UpperBoundingBox: PEN_BODY,
+    LowerBoundingBox: PEN_BODY,
 }
 
 def showMessageBox(base, title, msg):

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys 
+import sys
 import requests
 import json
+import traceback
 from utils import *
 
 default_headers = {'content-type': "application/json"}
@@ -17,12 +18,15 @@ class HttpOps:
             status_code, jsonStr = self.doPost(url, body)
         except (requests.exceptions.ReadTimeout, ConnectionError, json.JSONDecodeError):
             return ""
+        except:
+            traceback.print_exc()
+            return ""
         if status_code == 200:
             return jsonStr
         else:
             print("Error: code: %d, msg: %s" %(status_code, jsonStr))
             return ""
-            
+
 if __name__ == '__main__':
     url = "http://192.168.1.222:11500/images/recog"
     if len(sys.argv) < 2:

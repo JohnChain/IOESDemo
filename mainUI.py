@@ -33,6 +33,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
        self.btnBraws.clicked.connect(self.brawsImage)
        self.listImages.itemClicked.connect(self.previewImage)
 
+    def addRect(self, scene, meterDataDict, dataKey):
+        box = meterDataDict[dataKey]
+        rect = dict2Rect(box)
+        scene.addRect(rect, TYPE_2_PEN[dataKey])
+    
     def previewImage(self, item):
         full_path = self.getFilePath(item.text())
         self.updateImage(full_path)
@@ -46,22 +51,15 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             scene = self.gvPreview.scene()
             if scene != None:
                 scene.addRect(rect, TYPE_2_PEN[objType])
-                if "FaceBoundingBox" in meterDataDict:
-                    box = meterDataDict["FaceBoundingBox"]
-                    rect = dict2Rect(box)
-                    scene.addRect(rect, PEN_FACE)
-                if "HeadBoundingBox" in meterDataDict:
-                    box = meterDataDict["HeadBoundingBox"]
-                    rect = dict2Rect(box)
-                    scene.addRect(rect, PEN_HEAD)
-                if "UpperBoundingBox" in meterDataDict:
-                    box = meterDataDict["UpperBoundingBox"]
-                    rect = dict2Rect(box)
-                    scene.addRect(rect, PEN_BODY)
-                if "LowerBoundingBox" in meterDataDict:
-                    box = meterDataDict["LowerBoundingBox"]
-                    rect = dict2Rect(box)
-                    scene.addRect(rect, PEN_BODY)
+                if FaceBoundingBox in meterDataDict:
+                    self.addRect(scene, meterDataDict, FaceBoundingBox)
+                if HeadBoundingBox in meterDataDict:
+                    self.addRect(scene, meterDataDict, HeadBoundingBox)
+                if UpperBoundingBox in meterDataDict:
+                    self.addRect(scene, meterDataDict, UpperBoundingBox)
+                if LowerBoundingBox in meterDataDict:
+                    self.addRect(scene, meterDataDict, LowerBoundingBox)
+
         self.mtxtResponse.setText(json.dumps(objectList, indent=4))
 
     def getFilePath(self, fileName):
@@ -80,7 +78,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def postJson(self, url, output, imageList):
         mdir = {"Output": output, "ImageList": imageList}
         rspjson = self.httpOps.post(url, mdir)
-        print(rspjson)
+        if rspjson == "":
+            return
         self.dataManager.genMap(rspjson)
         self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
 
@@ -89,7 +88,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         itemNum = self.listImages.count()
         if url == "" or itemNum == 0:
             return
-        self.dataManager.clearMap()
+        self.btnStartTask.setEnabled(False)
+        self.dataManager.clearMap() # 清掉前一批图片解析结果
+
         output = {"Face": 1, "SubClass": 1}
         tempCount = 0 # 辅助计算8张图片一组
         imageList = []
@@ -107,6 +108,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             imageList.append(imageCell)
         if len(imageList) > 0:
             self.postJson(url, output, imageList)
+        self.btnStartTask.setEnabled(True)
         return
 
     def stopTask(self):
