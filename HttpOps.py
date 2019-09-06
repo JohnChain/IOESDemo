@@ -13,13 +13,16 @@ class HttpOps:
         return response.status_code, response.text
 
     def post(self, url, body):
-        status_code, jsonStr = self.doPost(url, body)
+        try:
+            status_code, jsonStr = self.doPost(url, body)
+        except (requests.exceptions.ReadTimeout, ConnectionError, json.JSONDecodeError):
+            return ""
         if status_code == 200:
             return jsonStr
         else:
             print("Error: code: %d, msg: %s" %(status_code, jsonStr))
             return ""
-
+            
 if __name__ == '__main__':
     url = "http://192.168.1.222:11500/images/recog"
     if len(sys.argv) < 2:
