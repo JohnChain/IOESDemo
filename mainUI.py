@@ -62,7 +62,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                     box = meterDataDict["LowerBoundingBox"]
                     rect = dict2Rect(box)
                     scene.addRect(rect, PEN_BODY)
-        self.mtxtResponse.setText(json.dumps(objectList))
+        self.mtxtResponse.setText(json.dumps(objectList, indent=4))
 
     def getFilePath(self, fileName):
         return self.edtImagePath.text() + "/" + fileName
