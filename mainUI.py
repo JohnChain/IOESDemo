@@ -113,13 +113,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def dumpResult(self):
-        scene = self.gvPreview.scene()
-        if scene != None:
-            scene.addRect(getRect(124, 34, 433, 344), PEN_HEAD)
-            scene.addRect(getRect(217, 144, 260, 191), PEN_FACE)
-            scene.addRect(getRect(14, 30, 571, 612), PEN_PERSON)
-            scene.addRect(getRect(14, 30, 0, 0), PEN_PERSON)
-            scene.addRect(getRect(14, 30, 0, 0), PEN_PERSON)
+        return
 
     def brawsImage(self):
         dir_path = getDirPath(self, "图片路径")
