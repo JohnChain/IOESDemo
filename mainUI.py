@@ -120,12 +120,15 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def markRect(self):
         scene = self.gvPreview.scene()
         if scene != None:
-            x = int(self.edtX.text())
-            y = int(self.edtY.text())
-            w = int(self.edtW.text())
-            h = int(self.edtH.text())
-            rect = getRect(x, y, w, h)
-            scene.addRect(rect, PEN_COMMON)
+            try:
+                x = int(self.edtX.text())
+                y = int(self.edtY.text())
+                w = int(self.edtW.text())
+                h = int(self.edtH.text())
+                rect = getRect(x, y, w, h)
+                scene.addRect(rect, PEN_COMMON)
+            except ValueError:
+                return
         return
     def brawsImage(self):
         dir_path = getDirPath(self, "图片路径")
