@@ -32,12 +32,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
        self.btnDumpResult.clicked.connect(self.dumpResult)
        self.btnBraws.clicked.connect(self.brawsImage)
        self.listImages.itemClicked.connect(self.previewImage)
+       self.btnMarkRect.clicked.connect(self.markRect)
 
     def addRect(self, scene, meterDataDict, dataKey):
         box = meterDataDict[dataKey]
         rect = dict2Rect(box)
         scene.addRect(rect, TYPE_2_PEN[dataKey])
-    
+
     def previewImage(self, item):
         full_path = self.getFilePath(item.text())
         self.updateImage(full_path)
@@ -68,7 +69,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def updateImage(self, image_path):
         pixmap = QPixmap(image_path)
         #scaledPixmap = pixmap.scaled(500, 1000)
-        #self.pixmap_item = QGraphicsPixmapItem(scaledPixmap)
         self.pixmap_item = QGraphicsPixmapItem(pixmap)
         self.scene = QGraphicsScene(self.gvPreview)
         #self.scene.setSceneRect(0, 0, 300, 300)
@@ -117,6 +117,16 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def dumpResult(self):
         return
 
+    def markRect(self):
+        scene = self.gvPreview.scene()
+        if scene != None:
+            x = int(self.edtX.text())
+            y = int(self.edtY.text())
+            w = int(self.edtW.text())
+            h = int(self.edtH.text())
+            rect = getRect(x, y, w, h)
+            scene.addRect(rect, PEN_COMMON)
+        return
     def brawsImage(self):
         dir_path = getDirPath(self, "图片路径")
         if dir_path == "":
