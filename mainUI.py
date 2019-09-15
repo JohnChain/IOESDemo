@@ -9,22 +9,26 @@ from PyQt5.QtWidgets import *
 from ImageDataManager import ImageDataManager
 from utils import *
 from HttpOps import HttpOps
+from BGWorker import BGWorker
 import IOESDemo
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
+        self.httpOps = HttpOps()
+        self.dataManager = ImageDataManager()
+        self.bgWorkder = BGWorker()
+
         self.setupUi(self)
         self.statusBar().showMessage(VERSION)
         self.registEvent()
         self.initStates()
-        self.httpOps = HttpOps()
-        self.dataManager = ImageDataManager()
 
     def initStates(self):
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
         self.edtURL.setText("http://192.168.1.222:11500/images/recog")
+        self.bgWorkder.bindSignal(self.bgWorkderCallback)
 
     def registEvent(self):
        self.btnStartTask.clicked.connect(self.startTask)
@@ -76,20 +80,31 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.gvPreview.setScene(self.scene)
 
     def postJson(self, url, output, imageList):
-        mdir = {"Output": output, "ImageList": imageList}
-        rspjson = self.httpOps.post(url, mdir)
-        if rspjson == "":
-            return
-        self.dataManager.genMap(rspjson)
-        self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
+        self.btnStartTask.setEnabled(False)
+        mdict = {"Output": output, "ImageList": imageList}
+        task = {"url": url, "body": mdict}
+        self.bgWorkder.addTask(task)
+
+    def bgWorkderCallback(self, rspJson):
+        print("here bgWorkderCallback")
+        if len(self.bgWorkder.taskList) == 0:
+            self.bgWorkder.stop()
+            self.btnStartTask.setEnabled(True)
+
+        if rspJson != "":
+            self.dataManager.genMap(rspJson)
+            self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
+        else:
+            self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
 
     def startTask(self):
         url = self.edtURL.text()
         itemNum = self.listImages.count()
         if url == "" or itemNum == 0:
             return
-        self.btnStartTask.setEnabled(False)
         self.dataManager.clearMap() # 清掉前一批图片解析结果
+
+        self.bgWorkder.start()
 
         output = {"Face": 1, "SubClass": 1}
         tempCount = 0 # 辅助计算8张图片一组
@@ -106,12 +121,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             imageCell = {"ImageID": "%d" %row}
             imageCell["Data"] = fileBase64(filePath)
             imageList.append(imageCell)
-        if len(imageList) > 0:
+        if len(imageList) > 0:  #最后一组不满8张
             self.postJson(url, output, imageList)
-        self.btnStartTask.setEnabled(True)
         return
 
     def stopTask(self):
+        self.bgWorkder.stop()
+        self.btnStartTask.setEnabled(True)
         showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def dumpResult(self):
