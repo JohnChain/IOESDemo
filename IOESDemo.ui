@@ -92,7 +92,7 @@
          <widget class="QListWidget" name="listImages"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,0">
           <property name="sizeConstraint">
            <enum>QLayout::SetMinimumSize</enum>
           </property>
@@ -110,62 +110,8 @@
             <property name="inputMethodHints">
              <set>Qt::ImhPreferNumbers</set>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="edtY">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="statusTip">
-             <string extracomment="y"/>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhPreferNumbers</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="edtW">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="statusTip">
-             <string extracomment="w"/>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhPreferNumbers</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="edtH">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="statusTip">
-             <string extracomment="h"/>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhPreferNumbers</set>
-            </property>
             <property name="text">
-             <string/>
+             <string>0, 10, 10, 20</string>
             </property>
            </widget>
           </item>

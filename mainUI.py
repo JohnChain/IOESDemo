@@ -137,10 +137,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         scene = self.gvPreview.scene()
         if scene != None:
             try:
-                x = int(self.edtX.text())
-                y = int(self.edtY.text())
-                w = int(self.edtW.text())
-                h = int(self.edtH.text())
+                rectStr = self.edtX.text().strip().split(",")
+                x = int(rectStr[0])
+                y = int(rectStr[1])
+                w = int(rectStr[2])
+                h = int(rectStr[3])
                 rect = getRect(x, y, w, h)
                 scene.addRect(rect, PEN_COMMON)
             except ValueError:
