@@ -12,6 +12,7 @@ from HttpOps import HttpOps
 from BGWorker import BGWorker
 import IOESDemo
 from MarkRect import MarkRectItem
+from PreviewWidget import PreviewWidget
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
@@ -134,6 +135,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def dumpResult(self):
+        ex = PreviewWidget(self)
         return
 
     def markRect(self):
