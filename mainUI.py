@@ -11,6 +11,7 @@ from utils import *
 from HttpOps import HttpOps
 from BGWorker import BGWorker
 import IOESDemo
+from MarkRect import MarkRectItem
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
@@ -38,10 +39,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
        self.listImages.itemClicked.connect(self.previewImage)
        self.btnMarkRect.clicked.connect(self.markRect)
 
-    def addRect(self, scene, meterDataDict, dataKey):
-        box = meterDataDict[dataKey]
+    def addRect(self, scene, box, dataKey):
         rect = dict2Rect(box)
-        scene.addRect(rect, TYPE_2_PEN[dataKey])
+        pen = TYPE_2_PEN[dataKey]
+        item = MarkRectItem(rect)
+        item.setPen(pen)
+        item.setAcceptHoverEvents(True)
+        scene.addItem(item)
 
     def previewImage(self, item):
         full_path = self.getFilePath(item.text())
@@ -52,18 +56,17 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             meterDataDict = objDict["Metadata"]
             objType = meterDataDict["Type"]
             box = meterDataDict["ObjectBoundingBox"]
-            rect = dict2Rect(box)
             scene = self.gvPreview.scene()
             if scene != None:
-                scene.addRect(rect, TYPE_2_PEN[objType])
+                self.addRect(scene, box, objType)
                 if FaceBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict, FaceBoundingBox)
+                    self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox)
                 if HeadBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict, HeadBoundingBox)
+                    self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox)
                 if UpperBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict, UpperBoundingBox)
+                    self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox)
                 if LowerBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict, LowerBoundingBox)
+                    self.addRect(scene, meterDataDict[LowerBoundingBox], LowerBoundingBox)
 
         self.mtxtResponse.setText(json.dumps(objectList, indent=4))
 
@@ -142,8 +145,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 y = int(rectStr[1])
                 w = int(rectStr[2])
                 h = int(rectStr[3])
-                rect = getRect(x, y, w, h)
-                scene.addRect(rect, PEN_COMMON)
+                box = {"x": x, "y": y, "w": w, "h": h}
+                self.addRect(scene, box, CommonBox)
             except ValueError:
                 return
         return

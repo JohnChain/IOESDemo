@@ -17,20 +17,22 @@ class MyFrame(QGraphicsView):
         pen = QPen(QColor(Qt.green))
         brush = QBrush(pen.color().darker(150))
 
+        bgColor = QColor(Qt.white)
+        bgBrush = QBrush(bgColor)
+        self.setBackgroundBrush(bgBrush)
         # i want a mouse over and mouse click event for this ellipse
         for xi in range(10):
             for yi in range(10):
-                item = callbackRect(x+xi*30, y+yi*30, w, h)
+                item = MarkRectItem(x+xi*30, y+yi*30, w, h)
                 item.setAcceptHoverEvents(True)
-                item.mouseDoubleClickEvent
                 item.setPen(pen)
-                item.setBrush(brush)
+                #item.setBrush(brush)
                 self.scene().addItem(item)
 
         # item = self.scene().addEllipse(x, y, w, h, pen, brush)
         item.setFlag(QGraphicsItem.ItemIsMovable)
 
-class callbackRect(QGraphicsRectItem):
+class MarkRectItem(QGraphicsRectItem):
     def mouseDoubleClickEvent(self, event):
         print("here in mouseDoubleClickEvent")
 
@@ -44,8 +46,7 @@ class callbackRect(QGraphicsRectItem):
 
     def hoverMoveEvent(self, event):
         # Do your stuff here.
-        color = QColor(180, 174, 185)
-        brush = QBrush(color)
+        brush = QBrush(Qt.NoBrush)
         QGraphicsRectItem.setBrush(self, brush)
         print("here in hoverMoveEvent")
 
