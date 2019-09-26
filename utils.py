@@ -10,6 +10,7 @@ MAX_BUNCH_LENGTH = 8
 
 SIG_TYPE_DATA = "SIG_TYPE_DATA"
 SIG_TYPE_END = "SIG_TYPE_END"
+SIG_TYPE_HOVER = "SIG_TYPE_HOVER"
 
 PEN_PERSON = QPen(Qt.red, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_FACE = QPen(Qt.magenta, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)

@@ -17,8 +17,20 @@ from PreviewWidget import PreviewWidget
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
+        # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
+        # key为图片路径，value为图片中的所有目标信息(一个由多个字典组成的list，每个字典为一个目标)
         self.dataManager = ImageDataManager()
-        self.rectDict = {JVIA_HUMAN: [], JVIA_VEHICLE: [], JVIA_BIKE: [], FaceBoundingBox: [], HeadBoundingBox: [], UpperBoundingBox: [], LowerBoundingBox: []}
+        # 保存当前打开图片中的所有类型目标的矩形框，用于后续checkbox中显示/不限时特定类型目标
+        self.rectDict = {
+            JVIA_HUMAN: [],
+            JVIA_VEHICLE: [],
+            JVIA_BIKE: [],
+            FaceBoundingBox: [],
+            HeadBoundingBox: [],
+            UpperBoundingBox: [],
+            LowerBoundingBox: [],
+            CommonBox: []
+        }
         self.setupUi(self)
         self.registEvent()
         self.initStates()
@@ -33,6 +45,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.combxSericeType.insertItem(1, "IAS")
         self.combxSericeType.setCurrentIndex (0)
 
+        self.previewWidget = None
+
     def registEvent(self):
         self.btnStartTask.clicked.connect(self.startTask)
         self.btnStopTask.clicked.connect(self.stopTask)
@@ -42,13 +56,14 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnMarkRect.clicked.connect(self.markRect)
         self.combxSericeType.currentIndexChanged.connect(self.updateServiceType)
 
-    def addRect(self, scene, box, dataKey):
+    def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
         pen = TYPE_2_PEN[dataKey]
-        item = MarkRectItem(rect, dataKey)
+        item = MarkRectItem(rect, dataKey, row, index)
         item.setPen(pen)
-        if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE:
+        if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE or dataKey == CommonBox:
             item.setAcceptHoverEvents(True)
+            item.bindSignal(self.flushPreviewWidget)
         if dataKey in self.rectDict:
             self.rectDict[dataKey].append(item)
         else:
@@ -66,17 +81,18 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         scene = self.gvPreview.scene()
         row = "%d" %self.listImages.row(item)
         objectList = self.dataManager.get(row)
-        for objDict in objectList:
+        for index in range(len(objectList)):
+            objDict = objectList[index]
             meterDataDict = objDict["Metadata"]
             self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"])
             if UpperBoundingBox in meterDataDict:
-                self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox)
+                self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox, row, index)
             if LowerBoundingBox in meterDataDict:
-                self.addRect(scene, meterDataDict[LowerBoundingBox], LowerBoundingBox)
+                self.addRect(scene, meterDataDict[LowerBoundingBox], LowerBoundingBox, row, index)
             if HeadBoundingBox in meterDataDict:
-                self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox)
+                self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox, row, index)
             if FaceBoundingBox in meterDataDict:
-                self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox)
+                self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox, row, index)
         self.mtxtResponse.setText(json.dumps(objectList, indent=4)) # 格式化输出json
 
     def getFilePath(self, fileName):
@@ -139,9 +155,16 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnStartTask.setEnabled(True)
         #showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
+    def flushPreviewWidget(self, row, index):
+        print("flashPreviewWidget: row: %s, index: %d" %(row, index))
+
     def dumpResult(self):
-        ex = PreviewWidget(self)
-        return
+        if self.previewWidget == None:
+            self.previewWidget = PreviewWidget(self)
+        else:
+            #self.previewWidget.setVisible(False)
+            self.previewWidget.setParent(None)
+            self.previewWidget = None
 
     def markRect(self):
         scene = self.gvPreview.scene()
@@ -149,7 +172,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             try:
                 rectStr = self.edtX.text().strip().split(",")
                 box = {"x": int(rectStr[0]), "y": int(rectStr[1]), "w": int(rectStr[2]), "h": int(rectStr[3])}
-                self.addRect(scene, box, CommonBox)
+                self.addRect(scene, box, CommonBox, CommonBox, 0)
             except ValueError:
                 showMessageBox(self, "标注异常", "请输入正确参数格式: x, y, w, h")
 
