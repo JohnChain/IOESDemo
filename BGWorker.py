@@ -6,11 +6,12 @@ from time import sleep
 class BGWorker(QThread):
     #  通过类成员对象定义信号对象
     _signal = pyqtSignal(str)
-    taskList = []
-    flagRun = False
  
     def __init__(self, parent=None):
         super(BGWorker, self).__init__()
+        self.httpOps = HttpOps()
+        self.taskList = []
+        self.flagRun = False
  
     def __del__(self):
         self.wait()
@@ -40,11 +41,10 @@ class BGWorker(QThread):
             else:
                 print("run sleep 1")
                 sleep(1)
-        print("here will stop")
+        print("Thread exited")
 
     def callback(self, rstJson):
         # 信号焕发，我是通过我封装类的回调来发起的
-        print("here callback")
         self._signal.emit(rstJson)
 
     def bindSignal(self, callback):
@@ -52,7 +52,5 @@ class BGWorker(QThread):
         self._signal.connect(callback)
     
     def postJson(self, url, mdir):
-        print("here postJson")
-        #rspjson = self.httpOps.post(url, mdir)
-        #return rspjson
-        return ""
+        rspjson = self.httpOps.post(url, mdir)
+        return rspjson

@@ -17,15 +17,14 @@ class HttpOps:
         try:
             status_code, jsonStr = self.doPost(url, body)
         except (requests.exceptions.ReadTimeout, ConnectionError, json.JSONDecodeError):
-            return ""
+            return "Error: 已连到主机，但接收回复超时"
         except:
             traceback.print_exc()
-            return ""
+            return "Error: 目标主机找不到 或 端口被拒绝访问"
         if status_code == 200:
             return jsonStr
         else:
-            print("Error: code: %d, msg: %s" %(status_code, jsonStr))
-            return ""
+            return ("Error: code: %d, msg: %s" %(status_code, jsonStr))
 
 if __name__ == '__main__':
     url = "http://192.168.1.222:11500/images/recog"

@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import *
 
 from ImageDataManager import ImageDataManager
 from utils import *
-from HttpOps import HttpOps
 from BGWorker import BGWorker
 import IOESDemo
 from MarkRect import MarkRectItem
@@ -17,7 +16,6 @@ from PreviewWidget import PreviewWidget
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
-        self.httpOps = HttpOps()
         self.dataManager = ImageDataManager()
         self.bgWorkder = BGWorker()
 
@@ -43,33 +41,32 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def addRect(self, scene, box, dataKey):
         rect = dict2Rect(box)
         pen = TYPE_2_PEN[dataKey]
-        item = MarkRectItem(rect)
+        item = MarkRectItem(rect, dataKey)
         item.setPen(pen)
-        item.setAcceptHoverEvents(True)
+        if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE:
+            item.setAcceptHoverEvents(True)
         scene.addItem(item)
 
     def previewImage(self, item):
+        scene = self.gvPreview.scene()
+        if scene == None:
+            return
         full_path = self.getFilePath(item.text())
         self.updateImage(full_path)
         row = "%d" %self.listImages.row(item)
         objectList = self.dataManager.get(row)
         for objDict in objectList:
             meterDataDict = objDict["Metadata"]
-            objType = meterDataDict["Type"]
-            box = meterDataDict["ObjectBoundingBox"]
-            scene = self.gvPreview.scene()
-            if scene != None:
-                self.addRect(scene, box, objType)
-                if FaceBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox)
-                if HeadBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox)
-                if UpperBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox)
-                if LowerBoundingBox in meterDataDict:
-                    self.addRect(scene, meterDataDict[LowerBoundingBox], LowerBoundingBox)
-
-        self.mtxtResponse.setText(json.dumps(objectList, indent=4))
+            self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"])
+            if UpperBoundingBox in meterDataDict:
+                self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox)
+            if LowerBoundingBox in meterDataDict:
+                self.addRect(scene, meterDataDict[LowerBoundingBox], LowerBoundingBox)
+            if HeadBoundingBox in meterDataDict:
+                self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox)
+            if FaceBoundingBox in meterDataDict:
+                self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox)
+        self.mtxtResponse.setText(json.dumps(objectList, indent=4)) # 格式化输出json
 
     def getFilePath(self, fileName):
         return self.edtImagePath.text() + "/" + fileName
@@ -91,15 +88,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def bgWorkderCallback(self, rspJson):
         print("here bgWorkderCallback")
-        if len(self.bgWorkder.taskList) == 0:
-            self.bgWorkder.stop()
-            self.btnStartTask.setEnabled(True)
-
-        if rspJson != "":
+        if rspJson != "" and rspJson[:5] != "Error":
             self.dataManager.genMap(rspJson)
             self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
         else:
+            showMessageBox(self, "Task Error", rspJson)
             self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
+            self.stopTask()
 
     def startTask(self):
         url = self.edtURL.text()
@@ -132,7 +127,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def stopTask(self):
         self.bgWorkder.stop()
         self.btnStartTask.setEnabled(True)
-        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
+        #showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def dumpResult(self):
         ex = PreviewWidget(self)
