@@ -97,7 +97,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             self.dataManager.genMap(rspJson)
             self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
         else:
-            showMessageBox(self, "Task Error", rspJson)
+            showMessageBox(self, "通信异常", rspJson)
             self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
             self.stopTask()
 
