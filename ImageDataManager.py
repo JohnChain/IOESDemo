@@ -17,16 +17,22 @@ class ImageDataManager:
     # }
     # return: OK: 0 Error: -1
     def genMap(self, jsonResponse):
+        print(jsonResponse)
         jsonDir = json.loads(jsonResponse)
-        if jsonDir["ret"] != "200":
+        if "ret" not in jsonDir or jsonDir["ret"] != "200":
+            print("Invalid json response")
             return -1
-        objectList = jsonDir["ObjectList"]
-        for obj in objectList:
-            imageId = obj["ImageID"]
-            if imageId in self.imageResponse:
-                self.imageResponse[imageId].append(obj)
-            else:
-                self.imageResponse[imageId] = [obj]
+        if "ObjectList" in jsonDir:
+            objectList = jsonDir["ObjectList"]
+            for obj in objectList:
+                imageId = obj["ImageID"]
+                if imageId in self.imageResponse:
+                    self.imageResponse[imageId].append(obj)
+                else:
+                    self.imageResponse[imageId] = [obj]
+        else:
+            if "error_msg" in jsonDir:
+                print("response error_msg: %s" %jsonDir[error_msg])
         return 0
 
     def clearMap(self):
