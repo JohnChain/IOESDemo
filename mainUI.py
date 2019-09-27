@@ -18,9 +18,36 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     _signal_hover = pyqtSignal(int, str, int)
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
+        self.setupUi(self)
+        self.registEvent()
+        self.initStates()
+        self.checkBGWorker()
+        self.initValues()
+
+    def initStates(self):
+        self.statusBar().showMessage(VERSION)
+        self.listImages.clear()
+        self.edtImagePath.setReadOnly(True)
+        self.edtURL.setText("http://192.168.1.222:9096/images/recog")
+        self.combxSericeType.insertItem(0, "IOES")
+        self.combxSericeType.insertItem(1, "IAS")
+        self.combxSericeType.setCurrentIndex (0)
+
+    def initValues(self):
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
         # key为图片路径，value为图片中的所有目标信息(一个由多个字典组成的list，每个字典为一个目标)
         self.dataManager = ImageDataManager()
+        self.previewWidget = None
+        self.cbxDict = {
+            JVIA_HUMAN: self.cbxPerson,
+            JVIA_VEHICLE: self.cbxCar,
+            JVIA_BIKE: self.cbxBike,
+            FaceBoundingBox: self.cbxFace,
+            HeadBoundingBox: self.checkBox,
+            UpperBoundingBox: self.cbxBody,
+            LowerBoundingBox: self.cbxBody,
+            CommonBox: self.checkBox
+        }
         # 保存当前打开图片中的所有类型目标的矩形框，用于后续checkbox中显示/不限时特定类型目标
         self.rectDict = {
             JVIA_HUMAN: [],
@@ -32,21 +59,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             LowerBoundingBox: [],
             CommonBox: []
         }
-        self.setupUi(self)
-        self.registEvent()
-        self.initStates()
-        self.checkBGWorker()
-
-    def initStates(self):
-        self.statusBar().showMessage(VERSION)
-        self.listImages.clear()
-        self.edtImagePath.setReadOnly(True)
-        self.edtURL.setText("http://192.168.1.222:9096/images/recog")
-        self.combxSericeType.insertItem(0, "IOES")
-        self.combxSericeType.insertItem(1, "IAS")
-        self.combxSericeType.setCurrentIndex (0)
-
-        self.previewWidget = None
 
     def registEvent(self):
         self._signal_hover.connect(self.flushPreviewWidget)
@@ -76,6 +88,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         else:
             print("unknow dateType: %s" %dataKey)
         scene.addItem(item)
+        state = True if self.cbxDict[dataKey].checkState() > 0 else False
+        item.setVisible(state)
 
     def rectOps(self, checkState, rectList):
         print("checkState: %d" %checkState)
