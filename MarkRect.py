@@ -20,22 +20,33 @@ class MarkRectItem(QGraphicsRectItem):
         self._signal = signal
 
     def mouseDoubleClickEvent(self, event):
+        super(MarkRectItem, self).mouseDoubleClickEvent(event)
         print("here in mouseDoubleClickEvent %s" %self.type)
 
     def mousePressEvent(self, event):
+        super(MarkRectItem, self).mousePressEvent(event)
         print("here in mousePressEvent %s" %self.type)
+        self.callback(1)
 
     def mouseReleaseEvent(self, event):
+        super(MarkRectItem, self).mouseReleaseEvent(event)
         print("here in mouseReleaseEvent %s" %self.type)
         return QGraphicsRectItem.mouseReleaseEvent(self, event)
 
-    def hoverMoveEvent(self, event):
-        super(MarkRectItem, self).hoverMoveEvent(event)
+    def hoverEnterEvent(self, event):
+        super(MarkRectItem, self).hoverEnterEvent(event)
+        print("hoverEnterEvent")
         self.callback(1)
 
-    def hoverLeaveEvent(self, event):
+    def hoverMoveEvent(self, event):
         super(MarkRectItem, self).hoverMoveEvent(event)
+        #self.callback(1)
+        return QGraphicsRectItem.hoverMoveEvent(self, event)
+
+    def hoverLeaveEvent(self, event):
+        super(MarkRectItem, self).hoverLeaveEvent(event)
         self.callback(0)
+        return QGraphicsRectItem.hoverLeaveEvent(self, event)
 
     def callback(self, isActive):
         self._signal.emit(isActive, self.row, self.index)

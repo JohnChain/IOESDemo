@@ -85,7 +85,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         for index in range(len(objectList)):
             objDict = objectList[index]
             meterDataDict = objDict["Metadata"]
-            self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"], row, index)
             if UpperBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox, row, index)
             if LowerBoundingBox in meterDataDict:
@@ -94,6 +93,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox, row, index)
             if FaceBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox, row, index)
+            if "ObjectBoundingBox" in meterDataDict:
+                self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"], row, index)
         self.mtxtResponse.setText(json.dumps(objectList, indent=4)) # 格式化输出json
 
     def getFilePath(self, fileName):
