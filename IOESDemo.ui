@@ -18,15 +18,36 @@
     <bool>true</bool>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,1">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>8</number>
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,20,0,1,1,1">
         <property name="spacing">
-         <number>10</number>
+         <number>8</number>
         </property>
         <property name="sizeConstraint">
          <enum>QLayout::SetFixedSize</enum>
@@ -247,16 +268,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="cbxBody">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(85, 255, 255);</string>
-            </property>
-            <property name="text">
-             <string>身体</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QCheckBox" name="cbxFace">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255, 0, 255);</string>
@@ -267,12 +278,22 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="cbxBike">
+           <widget class="QCheckBox" name="checkBox">
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(0, 85, 255);</string>
+             <string notr="true">background-color: rgb(255, 255, 0);</string>
             </property>
             <property name="text">
-             <string>非机动车</string>
+             <string>头部</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbxBody">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(85, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string>身体</string>
             </property>
            </widget>
           </item>
@@ -283,6 +304,16 @@
             </property>
             <property name="text">
              <string>机动车</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbxBike">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 85, 255);</string>
+            </property>
+            <property name="text">
+             <string>非机动车</string>
             </property>
            </widget>
           </item>
