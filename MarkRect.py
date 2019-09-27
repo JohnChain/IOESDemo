@@ -40,7 +40,6 @@ class MarkRectItem(QGraphicsRectItem):
 
     def hoverMoveEvent(self, event):
         super(MarkRectItem, self).hoverMoveEvent(event)
-        #self.callback(1)
         return QGraphicsRectItem.hoverMoveEvent(self, event)
 
     def hoverLeaveEvent(self, event):

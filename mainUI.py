@@ -157,22 +157,18 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnStartTask.setEnabled(True)
 
     def flushPreviewWidget(self, isActive, row, index):
-        print("flashPreviewWidget: isActive:%d row: %s, index: %d" %(isActive, row, index))
         if isActive == 1:
             if self.previewWidget == None:
                 self.previewWidget = PreviewWidget(0, row, index, 0, self)
             elif self.previewWidget.index != index or self.previewWidget.row != row:
                 self.previewWidget.setParent(None)
+                self.previewWidget = None
                 self.previewWidget = PreviewWidget(0, row, index, 0, self)
         else:
             self.previewWidget.setParent(None)
+            self.previewWidget = None
 
     def dumpResult(self):
-        if self.previewWidget == None:
-            self.previewWidget = PreviewWidget( 0, row, index, 0, self)
-        else:
-            self.previewWidget.setParent(None)
-            self.previewWidget = None
         showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def markRect(self):
