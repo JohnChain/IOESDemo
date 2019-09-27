@@ -169,8 +169,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             self.previewWidget = None
 
     def dumpResult(self):
-        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
-
+        widthListImage = self.listImages.size().width()
+        hightListImage = self.listImages.size().height()
+        heightGVPreview = self.gvPreview.size().height()
+        widthGVPreview = self.gvPreview.size().width()
+        showMessageBox(self, "空间长宽", "widthGVPreview: %d， heightGVPreview: %d, widthListImage: %d, hightListImage: %d" %(widthGVPreview, heightGVPreview, widthListImage, hightListImage))
     def markRect(self):
         scene = self.gvPreview.scene()
         if scene != None:
