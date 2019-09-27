@@ -3,7 +3,6 @@
 from utils import *
 
 class MarkRectItem(QGraphicsRectItem):
-    _signal = pyqtSignal(str, int)
     # 结合ImageDataManager中的
     # {
     #   "imageID1": [{objectID1}, {objectID2},...],
@@ -13,11 +12,12 @@ class MarkRectItem(QGraphicsRectItem):
     # boxtype :string : 标注框的类型(人/车/非机动车/人脸/上身/下身)
     # row: : string : "imageID1" / "imageID2" ...
     # index : int : index in each row list
-    def __init__(self, rect, boxtype, row, index):
+    def __init__(self, signal, rect, boxtype, row, index):
         super(MarkRectItem, self).__init__(rect)
         self.type = boxtype
         self.row = row
         self.index = index
+        self._signal = signal
 
     def mouseDoubleClickEvent(self, event):
         print("here in mouseDoubleClickEvent %s" %self.type)
@@ -31,13 +31,17 @@ class MarkRectItem(QGraphicsRectItem):
 
     def hoverMoveEvent(self, event):
         super(MarkRectItem, self).hoverMoveEvent(event)
-        self.callback()
+        self.callback(1)
 
-    def callback(self):
-        #self._signal.emit(row, index)
-        print("emit: row:%s index:%d" %(self.row, self.index))
+    def hoverLeaveEvent(self, event):
+        super(MarkRectItem, self).hoverMoveEvent(event)
+        self.callback(0)
+
+    def callback(self, isActive):
+        self._signal.emit(isActive, self.row, self.index)
+        print("emit: isActive: %d, row:%s index:%d" %(isActive, self.row, self.index))
         return
 
     def bindSignal(self, callback):
-        #self._signal.connect(callback)
+        self._signal.connect(callback)
         return

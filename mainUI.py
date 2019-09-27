@@ -15,6 +15,7 @@ from MarkRect import MarkRectItem
 from PreviewWidget import PreviewWidget
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
+    _signal_hover = pyqtSignal(int, str, int)
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
@@ -40,7 +41,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.statusBar().showMessage(VERSION)
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
-        self.edtURL.setText("http://192.168.1.222:11500/images/recog")
+        self.edtURL.setText("http://192.168.1.222:9096/images/recog")
         self.combxSericeType.insertItem(0, "IOES")
         self.combxSericeType.insertItem(1, "IAS")
         self.combxSericeType.setCurrentIndex (0)
@@ -48,6 +49,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.previewWidget = None
 
     def registEvent(self):
+        self._signal_hover.connect(self.flushPreviewWidget)
         self.btnStartTask.clicked.connect(self.startTask)
         self.btnStopTask.clicked.connect(self.stopTask)
         self.btnDumpResult.clicked.connect(self.dumpResult)
@@ -59,11 +61,10 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
         pen = TYPE_2_PEN[dataKey]
-        item = MarkRectItem(rect, dataKey, row, index)
+        item = MarkRectItem(self._signal_hover, rect, dataKey, row, index)
         item.setPen(pen)
         if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE or dataKey == CommonBox:
             item.setAcceptHoverEvents(True)
-            item.bindSignal(self.flushPreviewWidget)
         if dataKey in self.rectDict:
             self.rectDict[dataKey].append(item)
         else:
@@ -84,7 +85,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         for index in range(len(objectList)):
             objDict = objectList[index]
             meterDataDict = objDict["Metadata"]
-            self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"])
+            self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"], row, index)
             if UpperBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox, row, index)
             if LowerBoundingBox in meterDataDict:
@@ -153,18 +154,25 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def stopTask(self):
         self.bgWorkder.stop()
         self.btnStartTask.setEnabled(True)
-        #showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
-    def flushPreviewWidget(self, row, index):
-        print("flashPreviewWidget: row: %s, index: %d" %(row, index))
+    def flushPreviewWidget(self, isActive, row, index):
+        print("flashPreviewWidget: isActive:%d row: %s, index: %d" %(isActive, row, index))
+        if isActive == 1:
+            if self.previewWidget == None:
+                self.previewWidget = PreviewWidget(0, row, index, 0, self)
+            elif self.previewWidget.index != index or self.previewWidget.row != row:
+                self.previewWidget.setParent(None)
+                self.previewWidget = PreviewWidget(0, row, index, 0, self)
+        else:
+            self.previewWidget.setParent(None)
 
     def dumpResult(self):
         if self.previewWidget == None:
-            self.previewWidget = PreviewWidget(self)
+            self.previewWidget = PreviewWidget( 0, row, index, 0, self)
         else:
-            #self.previewWidget.setVisible(False)
             self.previewWidget.setParent(None)
             self.previewWidget = None
+        showMessageBox(self, "startTask", "height: %d, width: %d" %(self.gvPreview.size().height(), self.gvPreview.size().width()))
 
     def markRect(self):
         scene = self.gvPreview.scene()

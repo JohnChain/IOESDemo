@@ -6,23 +6,26 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 class PreviewWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, rect, row, index, dataDict, parent=None):
         super().__init__(parent)
+        self.row = row
+        self.index = index
+        self.dataDict = dataDict
         self.initUI()
-        
+
     def initUI(self):
         self.setAutoFillBackground(True)
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.red)
         self.setPalette(p)
 
-        lbl1 = QLabel('Zetcode', self)
+        lbl1 = QLabel("row:%s" %self.row, self)
         lbl1.move(15, 10)
 
-        lbl2 = QLabel('tutorials', self)
+        lbl2 = QLabel("index: %d" %self.index, self)
         lbl2.move(35, 40)
         
-        lbl3 = QLabel('for programmers', self)
+        lbl3 = QLabel('others....', self)
         lbl3.move(55, 70)
         
         self.setGeometry(30, 300, 250, 150)
