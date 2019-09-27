@@ -57,6 +57,12 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.listImages.itemClicked.connect(self.previewImage)
         self.btnMarkRect.clicked.connect(self.markRect)
         self.combxSericeType.currentIndexChanged.connect(self.updateServiceType)
+        self.cbxBike.stateChanged.connect(self.rectOpsBike)
+        self.cbxCar.stateChanged.connect(self.rectOpsCar)
+        self.cbxPerson.stateChanged.connect(self.rectOpsPerson)
+        self.cbxFace.stateChanged.connect(self.rectOpsFace)
+        self.cbxBody.stateChanged.connect(self.rectOpsBody)
+        self.checkBox.stateChanged.connect(self.rectOpsHead)
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
@@ -70,6 +76,25 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         else:
             print("unknow dateType: %s" %dataKey)
         scene.addItem(item)
+
+    def rectOps(self, checkState, rectList):
+        print("checkState: %d" %checkState)
+        targetState = True if checkState > 0 else False
+        for rect in rectList:
+            rect.setVisible(targetState)
+    def rectOpsBike(self, checkState):
+        self.rectOps(checkState, self.rectDict[JVIA_BIKE])
+    def rectOpsCar(self, checkState):
+        self.rectOps(checkState, self.rectDict[JVIA_VEHICLE])
+    def rectOpsPerson(self, checkState):
+        self.rectOps(checkState, self.rectDict[JVIA_HUMAN])
+    def rectOpsFace(self, checkState):
+        self.rectOps(checkState, self.rectDict[FaceBoundingBox])
+    def rectOpsBody(self, checkState):
+        self.rectOps(checkState, self.rectDict[UpperBoundingBox])
+        self.rectOps(checkState, self.rectDict[LowerBoundingBox])
+    def rectOpsHead(self, checkState):
+        self.rectOps(checkState, self.rectDict[CommonBox])
 
     def clearRectDict(self):
         for key in self.rectDict.keys():
