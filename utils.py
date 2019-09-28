@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 20190928001"
+VERSION = "version: 20190928002"
 
 MAX_BUNCH_LENGTH = 8
 

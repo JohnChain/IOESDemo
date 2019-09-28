@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from utils import *
-from IOESMapping import IOESMapping
+from IOESMapping import *
 
 class NewLabel(QLabel):
     def __init__(self, msg):
@@ -50,15 +50,6 @@ class PreviewWidget(QWidget):
         self.setGeometry(self.rect)
         self.show()
 
-    def setObjectInfo(self):
-        for keyWord in IOESMapping.mirrorKeyList:
-            if keyWord in self.dataDict:
-                key = IOESMapping.carAttribute2Name[keyWord]
-                value = self.dataDict[keyWord]
-                self.addLongObjectInfo(key, value)
-            else:
-                print("%s not in dataDict" %keyWord)
-
     # 较短的目标属性字串，一行够显示两个
     def addShortObjectInfo(self, key, value):
         lblKey = NewLabel(key + ":")
@@ -73,6 +64,59 @@ class PreviewWidget(QWidget):
         lblKey = NewLabel(key + ":")
         lblValue = NewLabel(value)
         self.formLayouSingle.addRow(lblKey, lblValue)
+
+    def setObjectInfo(self):
+        if ATTRIBUTE_Type in self.dataDict:
+            objType = self.dataDict[ATTRIBUTE_Type]
+            if objType == TYPE_CAR:
+                self.setCarInfo()
+            elif objType == TYPE_PERSON:
+                self.setPersonInfo()
+            elif objType == TYPE_FACE:
+                self.setFaceInfo()
+            elif objType == TYPE_BIKE:
+                self.setBikeInfo()
+            else:
+                pass
+        else:
+            print("Error: cannot find object type")
+            return
+
+    def setCarMappable(self, attribute, addObjectInfo):
+        if attribute in self.dataDict:
+            key = IOESMapping.mapCarAttribute2Name[attribute]
+            mapper = IOESMapping.mapCarMappable2Mapper[attribute]
+            tempValue = self.dataDict[attribute]
+            value = mapper[tempValue]
+            addObjectInfo(key, value)
+        else:
+            print("%s not in dataDict" %keyWord)
+    def setCarMirrorable(self, attribute, addObjectInfo):
+        if attribute in self.dataDict:
+            key = IOESMapping.mapCarAttribute2Name[attribute]
+            value = self.dataDict[attribute]
+            addObjectInfo(key, value)
+        else:
+            print("%s not in dataDict" %keyWord)
+    def setCarInfo(self):
+        # 映射项
+        for attribute in IOESMapping.listCarMappableShortText:
+            self.setCarMappable(attribute, self.addShortObjectInfo)
+        for attribute in IOESMapping.listCarMappableLongText:
+            self.setCarMappable(attribute, self.addLongObjectInfo)
+        # 透传项
+        for attribute in IOESMapping.listCarMirrorableShortText:
+            self.setCarMirrorable(attribute, self.addShortObjectInfo)
+        for attribute in IOESMapping.listCarMirrorableLongText:
+            self.setCarMirrorable(attribute, self.addLongObjectInfo)
+        # TODO：需特殊处理项
+
+    def setPersonInfo(self):
+        pass
+    def setFaceInfo(self):
+        pass
+    def setBikeInfo(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
