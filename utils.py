@@ -8,6 +8,12 @@ VERSION = "version: 20190928001"
 
 MAX_BUNCH_LENGTH = 8
 
+PREVIEW_WIDGET_X = 0
+PREVIEW_WIDGET_Y = 200
+PREVIEW_WIDGET_WIDTH = 290
+PREVIEW_WIDGET_HEIGHT = 400
+PREVIEW_WIDGET_BGCOLOR = QColor(27,78,125)
+
 SIG_TYPE_DATA = "SIG_TYPE_DATA"
 SIG_TYPE_END = "SIG_TYPE_END"
 SIG_TYPE_HOVER = "SIG_TYPE_HOVER"
@@ -51,11 +57,14 @@ def getImageList(dir_path):
         if name.endswith('.jpg') or name.endswith('.png') or name.endswith('.bmp')]
     return image_names
 
-def getRect(x, y, w, h):
+def getRectF(x, y, w, h):
     return QRectF(x, y, w, h)
 
+def getRect(x, y, w, h):
+    return QRect(x, y, w, h)
+
 def dict2Rect(mDict):
-    return getRect(mDict["x"], mDict["y"], mDict["w"], mDict["h"])
+    return getRectF(mDict["x"], mDict["y"], mDict["w"], mDict["h"])
 
 def getDirPath(base, title):
     return QFileDialog.getExistingDirectory(base, title, "")

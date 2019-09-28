@@ -35,7 +35,6 @@ class MarkRectItem(QGraphicsRectItem):
 
     def hoverEnterEvent(self, event):
         super(MarkRectItem, self).hoverEnterEvent(event)
-        print("hoverEnterEvent")
         self.callback(1)
 
     def hoverMoveEvent(self, event):

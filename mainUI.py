@@ -2,12 +2,9 @@
 #!/usr/local/bin/python
 import sys
 import json
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
 import IOESDemo
-from ImageDataManager import ImageDataManager
 from utils import *
+from ImageDataManager import ImageDataManager
 from BGWorker import BGWorker
 from IOESBGWorker import IOESBGWorker
 from IASBGWorker import IASBGWorker
@@ -92,7 +89,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         item.setVisible(state)
 
     def rectOps(self, checkState, rectList):
-        print("checkState: %d" %checkState)
         targetState = True if checkState > 0 else False
         for rect in rectList:
             rect.setVisible(targetState)
@@ -149,7 +145,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.gvPreview.setScene(self.scene)
 
     def bgWorkderCallback(self, rspJson):
-        print("here bgWorkderCallback")
         if rspJson != "" and rspJson[:5] != "Error":
             self.dataManager.genMap(rspJson)
             self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
@@ -197,12 +192,17 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def flushPreviewWidget(self, isActive, row, index):
         if isActive == 1:
+            rect = getRect(PREVIEW_WIDGET_X, PREVIEW_WIDGET_Y, PREVIEW_WIDGET_WIDTH, PREVIEW_WIDGET_HEIGHT)
+            objectList = self.dataManager.get(row)
+            dataDict = {}
+            if len(objectList) > 0:
+                dataDict = objectList[index]["Metadata"]
             if self.previewWidget == None:
-                self.previewWidget = PreviewWidget(0, row, index, 0, self)
+                self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
             elif self.previewWidget.index != index or self.previewWidget.row != row:
                 self.previewWidget.setParent(None)
                 self.previewWidget = None
-                self.previewWidget = PreviewWidget(0, row, index, 0, self)
+                self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
         else:
             self.previewWidget.setParent(None)
             self.previewWidget = None
@@ -213,6 +213,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         heightGVPreview = self.gvPreview.size().height()
         widthGVPreview = self.gvPreview.size().width()
         showMessageBox(self, "空间长宽", "widthGVPreview: %d， heightGVPreview: %d, widthListImage: %d, hightListImage: %d" %(widthGVPreview, heightGVPreview, widthListImage, hightListImage))
+
     def markRect(self):
         scene = self.gvPreview.scene()
         if scene != None:

@@ -1,0 +1,39 @@
+{
+    "ImageID": "4",
+    "ObjectID": 1,
+    "Metadata": {
+        "Type": "4",
+        "ObjectBoundingBox": {
+            "x": 58,
+            "y": 26,
+            "w": 261,
+            "h": 603
+        },
+        "Gender": "1",
+        "Age": "8",
+        "Angle": "128",
+        "BikeClass": "1",
+        "FaceBoundingBox": {
+            "x": 147,
+            "y": 58,
+            "w": 54,
+            "h": 77
+        },
+        "CoatLength": "2",
+        "CoatTexture": "5",
+        "CoatColorNums": "1",
+        "CoatColor": [
+            "16724484"
+        ],
+        "HelmetColor": "-1",
+        "HasHelmet": "0",
+        "HasGlasses": "1",
+        "HasMask": "0",
+        "HasBackpack": "0",
+        "HasCarrybag": "-1",
+        "HasUmbrella": "-1",
+        "HasPlate": "0"
+    },
+    "Feature": "/v3+/wEF//3/AAUB/fz8/v39/v4DBQQIAPz6/f39/wMCAf39/fv7/f/+/fv6/f38AgUGAAD9/Pz8/v//AQD+///9//38/v7/BwwEAP////78/v7//f3+AAEAAAMDAP/9/fz9/wD+/fz7/f39//79/v7++vsAAf79//4AAP8A/v79/wD9AgQFAgD+//79/v8AAf/8/f79/v8AAAQC//39/gEB//7+/wH/AAAAAAD8//77/f3+//8DBAIE/v39////BAT//wD9Cwr+/v/+AP77/f/9DBUdCwD+BwYA/v39/f3///7+Av/8/f8A/Pv7/gAD/v38/f7+AAD///7+AAABAP/9AAAAAAD+/v/+/v7//v4AAP8A/v79/v7+Bw0A/v/+//3/AP/9/v3+/wAACwX9/v7+/wABAP/+/Pz+///++/n3+/v+/v7+/wAA//79/v7+/v7+/wEA/wD//////wAAAgUE/fz9AAAA/fz9AAEA/v36/P39AP/+AAD/BxASCgD+/v4BAgIC/wAAAAD//gD9/f78/v8EAwEB/v37/f7//v4EBAIA/v3/AAD//v77/f79/wD9/gD///7+AP3++/n6/v/+/v39//39/v7/AAMA/fv9/wD/////AAUD/v39/wAJAAAAAAMA/f8BAQIC//7+/wAA/vz6/QD///8AAAIB/v37/f39//7+///+/fv8/f//AAD9/v7+AAEAAP37/v37/f38AAD7/f39/v7/AP8D/fv7/f7//f0DBAD9/wEBAAUG/fz7/v/+/gD/////AgMEAQAABQUDA////wIDAAD+AAECAAAA//8AAAMH///9/v79/fz+AP///f39/gD//v39AAQGAAD+/wD//v38/v39+/r9//z7/gAVEA0J/Pv6/f///fv7/fv7//38/f79/vz7/f7//v/+//////7+AP/+//7+/wAAAAD+/gD9/f39/wECAAIIBQQA/v37/vz9AAAA/wED/Pr4+/z9/v7+/v3+AQACAv78AP/9/gD++vr9AAD//v4A/wD//v39/wD//fv8/v//Cw8KAwD//v7+//7+//z6/QAC/v3+///+/vv7/v//DQ8D/wIA/v78/gAC//8AAgoMAAD+///+/vz8/v77AwH+/v79AP78/f/+/v36/P78//79/wAE/Pv6/Pz8//79/v8A/fz7/f3+/f38/v79//8AAQQCAQAA//78/f3///3/AAMC///+/f0AAf8A/Pv9/v7+/v/+/////f4A/wD+/v39/v/////+/v7//fv7/f37AAMB/wD+AwQDAP/+/gACAAQK//79/v39AP7+/gAA/gADAwkM/fz7/fz6/vz9//////79//78///9AAED/fv9//79/wAEA//+/v3+/v3+/v39/v7//v0AAP7+/f3+AP/9/fz/AP///Pn4/P38AgD7/P8A//8AAAAA/v39/v7+//37/gAA/v7/AP//AAIAAAAB/v79//4A/fv6/P37/v38/v79/wD/AAME/v79/v79/f39/v79/f3+/v79/fz+AP79/fz8/fz9AAAAAQIBAQP+/wUFAgMAAAIA/v3+AP///v4AAP7+/v39/v4A/v38/v39/f0CAv7//v7/AAD//v7+///+/gAAAP38/fz+AP/8/gAJBgD9AwD7/f7+//79/Pz7+/r7/fz8CQgFAP/9//8AAAD+/f38/v7//wADAf/9////AAD+/Pv7/fz8/f7/AAEA/fz8/P39/v37/f38AwIAAAEA/fz8/v39+/r6/fz5/fv8/v39AAIKBgECAgH6/P38AQQGA//9/fz8/f39/wD/AP8A/f37/v39/wD+///9AAH///3+/f4FBQL/BQcGAQIA/vz9//7+////AAEA///+///+/v3/AAQJ/v7+/v/9//79/QD//v3/AAEA/v3+///++/n6/Pv8/v39/f4AAQH+/fz9/v39/v/+/Pr5/Pz7//7/AP78/QD9/v8CAP8BAgP+/v79/wEC/v78/v7+/fr5/P8CAQEFAQAA//7//wAB/v4AAQQE/fv7/f/9AAH/AAIB",
+    "Index": 0
+}
