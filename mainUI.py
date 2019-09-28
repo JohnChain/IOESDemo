@@ -43,10 +43,10 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             JVIA_VEHICLE: self.cbxCar,
             JVIA_BIKE: self.cbxBike,
             FaceBoundingBox: self.cbxFace,
-            HeadBoundingBox: self.checkBox,
+            HeadBoundingBox: self.cbxHead,
             UpperBoundingBox: self.cbxBody,
             LowerBoundingBox: self.cbxBody,
-            CommonBox: self.checkBox
+            CommonBox: self.cbxHead
         }
         # 保存当前打开图片中的所有类型目标的矩形框，用于后续checkbox中显示/不限时特定类型目标
         self.rectDict = {
@@ -74,7 +74,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.cbxPerson.stateChanged.connect(self.rectOpsPerson)
         self.cbxFace.stateChanged.connect(self.rectOpsFace)
         self.cbxBody.stateChanged.connect(self.rectOpsBody)
-        self.checkBox.stateChanged.connect(self.rectOpsHead)
+        self.cbxHead.stateChanged.connect(self.rectOpsHead)
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)

@@ -74,7 +74,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="combxSericeType"/>
+           <widget class="QComboBox" name="combxSericeType">
+            <property name="currentIndex">
+             <number>-1</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -139,7 +143,7 @@
              <set>Qt::ImhPreferNumbers</set>
             </property>
             <property name="text">
-             <string>0, 10, 10, 20</string>
+             <string>10, 10, 100, 100</string>
             </property>
            </widget>
           </item>
@@ -265,6 +269,9 @@
             <property name="text">
              <string>行人</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -275,15 +282,21 @@
             <property name="text">
              <string>人脸</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="cbxHead">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255, 255, 0);</string>
             </property>
             <property name="text">
              <string>头部</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -295,6 +308,9 @@
             <property name="text">
              <string>身体</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -305,6 +321,9 @@
             <property name="text">
              <string>机动车</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -314,6 +333,9 @@
             </property>
             <property name="text">
              <string>非机动车</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
