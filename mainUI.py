@@ -220,20 +220,30 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             except ValueError:
                 showMessageBox(self, "标注异常", "请输入正确参数格式: x, y, w, h")
 
+    def restoreState(self):
+        self.lblTimeCost.setText("0")
+        self.lblParsedImageNumber.setText("0")
+        self.dataManager.clearMap()
+        self.listImages.clear()
+        if self.gvPreview.scene() != None:
+            self.gvPreview.scene().clear()
+
+        dir_path = self.edtImagePath.text()
+        if dir_path != "":
+            imageNames = getImageList(dir_path)
+            for name in imageNames:
+                item = QListWidgetItem("%s" % name)
+                self.listImages.addItem(item)
+            self.lblTotalImageNum.setText("%d" %len(imageNames))
+        else:
+            self.lblTotalImageNum.setText("0")
+
     def brawsImage(self):
         dir_path = getDirPath(self, "图片路径")
         if dir_path == "":
             return
         self.edtImagePath.setText(dir_path)
-        self.listImages.clear()
-        if self.gvPreview.scene() != None:
-            self.gvPreview.scene().clear()
-        self.dataManager.clearMap()
-        imageNames = getImageList(dir_path)
-        for name in imageNames:
-            item = QListWidgetItem("%s" % name)
-            self.listImages.addItem(item)
-        self.lblTotalImageNum.setText("%d" %len(imageNames))
+        self.restoreState()
 
 def main():
     app = QApplication(sys.argv)
