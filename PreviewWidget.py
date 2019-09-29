@@ -153,7 +153,23 @@ class PreviewWidget(QWidget):
         self.setSafetyBelt(CAR_ATTRIBUTE_SafetyBelt, self.addLongObjectInfo)
 
     def setPersonInfo(self):
-        pass
+        # 映射项
+        for attribute in IOESMapping.listPersonMappableShortText:
+            self.setCommonMappable(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addShortObjectInfo)
+        for attribute in IOESMapping.listPersonMappableLongText:
+            self.setCommonMappable(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addLongObjectInfo)
+        # 透传项
+        for attribute in IOESMapping.listPersonMirrorableShortText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapPersonAttribute2Name, self.addShortObjectInfo)
+        for attribute in IOESMapping.listPersonMirrorableLongText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapPersonAttribute2Name, self.addLongObjectInfo)
+        # Box项
+        for attribute in IOESMapping.listPersonBoxKey:
+            self.setCommonBox(attribute, IOESMapping.mapPersonAttribute2Name, self.addLongObjectInfo, )
+        # 颜色数组
+        for attribute in IOESMapping.listPersonColorKey:
+            self.setCommonColor(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addShortObjectInfo)
+
     def setFaceInfo(self):
         pass
     def setBikeInfo(self):

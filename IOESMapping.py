@@ -12,7 +12,6 @@ TYPE_BIKE       = "4"
 # 需要映射项
 CAR_ATTRIBUTE_Angle                 = 'Angle'
 CAR_ATTRIBUTE_VehicleClass          = 'VehicleClass'
-CAR_ATTRIBUTE_VehicleColorNums      = 'VehicleColorNums'
 CAR_ATTRIBUTE_HasPlate              = 'HasPlate'
 CAR_ATTRIBUTE_PlateClass            = 'PlateClass'
 CAR_ATTRIBUTE_PlateColor            = 'PlateColor'
@@ -20,7 +19,6 @@ CAR_ATTRIBUTE_Sunvisor              = 'Sunvisor'
 CAR_ATTRIBUTE_Paper                 = 'Paper'
 CAR_ATTRIBUTE_Decoration            = 'Decoration'
 CAR_ATTRIBUTE_Drop                  = 'Drop'
-CAR_ATTRIBUTE_Tag                   = 'Tag'
 CAR_ATTRIBUTE_HasCall               = 'HasCall'
 CAR_ATTRIBUTE_HasSkylight           = 'HasSkylight'
 CAR_ATTRIBUTE_HasBaggage            = 'HasBaggage'
@@ -31,9 +29,11 @@ CAR_ATTRIBUTE_HighwayTollVehicles   = 'HighwayTollVehicles'
 # 透传项
 CAR_ATTRIBUTE_VehicleBrand          = 'VehicleBrand'
 CAR_ATTRIBUTE_PlateNo               = 'PlateNo'
+CAR_ATTRIBUTE_VehicleColorNums      = 'VehicleColorNums'
+CAR_ATTRIBUTE_Tag                   = 'Tag'
 # 坐标矩形框项（需特殊处理）
 CAR_ATTRIBUTE_ObjectBoundingBox     = 'ObjectBoundingBox'
-# 车辆颜色数组（需特殊处理）
+# 颜色数组（需特殊处理）
 CAR_ATTRIBUTE_VehicleColor          = 'VehicleColor'
 # 安全带项（需特殊处理）
 CAR_ATTRIBUTE_SafetyBelt            = 'SafetyBelt'
@@ -46,7 +46,35 @@ CAR_ATTRIBUTE_CoDriver              = 'CoDriver'
 
 #######################################################
 # 行人
-#
+# 需要映射项
+PERSON_ATTRIBUTE_Gender = "Gender"
+PERSON_ATTRIBUTE_Age = "Age"
+PERSON_ATTRIBUTE_Angle = "Angle"
+PERSON_ATTRIBUTE_HasBackpack = "HasBackpack"
+PERSON_ATTRIBUTE_HasGlasses = "HasGlasses"
+PERSON_ATTRIBUTE_HasCarrybag = "HasCarrybag"
+PERSON_ATTRIBUTE_HasUmbrella = "HasUmbrella"
+PERSON_ATTRIBUTE_CoatLength = "CoatLength"
+PERSON_ATTRIBUTE_TrousersLength = "TrousersLength"
+PERSON_ATTRIBUTE_HasHat = "HasHat"
+PERSON_ATTRIBUTE_HasMask = "HasMask"
+PERSON_ATTRIBUTE_HairStyle = "HairStyle"
+PERSON_ATTRIBUTE_CoatTexture = "CoatTexture"
+PERSON_ATTRIBUTE_TrousersTexture = "TrousersTexture"
+PERSON_ATTRIBUTE_HasTrolley = "HasTrolley"
+PERSON_ATTRIBUTE_HasLuggage = "HasLuggage"
+# 透传项
+PERSON_ATTRIBUTE_CoatColorNums          = 'CoatColorNums'
+PERSON_ATTRIBUTE_TrousersColorNums      = 'TrousersColorNums'
+# 坐标矩形框项（需特殊处理）
+PERSON_ATTRIBUTE_ObjectBoundingBox      = 'ObjectBoundingBox'
+PERSON_ATTRIBUTE_HeadBoundingBox        = 'HeadBoundingBox'
+PERSON_ATTRIBUTE_UpperBoundingBox       = 'UpperBoundingBox'
+PERSON_ATTRIBUTE_LowerBoundingBox       = 'LowerBoundingBox'
+PERSON_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
+# 颜色数组（需特殊处理）
+PERSON_ATTRIBUTE_TrousersColor          = 'TrousersColor'
+PERSON_ATTRIBUTE_CoatColor              = 'CoatColor'
 
 class IOESMapping():
     listCarMappableShortText = [
@@ -84,31 +112,41 @@ class IOESMapping():
         CAR_ATTRIBUTE_VehicleColor,
     ]
 
-    mapCarAttribute2Name = {
-        CAR_ATTRIBUTE_Angle: "角度",
-        CAR_ATTRIBUTE_VehicleClass: "车辆类型",
-        CAR_ATTRIBUTE_VehicleColorNums: "车辆颜色数目",
-        CAR_ATTRIBUTE_HasPlate: "车牌",
-        CAR_ATTRIBUTE_PlateClass: "车牌种类",
-        CAR_ATTRIBUTE_PlateColor: "车牌颜色",
-        CAR_ATTRIBUTE_Sunvisor: "遮阳板状态",
-        CAR_ATTRIBUTE_Paper: "纸巾盒",
-        CAR_ATTRIBUTE_Decoration: "摆饰",
-        CAR_ATTRIBUTE_Drop: "挂饰",
-        CAR_ATTRIBUTE_Tag: "年检标数量",
-        CAR_ATTRIBUTE_HasCall: "打电话状态",
-        CAR_ATTRIBUTE_HasSkylight: "天窗",
-        CAR_ATTRIBUTE_HasBaggage: "行李架",
-        CAR_ATTRIBUTE_HasAerial: "天线",
-        CAR_ATTRIBUTE_HasCrash: "是否有撞损",
-        CAR_ATTRIBUTE_HasDanger: "是否危化车",
-        CAR_ATTRIBUTE_HighwayTollVehicles: "公路收费车型",
-        CAR_ATTRIBUTE_VehicleBrand: "车辆品牌",
-        CAR_ATTRIBUTE_PlateNo: "车牌号码",
-        CAR_ATTRIBUTE_ObjectBoundingBox: "位置",
-        CAR_ATTRIBUTE_VehicleColor: "车辆颜色数组",
-        CAR_ATTRIBUTE_SafetyBelt: "安全带",
-    }
+    listPersonMappableShortText = [
+        PERSON_ATTRIBUTE_Gender,
+        PERSON_ATTRIBUTE_Age,
+        PERSON_ATTRIBUTE_Angle,
+        PERSON_ATTRIBUTE_HasBackpack,
+        PERSON_ATTRIBUTE_HasGlasses,
+        PERSON_ATTRIBUTE_HasCarrybag,
+        PERSON_ATTRIBUTE_HasUmbrella,
+        PERSON_ATTRIBUTE_CoatLength,
+        PERSON_ATTRIBUTE_TrousersLength,
+        PERSON_ATTRIBUTE_HasHat,
+        PERSON_ATTRIBUTE_HasMask,
+        PERSON_ATTRIBUTE_HairStyle,
+        PERSON_ATTRIBUTE_CoatTexture,
+        PERSON_ATTRIBUTE_TrousersTexture,
+        PERSON_ATTRIBUTE_HasTrolley,
+        PERSON_ATTRIBUTE_HasLuggage,
+    ]
+    listPersonMappableLongText = []
+    listPersonMirrorableShortText = [
+        PERSON_ATTRIBUTE_CoatColorNums, 
+        PERSON_ATTRIBUTE_TrousersColorNums,
+    ]
+    listPersonMirrorableLongText = []
+    listPersonBoxKey = [
+        PERSON_ATTRIBUTE_ObjectBoundingBox,
+        PERSON_ATTRIBUTE_HeadBoundingBox,
+        PERSON_ATTRIBUTE_UpperBoundingBox,
+        PERSON_ATTRIBUTE_LowerBoundingBox,
+        PERSON_ATTRIBUTE_FaceBoundingBox,
+    ]
+    listPersonColorKey = [
+        PERSON_ATTRIBUTE_TrousersColor,
+        PERSON_ATTRIBUTE_CoatColor,
+    ]
 
     ThreeStateType = {
         "0": "无",
@@ -280,6 +318,31 @@ class IOESMapping():
         "16": "6类专业作业车",
     }
 
+    mapCarAttribute2Name = {
+        CAR_ATTRIBUTE_Angle: "角度",
+        CAR_ATTRIBUTE_VehicleClass: "车辆类型",
+        CAR_ATTRIBUTE_VehicleColorNums: "车辆颜色数目",
+        CAR_ATTRIBUTE_HasPlate: "车牌",
+        CAR_ATTRIBUTE_PlateClass: "车牌种类",
+        CAR_ATTRIBUTE_PlateColor: "车牌颜色",
+        CAR_ATTRIBUTE_Sunvisor: "遮阳板状态",
+        CAR_ATTRIBUTE_Paper: "纸巾盒",
+        CAR_ATTRIBUTE_Decoration: "摆饰",
+        CAR_ATTRIBUTE_Drop: "挂饰",
+        CAR_ATTRIBUTE_Tag: "年检标数量",
+        CAR_ATTRIBUTE_HasCall: "打电话状态",
+        CAR_ATTRIBUTE_HasSkylight: "天窗",
+        CAR_ATTRIBUTE_HasBaggage: "行李架",
+        CAR_ATTRIBUTE_HasAerial: "天线",
+        CAR_ATTRIBUTE_HasCrash: "是否有撞损",
+        CAR_ATTRIBUTE_HasDanger: "是否危化车",
+        CAR_ATTRIBUTE_HighwayTollVehicles: "公路收费车型",
+        CAR_ATTRIBUTE_VehicleBrand: "车辆品牌",
+        CAR_ATTRIBUTE_PlateNo: "车牌号码",
+        CAR_ATTRIBUTE_ObjectBoundingBox: "位置",
+        CAR_ATTRIBUTE_VehicleColor: "车辆颜色数组",
+        CAR_ATTRIBUTE_SafetyBelt: "安全带",
+    }
     mapCarMappable2Mapper = {
         CAR_ATTRIBUTE_Angle: AngleType,
         CAR_ATTRIBUTE_VehicleClass: VehicleClassType,
@@ -301,6 +364,59 @@ class IOESMapping():
         # 特殊映射(如二级内容)
         CAR_ATTRIBUTE_VehicleColor: VehicleColorType,
     }
+    mapPersonAttribute2Name = {
+        PERSON_ATTRIBUTE_Gender: "性别",
+        PERSON_ATTRIBUTE_Age: "年龄",
+        PERSON_ATTRIBUTE_Angle: "角度",
+        PERSON_ATTRIBUTE_HasBackpack: "背包",
+        PERSON_ATTRIBUTE_HasGlasses: "眼镜",
+        PERSON_ATTRIBUTE_HasCarrybag: "手提包",
+        PERSON_ATTRIBUTE_HasUmbrella: "打伞",
+        PERSON_ATTRIBUTE_CoatLength: "上衣类型",
+        PERSON_ATTRIBUTE_TrousersLength: "下身类型",
+        PERSON_ATTRIBUTE_HasHat: "帽子",
+        PERSON_ATTRIBUTE_HasMask: "口罩",
+        PERSON_ATTRIBUTE_HairStyle: "发型",
+        PERSON_ATTRIBUTE_CoatTexture: "上身衣着款式",
+        PERSON_ATTRIBUTE_TrousersTexture: "下身衣着款式",
+        PERSON_ATTRIBUTE_HasTrolley: "手推车",
+        PERSON_ATTRIBUTE_HasLuggage: "行李箱",
+
+        PERSON_ATTRIBUTE_CoatColorNums: "上衣颜色数目",
+        PERSON_ATTRIBUTE_TrousersColorNums: "下身颜色数目",
+
+        PERSON_ATTRIBUTE_ObjectBoundingBox: "位置",
+        PERSON_ATTRIBUTE_HeadBoundingBox: "头部位置",
+        PERSON_ATTRIBUTE_UpperBoundingBox: "上半身位置",
+        PERSON_ATTRIBUTE_LowerBoundingBox: "下半身位置",
+        PERSON_ATTRIBUTE_FaceBoundingBox: "面部位置",
+
+        PERSON_ATTRIBUTE_TrousersColor: "下身颜色数组",
+        PERSON_ATTRIBUTE_CoatColor: "上衣颜色数组",
+    }
+    mapPersonMappable2Mapper = {
+        PERSON_ATTRIBUTE_Gender: GenderType,
+        PERSON_ATTRIBUTE_Age: AgeType,
+        PERSON_ATTRIBUTE_Angle: AngleType,
+        PERSON_ATTRIBUTE_HasBackpack: ThreeStateType,
+        PERSON_ATTRIBUTE_HasGlasses: ThreeStateType,
+        PERSON_ATTRIBUTE_HasCarrybag: ThreeStateType,
+        PERSON_ATTRIBUTE_HasUmbrella: ThreeStateType,
+        PERSON_ATTRIBUTE_CoatLength: CoatType,
+        PERSON_ATTRIBUTE_TrousersLength: TrousersType,
+        PERSON_ATTRIBUTE_HasHat: ThreeStateType,
+        PERSON_ATTRIBUTE_HasMask: ThreeStateType,
+        PERSON_ATTRIBUTE_HairStyle: HairStyle,
+        PERSON_ATTRIBUTE_CoatTexture: CoatTexture,
+        PERSON_ATTRIBUTE_TrousersTexture: TrousersTexture,
+        PERSON_ATTRIBUTE_HasTrolley: ThreeStateType,
+        PERSON_ATTRIBUTE_HasLuggage: ThreeStateType,
+
+        # 特殊映射(如二级内容)
+        PERSON_ATTRIBUTE_TrousersColor: ObjectColorType,
+        PERSON_ATTRIBUTE_CoatColor: ObjectColorType,
+    }
+
 
 if __name__ == '__main__':
     pass
