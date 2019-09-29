@@ -58,7 +58,6 @@ class PreviewWidget(QWidget):
             self.formLayoutLeft.addRow(lblKey, lblValue)
         else:
             self.formLayoutRight.addRow(lblKey, lblValue)
-
     # 较长的目标属性字串，一行只够显示一个
     def addLongObjectInfo(self, key, value):
         lblKey = NewLabel(key + ":")
@@ -82,34 +81,76 @@ class PreviewWidget(QWidget):
             print("Error: cannot find object type")
             return
 
-    def setCarMappable(self, attribute, addObjectInfo):
+    def setCommonMappable(self, attribute, attribute2Name, mappable2Mapper, addObjectInfo):
         if attribute in self.dataDict:
-            key = IOESMapping.mapCarAttribute2Name[attribute]
-            mapper = IOESMapping.mapCarMappable2Mapper[attribute]
+            key = attribute2Name[attribute]
+            mapper = mappable2Mapper[attribute]
             tempValue = self.dataDict[attribute]
             value = mapper[tempValue]
             addObjectInfo(key, value)
         else:
             print("%s not in dataDict" %keyWord)
-    def setCarMirrorable(self, attribute, addObjectInfo):
+    def setCommonMirrorable(self, attribute, attribute2Name, addObjectInfo):
         if attribute in self.dataDict:
-            key = IOESMapping.mapCarAttribute2Name[attribute]
+            key = attribute2Name[attribute]
             value = self.dataDict[attribute]
             addObjectInfo(key, value)
         else:
             print("%s not in dataDict" %keyWord)
+
+    def setCommonBox(self, attribute, attribute2Name, addObjectInfo):
+        if attribute in self.dataDict:
+            key = attribute2Name[attribute]
+            box = self.dataDict[attribute]
+            value = "(%d, %d, %d, %d)" %(box["x"], box["y"], box["w"], box["h"])
+            addObjectInfo(key, value)
+        else:
+            print("%s not in dataDict" %keyWord)
+    def setCommonColor(self, attribute, attribute2Name, mappable2Mapper, addObjectInfo):
+        if attribute in self.dataDict:
+            key = attribute2Name[attribute]
+            mapper = mappable2Mapper[attribute]
+            listColor = self.dataDict[attribute]
+            value = []
+            for colorCode in listColor:
+                if colorCode in mapper:
+                    value.append(mapper[colorCode])
+                else:
+                    value.append(colorCode)
+            addObjectInfo(key, "[%s]" %(', '.join(value)))
+        else:
+            print("%s not in dataDict" %keyWord)
+    def setSafetyBelt(self, attribute, addObjectInfo):
+        if attribute in self.dataDict:
+            key = IOESMapping.mapCarAttribute2Name[attribute]
+            subDict = self.dataDict[attribute]
+            mapper = IOESMapping.ThreeStateType
+            mainDriver = mapper[subDict[CAR_ATTRIBUTE_MainDriver]]
+            coDriver = mapper[subDict[CAR_ATTRIBUTE_CoDriver]]
+            value = "{主驾驶%s系, 副驾驶%s系}" %(mainDriver, coDriver)
+            addObjectInfo(key, value)
+        else:
+            print("%s not in dataDict" %keyWord)
+
     def setCarInfo(self):
         # 映射项
         for attribute in IOESMapping.listCarMappableShortText:
-            self.setCarMappable(attribute, self.addShortObjectInfo)
+            self.setCommonMappable(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addShortObjectInfo)
         for attribute in IOESMapping.listCarMappableLongText:
-            self.setCarMappable(attribute, self.addLongObjectInfo)
+            self.setCommonMappable(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addLongObjectInfo)
         # 透传项
         for attribute in IOESMapping.listCarMirrorableShortText:
-            self.setCarMirrorable(attribute, self.addShortObjectInfo)
+            self.setCommonMirrorable(attribute, IOESMapping.mapCarAttribute2Name, self.addShortObjectInfo)
         for attribute in IOESMapping.listCarMirrorableLongText:
-            self.setCarMirrorable(attribute, self.addLongObjectInfo)
-        # TODO：需特殊处理项
+            self.setCommonMirrorable(attribute, IOESMapping.mapCarAttribute2Name, self.addLongObjectInfo)
+        # Box项
+        for attribute in IOESMapping.listCarBoxKey:
+            self.setCommonBox(attribute, IOESMapping.mapCarAttribute2Name, self.addLongObjectInfo, )
+        # 颜色数组
+        for attribute in IOESMapping.listCarColorKey:
+            self.setCommonColor(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addShortObjectInfo)
+        # 安全带
+        self.setSafetyBelt(CAR_ATTRIBUTE_SafetyBelt, self.addLongObjectInfo)
 
     def setPersonInfo(self):
         pass

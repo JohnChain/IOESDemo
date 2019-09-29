@@ -48,7 +48,6 @@ class MarkRectItem(QGraphicsRectItem):
 
     def callback(self, isActive):
         self._signal.emit(isActive, self.row, self.index)
-        print("emit: isActive: %d, row:%s index:%d" %(isActive, self.row, self.index))
         return
 
     def bindSignal(self, callback):

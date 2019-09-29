@@ -17,7 +17,6 @@ class ImageDataManager:
     # }
     # return: OK: 0 Error: -1
     def genMap(self, jsonResponse):
-        print(jsonResponse)
         jsonDir = json.loads(jsonResponse)
         if "ret" not in jsonDir or jsonDir["ret"] != "200":
             print("Invalid json response")

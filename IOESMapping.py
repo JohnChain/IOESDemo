@@ -297,6 +297,9 @@ class IOESMapping():
         CAR_ATTRIBUTE_HasCrash: ThreeStateType,
         CAR_ATTRIBUTE_HasDanger: ThreeStateType,
         CAR_ATTRIBUTE_HighwayTollVehicles: HighwayTollVehiclesType,
+
+        # 特殊映射(如二级内容)
+        CAR_ATTRIBUTE_VehicleColor: VehicleColorType,
     }
 
 if __name__ == '__main__':
