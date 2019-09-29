@@ -495,7 +495,6 @@ class IOESMapping():
         BIKE_ATTRIBUTE_HelmetColor: ObjectColorType,
         BIKE_ATTRIBUTE_HasMask: ThreeStateType,
         BIKE_ATTRIBUTE_CoatTexture: CoatTexture,
-
         # 特殊映射(如二级内容)
     }
 

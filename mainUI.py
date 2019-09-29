@@ -105,6 +105,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.rectOps(checkState, self.rectDict[LowerBoundingBox])
     def rectOpsHead(self, checkState):
         self.rectOps(checkState, self.rectDict[CommonBox])
+        self.rectOps(checkState, self.rectDict[HeadBoundingBox])
 
     def clearRectDict(self):
         for key in self.rectDict.keys():
