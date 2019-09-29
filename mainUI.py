@@ -18,7 +18,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.setupUi(self)
         self.registEvent()
         self.initStates()
-        self.checkBGWorker()
         self.initValues()
 
     def initStates(self):
@@ -199,10 +198,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             if len(objectList) > 0:
                 dataDict = objectList[index]["Metadata"]
             if self.previewWidget == None:
-                self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
-            elif self.previewWidget.index != index or self.previewWidget.row != row:
-                self.previewWidget.setParent(None)
-                self.previewWidget = None
                 self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
         else:
             self.previewWidget.setParent(None)

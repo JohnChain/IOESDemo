@@ -24,7 +24,6 @@ class IOESBGWorker(BGWorker):
                 self.freeCounter += 1
                 if self.freeCounter == 3:
                     break
-                print("run sleep 1")
                 sleep(1)
         self.callback(SIG_TYPE_END, "")
         self.freeCounter = 0

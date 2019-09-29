@@ -11,12 +11,15 @@ class NewLabel(QLabel):
 
 class PreviewWidget(QWidget):
     def __init__(self, rect, row, index, dataDict, parent=None):
-        super().__init__(parent)
+        super(PreviewWidget, self).__init__(parent)
         self.row = row
         self.rect = rect
         self.index = index
         self.dataDict = dataDict
         self.initUI()
+
+    def __del__(self):
+        super(PreviewWidget, self).deleteLater()
 
     def initUI(self):
         self.setAutoFillBackground(True)

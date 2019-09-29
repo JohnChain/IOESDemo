@@ -16,6 +16,7 @@ class BGWorker(QThread):
         self.flagRun = False
  
     def __del__(self):
+        super(BGWorker, self).deleteLater()
         self.flagRun = False
         self.taskList.clear()
         self.wait()
