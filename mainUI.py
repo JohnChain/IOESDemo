@@ -131,7 +131,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox, row, index)
             if "ObjectBoundingBox" in meterDataDict:
                 self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"], row, index)
-        self.mtxtResponse.setText(json.dumps(objectList, indent=4)) # 格式化输出json
+        self.mtxtResponse.setText(json.dumps(objectList, indent=4, ensure_ascii=False)) # 格式化输出json
 
     def getFilePath(self, fileName):
         return self.edtImagePath.text() + "/" + fileName
