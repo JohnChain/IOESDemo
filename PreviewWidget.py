@@ -173,7 +173,22 @@ class PreviewWidget(QWidget):
     def setFaceInfo(self):
         pass
     def setBikeInfo(self):
-        pass
+        # 映射项
+        for attribute in IOESMapping.listBikeMappableShortText:
+            self.setCommonMappable(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addShortObjectInfo)
+        for attribute in IOESMapping.listBikeMappableLongText:
+            self.setCommonMappable(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addLongObjectInfo)
+        # 透传项
+        for attribute in IOESMapping.listBikeMirrorableShortText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapBikeAttribute2Name, self.addShortObjectInfo)
+        for attribute in IOESMapping.listBikeMirrorableLongText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapBikeAttribute2Name, self.addLongObjectInfo)
+        # Box项
+        for attribute in IOESMapping.listBikeBoxKey:
+            self.setCommonBox(attribute, IOESMapping.mapBikeAttribute2Name, self.addLongObjectInfo, )
+        # 颜色数组
+        for attribute in IOESMapping.listBikeColorKey:
+            self.setCommonColor(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addShortObjectInfo)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

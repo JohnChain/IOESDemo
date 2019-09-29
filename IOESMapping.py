@@ -42,7 +42,27 @@ CAR_ATTRIBUTE_CoDriver              = 'CoDriver'
 
 #######################################################
 # 骑行
-#
+# 需要映射项
+BIKE_ATTRIBUTE_BikeClass = "BikeClass"
+BIKE_ATTRIBUTE_Gender = "Gender"
+BIKE_ATTRIBUTE_Age = "Age"
+BIKE_ATTRIBUTE_Angle = "Angle"
+BIKE_ATTRIBUTE_HasBackpack = "HasBackpack"
+BIKE_ATTRIBUTE_HasGlasses = "HasGlasses"
+BIKE_ATTRIBUTE_HasCarrybag = "HasCarrybag"
+BIKE_ATTRIBUTE_HasUmbrella = "HasUmbrella"
+BIKE_ATTRIBUTE_CoatLength = "CoatLength"
+
+BIKE_ATTRIBUTE_HasPlate = "HasPlate"
+BIKE_ATTRIBUTE_HasHelmet = "HasHelmet"
+BIKE_ATTRIBUTE_HelmetColor = "HelmetColor"
+BIKE_ATTRIBUTE_HasMask = "HasMask"
+BIKE_ATTRIBUTE_CoatTexture = "CoatTexture"
+# 透传项
+# 坐标矩形框项（需特殊处理）
+BIKE_ATTRIBUTE_ObjectBoundingBox      = 'ObjectBoundingBox'
+BIKE_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
+# 颜色数组（需特殊处理）
 
 #######################################################
 # 行人
@@ -147,6 +167,31 @@ class IOESMapping():
         PERSON_ATTRIBUTE_TrousersColor,
         PERSON_ATTRIBUTE_CoatColor,
     ]
+
+    listBikeMappableShortText = [
+        BIKE_ATTRIBUTE_BikeClass,
+        BIKE_ATTRIBUTE_Gender,
+        BIKE_ATTRIBUTE_Age,
+        BIKE_ATTRIBUTE_Angle,
+        BIKE_ATTRIBUTE_HasBackpack,
+        BIKE_ATTRIBUTE_HasGlasses,
+        BIKE_ATTRIBUTE_HasCarrybag,
+        BIKE_ATTRIBUTE_HasUmbrella,
+        BIKE_ATTRIBUTE_CoatLength,
+        BIKE_ATTRIBUTE_HasPlate,
+        BIKE_ATTRIBUTE_HasHelmet,
+        BIKE_ATTRIBUTE_HelmetColor,
+        BIKE_ATTRIBUTE_HasMask,
+        BIKE_ATTRIBUTE_CoatTexture,
+    ]
+    listBikeMappableLongText = []
+    listBikeMirrorableShortText = []
+    listBikeMirrorableLongText = []
+    listBikeBoxKey = [
+        BIKE_ATTRIBUTE_ObjectBoundingBox,
+        BIKE_ATTRIBUTE_FaceBoundingBox,
+    ]
+    listBikeColorKey = []
 
     ThreeStateType = {
         "0": "无",
@@ -417,6 +462,42 @@ class IOESMapping():
         PERSON_ATTRIBUTE_CoatColor: ObjectColorType,
     }
 
+    mapBikeAttribute2Name = {
+        BIKE_ATTRIBUTE_BikeClass: "骑行类型",
+        BIKE_ATTRIBUTE_Gender: "性别",
+        BIKE_ATTRIBUTE_Age: "年龄",
+        BIKE_ATTRIBUTE_Angle: "角度",
+        BIKE_ATTRIBUTE_HasBackpack: "背包",
+        BIKE_ATTRIBUTE_HasGlasses: "眼镜",
+        BIKE_ATTRIBUTE_HasCarrybag: "手提包",
+        BIKE_ATTRIBUTE_HasUmbrella: "打伞",
+        BIKE_ATTRIBUTE_CoatLength: "上衣类型",
+        BIKE_ATTRIBUTE_HasPlate: "挂车牌",
+        BIKE_ATTRIBUTE_HasHelmet: "戴头盔",
+        BIKE_ATTRIBUTE_HelmetColor: "头盔颜色",
+        BIKE_ATTRIBUTE_HasMask: "口罩",
+        BIKE_ATTRIBUTE_CoatTexture: "上身衣着款式",
+        BIKE_ATTRIBUTE_ObjectBoundingBox: "位置",
+        BIKE_ATTRIBUTE_FaceBoundingBox: "面部位置",
+    }
+    mapBikeMappable2Mapper = {
+        BIKE_ATTRIBUTE_BikeClass: BikeClassType,
+        BIKE_ATTRIBUTE_Gender: GenderType,
+        BIKE_ATTRIBUTE_Age: AgeType,
+        BIKE_ATTRIBUTE_Angle: AngleType,
+        BIKE_ATTRIBUTE_HasBackpack: ThreeStateType,
+        BIKE_ATTRIBUTE_HasGlasses: ThreeStateType,
+        BIKE_ATTRIBUTE_HasCarrybag: ThreeStateType,
+        BIKE_ATTRIBUTE_HasUmbrella: ThreeStateType,
+        BIKE_ATTRIBUTE_CoatLength: CoatType,
+        BIKE_ATTRIBUTE_HasPlate: ThreeStateType,
+        BIKE_ATTRIBUTE_HasHelmet: ThreeStateType,
+        BIKE_ATTRIBUTE_HelmetColor: ObjectColorType,
+        BIKE_ATTRIBUTE_HasMask: ThreeStateType,
+        BIKE_ATTRIBUTE_CoatTexture: CoatTexture,
+
+        # 特殊映射(如二级内容)
+    }
 
 if __name__ == '__main__':
     pass
