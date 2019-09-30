@@ -2,13 +2,12 @@
 #!/usr/local/bin/python
 import sys
 import json
-from utils import *
-from HttpOps import HttpOps
+from IOESMapping import *
+from BaseDump import BaseDump
 
-class ImageDataManager:
+class IOESDataManager:
     def __init__(self):
         self.imageResponse = {}
-        self.httpOps = HttpOps()
 
     # 将server返回的json字串，整理为一个字典
     # {
@@ -42,6 +41,22 @@ class ImageDataManager:
             return self.imageResponse[imageID]
         else:
             return []
-    
+
     def count(self):
         return len(self.imageResponse)
+
+    def dump(self, destFile):
+        dumper = BaseDump(destFile, ObjectType)
+        # 给每个sheet写列名称
+        dumper.insert(TYPE_CAR, list(IOESCarMapping.mapAttribute2Name.values()))
+        dumper.insert(TYPE_BIKE, list(IOESBikeMapping.mapAttribute2Name.values()))
+        dumper.insert(TYPE_PERSON, list(IOESPersonMapping.mapAttribute2Name.values()))
+
+        # 写所有数据
+
+        # 保存到文件
+        dumper.save()
+
+if __name__ == "__main__":
+    dataMapper = IOESDataManager()
+    dataMapper.dump("empty_book2.xlsx")

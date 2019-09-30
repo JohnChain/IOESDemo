@@ -4,7 +4,7 @@ import sys
 import json
 import IOESDemo
 from utils import *
-from ImageDataManager import ImageDataManager
+from IOESDataManager import IOESDataManager
 from BGWorker import BGWorker
 from IOESBGWorker import IOESBGWorker
 from IASBGWorker import IASBGWorker
@@ -32,7 +32,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def initValues(self):
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
         # key为图片路径，value为图片中的所有目标信息(一个由多个字典组成的list，每个字典为一个目标)
-        self.dataManager = ImageDataManager()
+        self.dataManager = IOESDataManager()
+        # 存储所有image的全路径名称
+        self.listImageName = []
         self.previewWidget = None
         self.cbxDict = {
             JVIA_HUMAN: self.cbxPerson,
@@ -179,12 +181,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnStartTask.setEnabled(False)
         self.dataManager.clearMap()     # 清掉前一批图片解析结果
         self.bgWorkder.start()      #启动后台线程
-        fileList = []
-        for row in range(itemNum):
-            fileName = self.listImages.item(row).text()
-            filePath = self.getFilePath(fileName)
-            fileList.append(filePath)
-        self.bgWorkder.addTask(url, fileList)
+        self.bgWorkder.addTask(url, self.listImageName)
 
     def stopTask(self):
         self.bgWorkder.stop()
@@ -232,6 +229,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             for name in imageNames:
                 item = QListWidgetItem("%s" % name)
                 self.listImages.addItem(item)
+                self.listImageName.append(self.getFilePath(name))
             self.lblTotalImageNum.setText("%d" %len(imageNames))
         else:
             self.lblTotalImageNum.setText("0")

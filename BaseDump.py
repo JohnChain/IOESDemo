@@ -34,7 +34,6 @@ if __name__ == "__main__":
         TYPE_PERSON: "行人",
         TYPE_CAR: "机动车",
     }
-    destFile = "empty_book2.xlsx"
 
-    dumper = BaseDump(destFile, ObjectType)
+    dumper = BaseDump("empty_book2.xlsx", ObjectType)
     dumper.save()
