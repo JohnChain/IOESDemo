@@ -4,9 +4,10 @@ from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
 class BaseDump():
-    def __init__(self, destFile, mapSheetName):
+    def __init__(self, destFile, mapSheetName, ):
         self.destFile = destFile
         self.wb = Workbook()
+        # 已ObjectType为key的字典，value为 sheet 句柄
         self.wsDict = {}
         for key, value in mapSheetName.items():
             self.wsDict[key] = self.wb.create_sheet(title=value, index=0)
@@ -14,8 +15,12 @@ class BaseDump():
     def save(self):
         self.wb.save(filename = self.destFile)
 
-    def insert(self):
-        pass
+    # 在指定sheet里插入一行
+    # objType: 目标类型，将根据此类型映射到对应类型的sheet
+    # listOneRow: 一行数据，（建议list，其他可迭代(dict)未尝试）
+    def insert(self, objType, listOneRow):
+        ws = self.wsDict[objType]
+        ws.append(listOneRow)
 
 if __name__ == "__main__":
     TYPE_PERSON     = "1"

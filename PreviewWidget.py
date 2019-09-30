@@ -148,7 +148,7 @@ class PreviewWidget(QWidget):
             self.setCommonMirrorable(attribute, IOESMapping.mapAttribute2Name, self.addLongObjectInfo)
         # Box项
         for attribute in IOESMapping.listBoxKey:
-            self.setCommonBox(attribute, IOESMapping.mapAttribute2Name, self.addLongObjectInfo, )
+            self.setCommonBox(attribute, IOESMapping.mapAttribute2Name, self.addLongObjectInfo)
         # 颜色数组
         for attribute in IOESMapping.listColorKey:
             self.setCommonColor(attribute, IOESMapping.mapAttribute2Name, IOESMapping.mapMappable2Mapper, self.addShortObjectInfo)

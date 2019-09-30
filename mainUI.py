@@ -204,11 +204,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             self.previewWidget = None
 
     def dumpResult(self):
-        widthListImage = self.listImages.size().width()
-        hightListImage = self.listImages.size().height()
-        heightGVPreview = self.gvPreview.size().height()
-        widthGVPreview = self.gvPreview.size().width()
-        showMessageBox(self, "空间长宽", "widthGVPreview: %d， heightGVPreview: %d, widthListImage: %d, hightListImage: %d" %(widthGVPreview, heightGVPreview, widthListImage, hightListImage))
+        flter = "WindowsOffice(*.xls *.xlsx)"
+        outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
+        print("outFilePath = %s", outFilePath)
 
     def markRect(self):
         scene = self.gvPreview.scene()

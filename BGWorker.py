@@ -2,7 +2,6 @@
 #!/usr/local/bin/python
 from PyQt5.QtCore import *
 from HttpOps import HttpOps
-from ImageDataManager import ImageDataManager
 from time import sleep
 from utils import *
 

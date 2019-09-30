@@ -69,6 +69,9 @@ def dict2Rect(mDict):
 def getDirPath(base, title):
     return QFileDialog.getExistingDirectory(base, title, "")
 
+def getFilePath(base, filter = "", caption = ""):
+    return QFileDialog.getOpenFileName(parent = base, caption = caption, filter = filter)
+
 def toBase64(plainStr):
     return base64.b64encode(plainStr).decode('utf-8')
 
