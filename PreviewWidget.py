@@ -123,11 +123,11 @@ class PreviewWidget(QWidget):
             addObjectInfo(key, "[%s]" %(', '.join(value)))
         else:
             print("%s not in dataDict" %keyWord)
-    def setSafetyBelt(self, attribute, addObjectInfo):
+    def setSafetyBelt(self, IOESMapping, attribute, addObjectInfo):
         if attribute in self.dataDict:
-            key = IOESMapping.mapCarAttribute2Name[attribute]
+            key = IOESMapping.mapAttribute2Name[attribute]
             subDict = self.dataDict[attribute]
-            mapper = IOESMapping.ThreeStateType
+            mapper = IOESMapping.mapMappable2Mapper[attribute]
             mainDriver = mapper[subDict[CAR_ATTRIBUTE_MainDriver]]
             coDriver = mapper[subDict[CAR_ATTRIBUTE_CoDriver]]
             value = "{主驾驶%s系, 副驾驶%s系}" %(mainDriver, coDriver)
@@ -135,63 +135,34 @@ class PreviewWidget(QWidget):
         else:
             print("%s not in dataDict" %keyWord)
 
+    def commonSetter(self, IOESMapping):
+        # 映射项
+        for attribute in IOESMapping.listMappableShortText:
+            self.setCommonMappable(attribute, IOESMapping.mapAttribute2Name, IOESMapping.mapMappable2Mapper, self.addShortObjectInfo)
+        for attribute in IOESMapping.listMappableLongText:
+            self.setCommonMappable(attribute, IOESMapping.mapAttribute2Name, IOESMapping.mapMappable2Mapper, self.addLongObjectInfo)
+        # 透传项
+        for attribute in IOESMapping.listMirrorableShortText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapAttribute2Name, self.addShortObjectInfo)
+        for attribute in IOESMapping.listMirrorableLongText:
+            self.setCommonMirrorable(attribute, IOESMapping.mapAttribute2Name, self.addLongObjectInfo)
+        # Box项
+        for attribute in IOESMapping.listBoxKey:
+            self.setCommonBox(attribute, IOESMapping.mapAttribute2Name, self.addLongObjectInfo, )
+        # 颜色数组
+        for attribute in IOESMapping.listColorKey:
+            self.setCommonColor(attribute, IOESMapping.mapAttribute2Name, IOESMapping.mapMappable2Mapper, self.addShortObjectInfo)
+
     def setCarInfo(self):
-        # 映射项
-        for attribute in IOESMapping.listCarMappableShortText:
-            self.setCommonMappable(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addShortObjectInfo)
-        for attribute in IOESMapping.listCarMappableLongText:
-            self.setCommonMappable(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addLongObjectInfo)
-        # 透传项
-        for attribute in IOESMapping.listCarMirrorableShortText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapCarAttribute2Name, self.addShortObjectInfo)
-        for attribute in IOESMapping.listCarMirrorableLongText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapCarAttribute2Name, self.addLongObjectInfo)
-        # Box项
-        for attribute in IOESMapping.listCarBoxKey:
-            self.setCommonBox(attribute, IOESMapping.mapCarAttribute2Name, self.addLongObjectInfo, )
-        # 颜色数组
-        for attribute in IOESMapping.listCarColorKey:
-            self.setCommonColor(attribute, IOESMapping.mapCarAttribute2Name, IOESMapping.mapCarMappable2Mapper, self.addShortObjectInfo)
+        self.commonSetter(IOESCarMapping)
         # 安全带
-        self.setSafetyBelt(CAR_ATTRIBUTE_SafetyBelt, self.addLongObjectInfo)
-
+        self.setSafetyBelt(IOESCarMapping, CAR_ATTRIBUTE_SafetyBelt, self.addLongObjectInfo)
     def setPersonInfo(self):
-        # 映射项
-        for attribute in IOESMapping.listPersonMappableShortText:
-            self.setCommonMappable(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addShortObjectInfo)
-        for attribute in IOESMapping.listPersonMappableLongText:
-            self.setCommonMappable(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addLongObjectInfo)
-        # 透传项
-        for attribute in IOESMapping.listPersonMirrorableShortText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapPersonAttribute2Name, self.addShortObjectInfo)
-        for attribute in IOESMapping.listPersonMirrorableLongText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapPersonAttribute2Name, self.addLongObjectInfo)
-        # Box项
-        for attribute in IOESMapping.listPersonBoxKey:
-            self.setCommonBox(attribute, IOESMapping.mapPersonAttribute2Name, self.addLongObjectInfo, )
-        # 颜色数组
-        for attribute in IOESMapping.listPersonColorKey:
-            self.setCommonColor(attribute, IOESMapping.mapPersonAttribute2Name, IOESMapping.mapPersonMappable2Mapper, self.addShortObjectInfo)
-
+        self.commonSetter(IOESPersonMapping)
+    def setBikeInfo(self):
+        self.commonSetter(IOESBikeMapping)
     def setFaceInfo(self):
         pass
-    def setBikeInfo(self):
-        # 映射项
-        for attribute in IOESMapping.listBikeMappableShortText:
-            self.setCommonMappable(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addShortObjectInfo)
-        for attribute in IOESMapping.listBikeMappableLongText:
-            self.setCommonMappable(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addLongObjectInfo)
-        # 透传项
-        for attribute in IOESMapping.listBikeMirrorableShortText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapBikeAttribute2Name, self.addShortObjectInfo)
-        for attribute in IOESMapping.listBikeMirrorableLongText:
-            self.setCommonMirrorable(attribute, IOESMapping.mapBikeAttribute2Name, self.addLongObjectInfo)
-        # Box项
-        for attribute in IOESMapping.listBikeBoxKey:
-            self.setCommonBox(attribute, IOESMapping.mapBikeAttribute2Name, self.addLongObjectInfo, )
-        # 颜色数组
-        for attribute in IOESMapping.listBikeColorKey:
-            self.setCommonColor(attribute, IOESMapping.mapBikeAttribute2Name, IOESMapping.mapBikeMappable2Mapper, self.addShortObjectInfo)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
