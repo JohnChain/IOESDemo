@@ -129,13 +129,13 @@ class IOESDataManager:
         else:
             listObj.append("-")
 
-    def dumpCarInfo(self, dataDict, dumper):
+    def dumpCarInfo(self, dataDict, dumper, fileName):
         listObj = ["图片路径"]
         self.dumpPrepare(IOESCarMapping, listObj)
         listObj.append(IOESCarMapping.mapAttribute2Name[CAR_ATTRIBUTE_SafetyBelt])
         dumper.insert(TYPE_CAR, listObj)
 
-        listObj = ["/home/xxx/xx/xx"]
+        listObj = [fileName]
         # get common
         self.dumpCommonObj(dataDict, IOESCarMapping, listObj)
         # get safeBar
@@ -143,43 +143,46 @@ class IOESDataManager:
         dumper.insert(TYPE_CAR, listObj)
         dumper.save()
 
-    def dumpPersonInfo(self, dataDict, dumper):
+    def dumpPersonInfo(self, dataDict, dumper, fileName):
         listObj = ["图片路径"]
         self.dumpPrepare(IOESPersonMapping, listObj)
         dumper.insert(TYPE_PERSON, listObj)
 
-        listObj = ["/home/xxx/xx/xx"]
+        listObj = [fileName]
         # get common
         self.dumpCommonObj(dataDict, IOESPersonMapping, listObj)
         dumper.insert(TYPE_PERSON, listObj)
         dumper.save()
 
-    def dumpBikeInfo(self, dataDict, dumper):
+    def dumpBikeInfo(self, dataDict, dumper, fileName):
         listObj = ["图片路径"]
         self.dumpPrepare(IOESBikeMapping, listObj)
         dumper.insert(TYPE_BIKE, listObj)
 
-        listObj = ["/home/xxx/xx/xx"]
+        listObj = [fileName]
         # get common
         self.dumpCommonObj(dataDict, IOESBikeMapping, listObj)
         dumper.insert(TYPE_BIKE, listObj)
         dumper.save()
 
-    def dump(self, destFile):
+    def dump(self, listImageName, destFile):
         dumper = BaseDump(destFile, ObjectType)
         # 写所有数据
+        index = 0
         for oneRow in self.imageResponse.values():
+            fileName = listImageName[index]
+            index += 1
             for obj in oneRow:
                 listRowValue = []
                 dataDict = obj["Metadata"]
                 if ATTRIBUTE_Type in dataDict:
                     objType = dataDict[ATTRIBUTE_Type]
                     if objType == TYPE_CAR:
-                        self.dumpCarInfo(dataDict,dumper)
+                        self.dumpCarInfo(dataDict,dumper, fileName)
                     elif objType == TYPE_PERSON:
-                        self.dumpPersonInfo(dataDict, dumper)
+                        self.dumpPersonInfo(dataDict, dumper, fileName)
                     elif objType == TYPE_BIKE:
-                        self.dumpBikeInfo(dataDict, dumper)
+                        self.dumpBikeInfo(dataDict, dumper, fileName)
                     else:
                         return "Error: unknow object type ", objType
                 else:
