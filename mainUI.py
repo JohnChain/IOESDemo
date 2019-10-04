@@ -120,10 +120,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.updateImage(full_path)
         scene = self.gvPreview.scene()
         row = "%d" %self.listImages.row(item)
-        objectList = self.dataManager.get(row)
+        objectList = self.dataManager.getRow(row)
         for index in range(len(objectList)):
-            objDict = objectList[index]
-            meterDataDict = objDict["Metadata"]
+            meterDataDict = self.dataManager.getObj(row, index)
             if UpperBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox, row, index)
             if LowerBoundingBox in meterDataDict:
@@ -195,10 +194,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def flushPreviewWidget(self, isActive, row, index):
         if isActive == 1:
             rect = getRect(PREVIEW_WIDGET_X, PREVIEW_WIDGET_Y, PREVIEW_WIDGET_WIDTH, PREVIEW_WIDGET_HEIGHT)
-            objectList = self.dataManager.get(row)
-            dataDict = {}
-            if len(objectList) > 0:
-                dataDict = objectList[index]["Metadata"]
+            dataDict = self.dataManager.getObj(row, index)
             if self.previewWidget == None:
                 self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
         else:
