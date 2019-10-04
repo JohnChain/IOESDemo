@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.0 2019093002"
+VERSION = "version: 2.2.0 2019100401"
 
 MAX_BUNCH_LENGTH = 10
 
@@ -70,7 +70,7 @@ def getDirPath(base, title):
     return QFileDialog.getExistingDirectory(base, title, "")
 
 def getFilePath(base, filter = "", caption = ""):
-    return QFileDialog.getOpenFileName(parent = base, caption = caption, filter = filter)
+    return QFileDialog.getSaveFileName(parent = base, caption = caption, filter = filter)
 
 def toBase64(plainStr):
     return base64.b64encode(plainStr).decode('utf-8')

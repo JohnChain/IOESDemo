@@ -21,6 +21,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.initValues()
 
     def initStates(self):
+        self.setWindowTitle('KeenSenseDemo')
+        self.setWindowIcon(QIcon('resource/logo.png'))
         self.statusBar().showMessage(VERSION)
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
@@ -148,8 +150,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def bgWorkderCallback(self, rspJson):
         if rspJson != "" and rspJson[:5] != "Error":
-            self.dataManager.genMap(rspJson)
-            self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
+            rst = self.dataManager.genMap(rspJson)
+            if rst == "":
+                self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
+            else:
+                showMessageBox(self, "处理回复消息异常", rst)
         else:
             showMessageBox(self, "通信异常", rspJson)
             self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
@@ -203,7 +208,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def dumpResult(self):
         flter = "WindowsOffice(*.xls *.xlsx)"
         outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
-        print("outFilePath = %s", outFilePath)
+        # TODO: outFilePath QFileDialog.getSaveFileName return tuple instead of QString ?
+        self.dataManager.dump(outFilePath[0])
 
     def markRect(self):
         scene = self.gvPreview.scene()

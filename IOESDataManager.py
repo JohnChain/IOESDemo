@@ -14,13 +14,13 @@ class IOESDataManager:
     #   "imageID1": [{objectID1}, {objectID2},...],
     #   "imageID2": [{objectID1}, {objectID2},...],
     # }
-    # return: OK: 0 Error: -1
+    # return: OK: "" Error: "reason"
     def genMap(self, jsonResponse):
+        rst = ""
         jsonDir = json.loads(jsonResponse)
         if "ret" not in jsonDir or jsonDir["ret"] != "200":
-            print("Invalid json response")
-            return -1
-        if "ObjectList" in jsonDir:
+            rst = "Invalid json response"
+        elif "ObjectList" in jsonDir:
             objectList = jsonDir["ObjectList"]
             for obj in objectList:
                 imageId = obj["ImageID"]
@@ -30,8 +30,8 @@ class IOESDataManager:
                     self.imageResponse[imageId] = [obj]
         else:
             if "error_msg" in jsonDir:
-                print("response error_msg: %s" %jsonDir[error_msg])
-        return 0
+                rst = "response error_msg: %s" %jsonDir[error_msg]
+        return rst
 
     def clearMap(self):
         self.imageResponse.clear()
