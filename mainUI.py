@@ -22,7 +22,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def initStates(self):
         self.setWindowTitle('KeenSenseDemo')
-        self.setWindowIcon(QIcon('resource/logo.png'))
         self.statusBar().showMessage(VERSION)
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
