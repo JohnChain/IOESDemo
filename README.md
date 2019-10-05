@@ -7,6 +7,11 @@
 5. 鼠标悬浮于目标矩形框区域，显示预览窗口展示目标参数
 6. 支持将所有图片的json回复信息导出到Excel表格
 
+#### TODO
+1. 预览图片自适应自窗口大小(or 支持放大缩小))
+2. log to file
+3. IAS 协议
+
 ## 开发环境
 MacOS Mojave    
 VSCode Version 1.38.1      
