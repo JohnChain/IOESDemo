@@ -2,3 +2,6 @@
 __pycache__/
 .pylintrc
 data/
+build/
+dist/
+mainUI.spec

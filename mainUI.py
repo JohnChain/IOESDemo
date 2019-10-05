@@ -205,7 +205,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         flter = "WindowsOffice(*.xls *.xlsx)"
         outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
         # TODO: outFilePath QFileDialog.getSaveFileName return tuple instead of QString ?
-        self.dataManager.dump(self.listImageName, outFilePath[0])
+        rst = self.dataManager.dump(self.listImageName, outFilePath[0])
+        if rst == "":
+            showMessageBox(self, "导出数据", "导出完成")
+        else:
+            showMessageBox(self, "导出数据", "导出失败: %s" %rst)
 
     def markRect(self):
         scene = self.gvPreview.scene()
