@@ -29,11 +29,12 @@ pip install requests -i https://pypi.douban.com/simple
 python3 mainUI.py
 
 ## 打包为单个可执行文件
-pyinstaller -F -w -i resource/logo.icns mainUI.py
-
+MacSO: pyinstaller -F -w -i resource/logo.icns mainUI.py
+Windows: pyinstaller -F -w -i resource/logo.ico mainUI.py
 ## 效果预览
 ![](resource/demo_osx.png)
 
 ## refs:
 https://www.riverbankcomputing.com/static/Docs/PyQt4/classes.html  
 https://openpyxl.readthedocs.io/en/stable/  
+https://www.cnblogs.com/hester/p/11460121.html

@@ -499,4 +499,17 @@ class IOESCarMapping():
     }
 
 if __name__ == '__main__':
-    pass
+    carMapping = IOESCarMapping()
+    PersonMapping = IOESPersonMapping()
+    BikeMapping = IOESBikeMapping()
+    print("===== Car =====")
+    for (key,value) in carMapping.mapAttribute2Name.items(): 
+        print("%s \t\t\t %s" %(key, value))
+    
+    print("===== Person =====")
+    for (key,value) in PersonMapping.mapAttribute2Name.items(): 
+        print("%s \t\t\t %s" %(key, value))
+
+    print("===== Bike =====")
+    for (key,value) in BikeMapping.mapAttribute2Name.items(): 
+        print("%s \t\t\t %s" %(key, value))

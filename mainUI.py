@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/local/bin/python
+import fix_qt_import_error
 import sys
 import json
 import IOESDemo
@@ -184,6 +185,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnStartTask.setEnabled(False)
         self.dataManager.clearMap()     # 清掉前一批图片解析结果
         self.bgWorkder.start()      #启动后台线程
+        
         self.bgWorkder.addTask(url, self.listImageName)
 
     def stopTask(self):
@@ -225,6 +227,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.lblParsedImageNumber.setText("0")
         self.dataManager.clearMap()
         self.listImages.clear()
+        self.listImageName.clear()
         if self.gvPreview.scene() != None:
             self.gvPreview.scene().clear()
 
