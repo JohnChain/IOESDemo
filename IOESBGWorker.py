@@ -15,7 +15,7 @@ class IOESBGWorker(BGWorker):
         while(self.flagRun):
             if(len(self.taskList) > 0):
                 self.freeCounter = 0
-                taskJson = self.taskList.pop()
+                taskJson = self.taskList.pop(0)
                 url = taskJson["url"]
                 body = taskJson["body"]
                 rspJson = self.postJson(url, body)

@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.2 2019101803"
+VERSION = "version: 2.2.2 2019101804"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 
@@ -25,6 +25,9 @@ PEN_BODY = QPen(Qt.cyan, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_VEHICLE = QPen(Qt.green, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_NON_VEHICLE = QPen(Qt.blue, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_COMMON = QPen(Qt.red, 1, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
+
+BRUSH_Y = QBrush(Qt.green)
+BRUSH_F = QBrush(Qt.red)
 
 JVIA_UNKNOWN = "0"  #!< 未能定义的物体
 JVIA_HUMAN = "1"  #!< 行人
@@ -47,6 +50,20 @@ TYPE_2_PEN = {
     UpperBoundingBox: PEN_BODY,
     LowerBoundingBox: PEN_BODY,
     CommonBox: PEN_COMMON,
+}
+
+JSON_PARSE_RET_CODE = "JSON_PARSE_RET_CODE"
+JSON_PARSE_RET_REASON = "JSON_PARSE_RET_REASON"
+JSON_PARSE_RET_PAYLOAD = "JSON_PARSE_RET_PAYLOAD"
+
+JSON_PARSE_RET_OK = "0"
+JSON_PARSE_RET_INVALID_JSON_RESPONSE = "-1"
+JSON_PARSE_RET_PEER_ERROR = "-2"
+
+JSON_PARSE_RET_MAPPER = {
+    JSON_PARSE_RET_OK: "",
+    JSON_PARSE_RET_INVALID_JSON_RESPONSE: "Invalid json response",
+    JSON_PARSE_RET_PEER_ERROR: "Server return fail reason: ",
 }
 
 def showMessageBox(base, title, msg):

@@ -14,24 +14,43 @@ class IOESDataManager:
     #   "imageID1": [{objectID1}, {objectID2},...],
     #   "imageID2": [{objectID1}, {objectID2},...],
     # }
-    # return: OK: "" Error: "reason"
+    # return: 一个字典, eg
+    # {
+    # "JSON_PARSE_RET_CODE": "0",
+    # "JSON_PARSE_RET_REASON": "xxxx",
+    # "JSON_PARSE_RET_PAYLOAD": { "1": brush, "2": brush,...}
+    # }
     def genMap(self, jsonResponse):
-        rst = ""
+        ret = {}
+        code = ""
+        reason = ""
+        id2brush = {}  # { "1": brush, "2": brush,...}
         jsonDir = json.loads(jsonResponse)
         if "ret" not in jsonDir or jsonDir["ret"] != "200":
-            rst = "Invalid json response"
-        elif "ObjectList" in jsonDir:
-            objectList = jsonDir["ObjectList"]
-            for obj in objectList:
-                imageId = obj["ImageID"]
-                if imageId in self.imageResponse:
-                    self.imageResponse[imageId].append(obj)
-                else:
-                    self.imageResponse[imageId] = [obj]
+            code = JSON_PARSE_RET_INVALID_JSON_RESPONSE
+            reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_INVALID_JSON_RESPONSE]
         else:
-            if "error_msg" in jsonDir:
-                rst = "response error_msg: %s" %jsonDir[error_msg]
-        return rst
+            if "ObjectList" in jsonDir:
+                code = JSON_PARSE_RET_OK
+                objectList = jsonDir["ObjectList"]
+                for obj in objectList:
+                    imageId = obj["ImageID"]
+                    if imageId in self.imageResponse:
+                        self.imageResponse[imageId].append(obj)
+                    else:
+                        self.imageResponse[imageId] = [obj]
+                        id2brush[imageId] = BRUSH_Y
+            else:
+                code = JSON_PARSE_RET_PEER_ERROR
+                if "error_msg" in jsonDir:
+                    reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_PEER_ERROR] + jsonDir[error_msg]
+                else:
+                    reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_PEER_ERROR] + "service not give reason"
+        ret[JSON_PARSE_RET_CODE] = code
+        ret[JSON_PARSE_RET_REASON] = reason
+        ret[JSON_PARSE_RET_PAYLOAD] = id2brush
+
+        return ret
 
     def clearMap(self):
         self.imageResponse.clear()
@@ -61,7 +80,8 @@ class IOESDataManager:
                 listObj.append(mapAttribute2Name[attribute])
             else:
                 listObj.append("?_?")
-    def dumpPrepare(self, mapper, listObj):
+    def dumpPrepare(self, mapper):
+        listObj = ["图片路径"]
         # 给每个sheet写列名称
         self.dumpPrepareList(mapper.listMappableShortText, mapper.mapAttribute2Name, listObj)
         self.dumpPrepareList(mapper.listMappableLongText, mapper.mapAttribute2Name, listObj)
@@ -69,6 +89,7 @@ class IOESDataManager:
         self.dumpPrepareList(mapper.listMirrorableLongText, mapper.mapAttribute2Name, listObj)
         self.dumpPrepareList(mapper.listBoxKey, mapper.mapAttribute2Name, listObj)
         self.dumpPrepareList(mapper.listColorKey, mapper.mapAttribute2Name, listObj)
+        return listObj
 
     def dumpCommonMappable(self, dataDict, listAttribute, mapMappable2Mapper, listObj):
         for attribute in listAttribute:
@@ -130,10 +151,6 @@ class IOESDataManager:
             listObj.append("-")
 
     def dumpCarInfo(self, dataDict, dumper, fileName):
-        listObj = ["图片路径"]
-        self.dumpPrepare(IOESCarMapping, listObj)
-        listObj.append(IOESCarMapping.mapAttribute2Name[CAR_ATTRIBUTE_SafetyBelt])
-        dumper.insert(TYPE_CAR, listObj)
 
         listObj = [fileName]
         # get common
@@ -144,10 +161,6 @@ class IOESDataManager:
         dumper.save()
 
     def dumpPersonInfo(self, dataDict, dumper, fileName):
-        listObj = ["图片路径"]
-        self.dumpPrepare(IOESPersonMapping, listObj)
-        dumper.insert(TYPE_PERSON, listObj)
-
         listObj = [fileName]
         # get common
         self.dumpCommonObj(dataDict, IOESPersonMapping, listObj)
@@ -155,10 +168,6 @@ class IOESDataManager:
         dumper.save()
 
     def dumpBikeInfo(self, dataDict, dumper, fileName):
-        listObj = ["图片路径"]
-        self.dumpPrepare(IOESBikeMapping, listObj)
-        dumper.insert(TYPE_BIKE, listObj)
-
         listObj = [fileName]
         # get common
         self.dumpCommonObj(dataDict, IOESBikeMapping, listObj)
@@ -167,6 +176,16 @@ class IOESDataManager:
 
     def dump(self, listImageName, destFile):
         dumper = BaseDump(destFile, ObjectType)
+
+        listObj = self.dumpPrepare(IOESCarMapping)
+        listObj.append(IOESCarMapping.mapAttribute2Name[CAR_ATTRIBUTE_SafetyBelt])
+        dumper.insert(TYPE_CAR, listObj)
+
+        listObj = self.dumpPrepare(IOESPersonMapping)
+        dumper.insert(TYPE_PERSON, listObj)
+
+        listObj = self.dumpPrepare(IOESBikeMapping)
+        dumper.insert(TYPE_BIKE, listObj)
         # 写所有数据
         index = 0
         for oneRow in self.imageResponse.values():

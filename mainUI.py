@@ -147,13 +147,24 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.scene.addItem(self.pixmap_item)
         self.gvPreview.setScene(self.scene)
 
+    def updateListWidgetItems(self, id2brush):
+        for imageId in id2brush:
+            brush = id2brush[imageId]
+            try:
+                row = int(imageId)
+                item = self.listImages.item(row)
+                item.setBackground(brush)
+            except Exception as e:
+                showMessageBox(self, "更新图片列别异常", str(e))
+
     def bgWorkderCallback(self, rspJson):
         if rspJson != "" and rspJson[:5] != "Error":
-            rst = self.dataManager.genMap(rspJson)
-            if rst == "":
+            ret = self.dataManager.genMap(rspJson)
+            if ret[JSON_PARSE_RET_CODE] == JSON_PARSE_RET_OK:
+                self.updateListWidgetItems(ret[JSON_PARSE_RET_PAYLOAD])
                 self.lblParsedImageNumber.setText("%d" %self.dataManager.count())
             else:
-                showMessageBox(self, "处理回复消息异常", rst)
+                showMessageBox(self, "处理回复消息异常", ret[JSON_PARSE_RET_REASON])
         else:
             self.stopTask()
             showMessageBox(self, "通信异常", rspJson)
