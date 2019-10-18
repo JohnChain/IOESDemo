@@ -26,7 +26,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.statusBar().showMessage(VERSION)
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
-        self.edtURL.setText("http://192.168.1.222:9096/images/recog")
+        self.edtURL.setText(DEFAULT_SERVICE_URL)
         self.combxSericeType.insertItem(0, "IOES")
         self.combxSericeType.insertItem(1, "IAS")
         self.combxSericeType.setCurrentIndex (0)
@@ -155,9 +155,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             else:
                 showMessageBox(self, "处理回复消息异常", rst)
         else:
+            self.stopTask()
             showMessageBox(self, "通信异常", rspJson)
             self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
-            self.stopTask()
 
     def onBgWorkderExit(self, msg):
         self.btnStartTask.setEnabled(True)

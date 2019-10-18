@@ -18,8 +18,10 @@ class IOESBGWorker(BGWorker):
                 taskJson = self.taskList.pop()
                 url = taskJson["url"]
                 body = taskJson["body"]
-                rspJosn = self.postJson(url, body)
-                self.callback(SIG_TYPE_DATA, rspJosn)
+                rspJson = self.postJson(url, body)
+                self.callback(SIG_TYPE_DATA, rspJson)
+                if rspJson == "" or rspJson[:5] == "Error":
+                    break
             else:
                 self.freeCounter += 1
                 if self.freeCounter == 3:
@@ -35,7 +37,7 @@ class IOESBGWorker(BGWorker):
         imageList = []
         for index in range(len(fileList)):
             tempCount = tempCount + 1
-            if tempCount > MAX_BUNCH_LENGTH:
+            if tempCount >= MAX_BUNCH_LENGTH:
                 self.addJsonTask(url, imageList)
                 tempCount = 0
                 imageList = []

@@ -4,8 +4,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.2 2019101801"
-
+VERSION = "version: 2.2.2 2019101803"
+DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 
 PREVIEW_WIDGET_X = 0

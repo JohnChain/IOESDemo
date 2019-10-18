@@ -35,7 +35,6 @@ class IOESDataManager:
 
     def clearMap(self):
         self.imageResponse.clear()
-        print("imageResponse len: %d" %(self.count()))
 
     def getRow(self, imageID):
         if imageID in self.imageResponse:
