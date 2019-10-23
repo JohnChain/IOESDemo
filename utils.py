@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.2 2019101804"
+VERSION = "version: 2.2.2 2019102101"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 
@@ -71,7 +71,7 @@ def showMessageBox(base, title, msg):
 
 def getImageList(dir_path):
     image_names = [name for name in os.listdir(dir_path) \
-        if name.endswith('.jpg') or name.endswith('.png') or name.endswith('.bmp')]
+        if name.endswith('.jpg') or name.endswith('.JPG') or name.endswith('.jpeg') or name.endswith('.JPEG') or name.endswith('.png') or name.endswith('.PNG') or name.endswith('.bmp') or name.endswith('.BMP')]
     return image_names
 
 def getRectF(x, y, w, h):
