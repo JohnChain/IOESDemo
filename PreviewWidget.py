@@ -97,6 +97,10 @@ class PreviewWidget(QWidget):
         if attribute in self.dataDict:
             key = attribute2Name[attribute]
             value = self.dataDict[attribute]
+            if attribute == CAR_ATTRIBUTE_VehicleBrand:
+                value = value.replace("__BRAND__", "")
+                value = value.replace("SUBBRAND__", "")
+                value = value.replace("YEAR__", "")
             addObjectInfo(key, value)
         else:
             print("%s not in dataDict" %attribute)

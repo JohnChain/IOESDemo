@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.2 2019102101"
+VERSION = "version: 2.2.2 2019102401"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 MAX_THREAD = 10
@@ -17,7 +17,9 @@ PREVIEW_WIDGET_BGCOLOR = QColor(27,78,125)
 
 SIG_TYPE_DATA = "SIG_TYPE_DATA"
 SIG_TYPE_END = "SIG_TYPE_END"
-SIG_TYPE_HOVER = "SIG_TYPE_HOVER"
+SIG_TYPE_ENTER = "SIG_TYPE_ENTER"
+SIG_TYPE_LEAVE = "SIG_TYPE_LEAVE"
+SIG_TYPE_DOUBLE_CLICK = "SIG_TYPE_DOUBLE_CLICK"
 
 PEN_PERSON = QPen(Qt.red, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_FACE = QPen(Qt.magenta, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)

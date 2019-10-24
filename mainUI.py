@@ -13,7 +13,7 @@ from MarkRect import MarkRectItem
 from PreviewWidget import PreviewWidget
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
-    _signal_hover = pyqtSignal(int, str, int)
+    _signal_hover = pyqtSignal(str, str, int)
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
         self.setupUi(self)
@@ -28,7 +28,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.edtImagePath.setReadOnly(True)
         self.edtURL.setText(DEFAULT_SERVICE_URL)
         self.initComBx()
-        
+ 
     def initComBx(self):
         self.combxSericeType.insertItem(0, "IOES")
         self.combxSericeType.insertItem(1, "IAS")
@@ -227,16 +227,21 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.bgWorkder.stop()
         self.btnStartTask.setEnabled(True)
 
-    def flushPreviewWidget(self, isActive, row, index):
-        if isActive == 1:
+    def flushPreviewWidget(self, SIG_TYPE, row, index):
+        if SIG_TYPE == SIG_TYPE_ENTER:
             rect = getRect(PREVIEW_WIDGET_X, PREVIEW_WIDGET_Y, PREVIEW_WIDGET_WIDTH, PREVIEW_WIDGET_HEIGHT)
             dataDict = self.dataManager.getObj(row, index)
             if self.previewWidget == None:
                 self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
-        else:
+        elif SIG_TYPE == SIG_TYPE_LEAVE:
             if self.previewWidget != None:
                 self.previewWidget.setParent(None)
                 self.previewWidget = None
+        elif SIG_TYPE == SIG_TYPE_DOUBLE_CLICK:
+            dataDict = self.dataManager.getObj(row, index)
+            self.mtxtParseResult.setText(json.dumps(dataDict, indent=4, ensure_ascii=False)) # 格式化输出json
+        else:
+            print("unknow SIG_TYPE: ", SIG_TYPE)
 
     def dumpResult(self):
         flter = "WindowsOffice(*.xls *.xlsx)"
