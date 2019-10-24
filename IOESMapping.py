@@ -58,10 +58,12 @@ BIKE_ATTRIBUTE_HelmetColor = "HelmetColor"
 BIKE_ATTRIBUTE_HasMask = "HasMask"
 BIKE_ATTRIBUTE_CoatTexture = "CoatTexture"
 # 透传项
+BIKE_ATTRIBUTE_CoatColorNums          = 'CoatColorNums'
 # 坐标矩形框项（需特殊处理）
 BIKE_ATTRIBUTE_ObjectBoundingBox      = 'ObjectBoundingBox'
 BIKE_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
 # 颜色数组（需特殊处理）
+BIKE_ATTRIBUTE_CoatColor              = 'CoatColor'
 #######################################################
 # 行人
 # 需要映射项
@@ -282,13 +284,17 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_CoatTexture,
     ]
     listMappableLongText = []
-    listMirrorableShortText = []
+    listMirrorableShortText = [
+        BIKE_ATTRIBUTE_CoatColorNums
+    ]
     listMirrorableLongText = []
     listBoxKey = [
         BIKE_ATTRIBUTE_ObjectBoundingBox,
         BIKE_ATTRIBUTE_FaceBoundingBox,
     ]
-    listColorKey = []
+    listColorKey = [
+        BIKE_ATTRIBUTE_CoatColor
+    ]
     mapAttribute2Name = {
         BIKE_ATTRIBUTE_BikeClass: "骑行类型",
         BIKE_ATTRIBUTE_Gender: "性别",
@@ -306,6 +312,8 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_CoatTexture: "上身衣着款式",
         BIKE_ATTRIBUTE_ObjectBoundingBox: "位置",
         BIKE_ATTRIBUTE_FaceBoundingBox: "面部位置",
+        BIKE_ATTRIBUTE_CoatColorNums: "上身颜色数目",
+        BIKE_ATTRIBUTE_CoatColor: "上衣颜色数组",
     }
     mapMappable2Mapper = {
         BIKE_ATTRIBUTE_BikeClass: BikeClassType,
@@ -323,6 +331,7 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_HasMask: ThreeStateType,
         BIKE_ATTRIBUTE_CoatTexture: CoatTexture,
         # 特殊映射(如二级内容)
+        BIKE_ATTRIBUTE_CoatColor: ObjectColorType,
     }
 class IOESPersonMapping():
     listMappableShortText = [

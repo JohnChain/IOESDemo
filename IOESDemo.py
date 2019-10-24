@@ -119,6 +119,7 @@ class Ui_IOESDemo(object):
         self.lblTimeCost = QtWidgets.QLabel(self.centralwidget)
         self.lblTimeCost.setObjectName("lblTimeCost")
         self.horizontalLayout_2.addWidget(self.lblTimeCost)
+        self.horizontalLayout_2.setStretch(1, 1)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -248,7 +249,7 @@ class Ui_IOESDemo(object):
     def retranslateUi(self, IOESDemo):
         _translate = QtCore.QCoreApplication.translate
         IOESDemo.setWindowTitle(_translate("IOESDemo", "IOESDemo"))
-        self.label.setText(_translate("IOESDemo", "算法服务URL地址"))
+        self.label.setText(_translate("IOESDemo", "服务URL"))
         self.edtURL.setText(_translate("IOESDemo", "http://192.168.1.222:9098/images/recog"))
         self.btnBraws.setText(_translate("IOESDemo", "选择图片目录"))
         self.label_2.setText(_translate("IOESDemo", "请求模式："))

@@ -92,14 +92,14 @@ class PreviewWidget(QWidget):
             value = mapper[tempValue]
             addObjectInfo(key, value)
         else:
-            print("%s not in dataDict" %keyWord)
+            print("%s not in dataDict" %attribute)
     def setCommonMirrorable(self, attribute, attribute2Name, addObjectInfo):
         if attribute in self.dataDict:
             key = attribute2Name[attribute]
             value = self.dataDict[attribute]
             addObjectInfo(key, value)
         else:
-            print("%s not in dataDict" %keyWord)
+            print("%s not in dataDict" %attribute)
 
     def setCommonBox(self, attribute, attribute2Name, addObjectInfo):
         if attribute in self.dataDict:
@@ -108,7 +108,7 @@ class PreviewWidget(QWidget):
             value = "(%d, %d, %d, %d)" %(box["x"], box["y"], box["w"], box["h"])
             addObjectInfo(key, value)
         else:
-            print("%s not in dataDict" %keyWord)
+            print("%s not in dataDict" %attribute)
     def setCommonColor(self, attribute, attribute2Name, mappable2Mapper, addObjectInfo):
         if attribute in self.dataDict:
             key = attribute2Name[attribute]
@@ -122,7 +122,7 @@ class PreviewWidget(QWidget):
                     value.append(colorCode)
             addObjectInfo(key, "[%s]" %(', '.join(value)))
         else:
-            print("%s not in dataDict" %keyWord)
+            print("%s not in dataDict" %attribute)
     def setSafetyBelt(self, IOESMapping, attribute, addObjectInfo):
         if attribute in self.dataDict:
             key = IOESMapping.mapAttribute2Name[attribute]
@@ -133,7 +133,7 @@ class PreviewWidget(QWidget):
             value = "{主驾驶%s系, 副驾驶%s系}" %(mainDriver, coDriver)
             addObjectInfo(key, value)
         else:
-            print("%s not in dataDict" %keyWord)
+            print("%s not in dataDict" %attribute)
 
     def commonSetter(self, IOESMapping):
         # 映射项

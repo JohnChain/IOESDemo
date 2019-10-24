@@ -44,7 +44,7 @@ class IOESBGWorker(BGWorker):
                 imageList.clear()
                 break
             tempCount = tempCount + 1
-            if tempCount >= MAX_BUNCH_LENGTH:
+            if tempCount >= GLOBAL_BUNCH_LENGTH:
                 self.addJsonTask(url, imageList)
                 tempCount = 0
                 imageList = []

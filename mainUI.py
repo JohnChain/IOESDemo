@@ -37,8 +37,10 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         for idx in range(len(MODEL_LIST)):
             key = MODEL_LIST[idx]
             self.combxModel.insertItem(idx, key)
-        for idx in range(1, THREAD_MAX):
-            self.combxBunchSize.insertItem(idx, "%d" %idx)
+        self.combxModel.setCurrentIndex(0)
+        for idx in range(MAX_BUNCH_LENGTH):
+            self.combxBunchSize.insertItem(idx, "%d" %(idx + 1))
+        self.combxBunchSize.setCurrentIndex(MAX_BUNCH_LENGTH - 1)
 
     def initValues(self):
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
@@ -90,13 +92,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def updateMode(self, event):
         key = self.combxModel.currentText()
-        self.model = MODEL_MAPPER[key]
-        print("current model: %d" %self.model)
+        GLOBAL_MODEL = MODEL_MAPPER[key]
+        print("current GLOBAL_MODEL: %d" %GLOBAL_MODEL)
 
     def updateBunchSize(self, event):
         key = self.combxBunchSize.currentText()
-        self.thread = int(key)
-        print("current thread: %d" %self.thread)
+        GLOBAL_BUNCH_LENGTH = int(key)
+        print("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH)
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
@@ -232,8 +234,9 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             if self.previewWidget == None:
                 self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
         else:
-            self.previewWidget.setParent(None)
-            self.previewWidget = None
+            if self.previewWidget != None:
+                self.previewWidget.setParent(None)
+                self.previewWidget = None
 
     def dumpResult(self):
         flter = "WindowsOffice(*.xls *.xlsx)"
