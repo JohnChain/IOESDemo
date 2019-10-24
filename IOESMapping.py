@@ -467,7 +467,7 @@ class IOESCarMapping():
         CAR_ATTRIBUTE_HasAerial: "天线",
         CAR_ATTRIBUTE_HasCrash: "是否有撞损",
         CAR_ATTRIBUTE_HasDanger: "是否危化车",
-        CAR_ATTRIBUTE_HighwayTollVehicles: "公路收费车型",
+        CAR_ATTRIBUTE_HighwayTollVehicles: "收费车型",
         CAR_ATTRIBUTE_VehicleBrand: "车辆品牌",
         CAR_ATTRIBUTE_PlateNo: "车牌号码",
         CAR_ATTRIBUTE_ObjectBoundingBox: "位置",

@@ -25,6 +25,9 @@ pip install PyQt5-tools -i https://pypi.douban.com/simple
 pip install openpyxl -i https://pypi.douban.com/simple  
 pip install requests -i https://pypi.douban.com/simple  
 
+## 更新UI
+pyuic5 IOESDemo.ui -o IOESDemo.py
+
 ## 通过python执行
 python3 mainUI.py
 

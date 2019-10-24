@@ -66,6 +66,21 @@ JSON_PARSE_RET_MAPPER = {
     JSON_PARSE_RET_PEER_ERROR: "Server return fail reason: ",
 }
 
+MODEL_FULL = "全目标据结构化"
+MODEL_PBC = "行人、骑行、车辆检测识别"
+MODEL_Face = "单独人脸检测识别"
+MODEL_PB = "单独行人、骑行检测识别"
+MODEL_Car = "单独车辆检测识别"
+MODEL_LIST = [MODEL_FULL, MODEL_PBC, MODEL_Face, MODEL_PB, MODEL_Car]
+MODEL_MAPPER= {
+    MODEL_FULL: 1,
+    MODEL_PBC: 2,
+    MODEL_Face: 3,
+    MODEL_PB: 4,
+    MODEL_Car: 5,
+}
+THREAD_MAX = 10
+
 def showMessageBox(base, title, msg):
     QMessageBox.information(base, title, msg)
 

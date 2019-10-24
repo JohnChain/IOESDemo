@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1424</width>
-    <height>917</height>
+    <height>942</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,7 @@
        <number>8</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,20,0,1,1,1">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,20,0,1,1,1">
         <property name="spacing">
          <number>8</number>
         </property>
@@ -69,7 +69,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>算法服务URL地址</string>
+             <string>服务URL</string>
             </property>
            </widget>
           </item>
@@ -86,13 +86,6 @@
          <widget class="QLineEdit" name="edtURL">
           <property name="text">
            <string>http://192.168.1.222:9098/images/recog</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>本地图片路径</string>
           </property>
          </widget>
         </item>
@@ -114,9 +107,37 @@
           <item>
            <widget class="QPushButton" name="btnBraws">
             <property name="text">
-             <string>浏览</string>
+             <string>选择图片目录</string>
             </property>
            </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0,1">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>请求模式：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="combxModel"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,1">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>单组图片：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="combxBunchSize"/>
           </item>
          </layout>
         </item>
@@ -157,7 +178,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0">
           <item>
            <widget class="QLabel" name="label_6">
             <property name="text">
@@ -172,14 +193,10 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,0">
           <item>
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>已识别数：</string>
+             <string>已识别数:</string>
             </property>
            </widget>
           </item>
@@ -190,6 +207,10 @@
             </property>
            </widget>
           </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
           <item>
            <widget class="QLabel" name="label_4">
             <property name="text">
@@ -368,6 +389,105 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="menuCfgFull">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Full</string>
+   </property>
+  </action>
+  <action name="menuCfgPBC">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Person+Bike+Car</string>
+   </property>
+  </action>
+  <action name="menuCfgFace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Face</string>
+   </property>
+  </action>
+  <action name="menuCfgPB">
+   <property name="text">
+    <string>Person+Bike</string>
+   </property>
+  </action>
+  <action name="menuCfgCar">
+   <property name="text">
+    <string>Car</string>
+   </property>
+  </action>
+  <action name="menuCfgBunch1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="menuCfgBunch5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>5</string>
+   </property>
+  </action>
+  <action name="menuCfgBunch10">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>10</string>
+   </property>
+  </action>
+  <action name="menuCfgThread1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="menuCfgThread4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="menuCfgThread8">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>8</string>
+   </property>
+  </action>
+  <action name="menuCfgThread12">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>12</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

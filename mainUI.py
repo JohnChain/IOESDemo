@@ -27,9 +27,18 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
         self.edtURL.setText(DEFAULT_SERVICE_URL)
+        self.initComBx()
+        
+    def initComBx(self):
         self.combxSericeType.insertItem(0, "IOES")
         self.combxSericeType.insertItem(1, "IAS")
         self.combxSericeType.setCurrentIndex (0)
+
+        for idx in range(len(MODEL_LIST)):
+            key = MODEL_LIST[idx]
+            self.combxModel.insertItem(idx, key)
+        for idx in range(1, THREAD_MAX):
+            self.combxBunchSize.insertItem(idx, "%d" %idx)
 
     def initValues(self):
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
@@ -75,6 +84,19 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.cbxFace.stateChanged.connect(self.rectOpsFace)
         self.cbxBody.stateChanged.connect(self.rectOpsBody)
         self.cbxHead.stateChanged.connect(self.rectOpsHead)
+
+        self.combxModel.currentIndexChanged.connect(self.updateMode)
+        self.combxBunchSize.currentIndexChanged.connect(self.updateBunchSize)
+
+    def updateMode(self, event):
+        key = self.combxModel.currentText()
+        self.model = MODEL_MAPPER[key]
+        print("current model: %d" %self.model)
+
+    def updateBunchSize(self, event):
+        key = self.combxBunchSize.currentText()
+        self.thread = int(key)
+        print("current thread: %d" %self.thread)
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
