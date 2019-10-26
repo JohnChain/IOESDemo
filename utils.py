@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.2 2019102401"
+VERSION = "version: 2.2.2 2019102601"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 MAX_THREAD = 10
@@ -30,24 +30,26 @@ PEN_NON_VEHICLE = QPen(Qt.blue, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 PEN_COMMON = QPen(Qt.red, 1, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin)
 
 BRUSH_Y = QBrush(Qt.green)
-BRUSH_F = QBrush(Qt.red)
+BRUSH_N = QBrush(Qt.red)
+BRUSH_Clear = QBrush(Qt.NoBrush)
 
 JVIA_UNKNOWN = "0"  #!< 未能定义的物体
 JVIA_HUMAN = "1"  #!< 行人
 JVIA_VEHICLE = "2"  #!< 车辆
 JVIA_FACE = "3"  #!< 人臉
 JVIA_BIKE = "4"  #!< 人骑车
-
 FaceBoundingBox = "FaceBoundingBox"
 HeadBoundingBox = "HeadBoundingBox"
 UpperBoundingBox = "UpperBoundingBox"
 LowerBoundingBox = "LowerBoundingBox"
+ObjectBoundingBox = "ObjectBoundingBox"
 CommonBox = "CommonBox"
 
 TYPE_2_PEN = {
     JVIA_HUMAN : PEN_PERSON,
     JVIA_VEHICLE : PEN_VEHICLE,
     JVIA_BIKE : PEN_NON_VEHICLE,
+    JVIA_FACE: PEN_FACE,
     FaceBoundingBox: PEN_FACE,
     HeadBoundingBox: PEN_HEAD,
     UpperBoundingBox: PEN_BODY,
@@ -83,9 +85,9 @@ MODEL_MAPPER= {
     MODEL_Car: 5,
 }
 
-GLOBAL_BUNCH_LENGTH = MAX_BUNCH_LENGTH
-GLOBAL_THREAD = MAX_THREAD
-GLOBAL_MODEL = MODEL_MAPPER[MODEL_FULL]
+GLOBAL_BUNCH_LENGTH = [MAX_BUNCH_LENGTH]
+GLOBAL_THREAD = [MAX_THREAD]
+GLOBAL_MODEL = [MODEL_MAPPER[MODEL_FULL]]
 
 def showMessageBox(base, title, msg):
     QMessageBox.information(base, title, msg)

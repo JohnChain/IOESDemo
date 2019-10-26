@@ -53,6 +53,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             JVIA_HUMAN: self.cbxPerson,
             JVIA_VEHICLE: self.cbxCar,
             JVIA_BIKE: self.cbxBike,
+            JVIA_FACE: self.cbxFace,
             FaceBoundingBox: self.cbxFace,
             HeadBoundingBox: self.cbxHead,
             UpperBoundingBox: self.cbxBody,
@@ -64,6 +65,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             JVIA_HUMAN: [],
             JVIA_VEHICLE: [],
             JVIA_BIKE: [],
+            JVIA_FACE: [],
             FaceBoundingBox: [],
             HeadBoundingBox: [],
             UpperBoundingBox: [],
@@ -92,25 +94,26 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def updateMode(self, event):
         key = self.combxModel.currentText()
-        GLOBAL_MODEL = MODEL_MAPPER[key]
-        print("current GLOBAL_MODEL: %d" %GLOBAL_MODEL)
+        GLOBAL_MODEL[0] = MODEL_MAPPER[key]
+        print("current GLOBAL_MODEL: %d" %GLOBAL_MODEL[0])
 
     def updateBunchSize(self, event):
         key = self.combxBunchSize.currentText()
-        GLOBAL_BUNCH_LENGTH = int(key)
-        print("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH)
+        GLOBAL_BUNCH_LENGTH[0] = int(key)
+        print("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH[0])
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
         pen = TYPE_2_PEN[dataKey]
         item = MarkRectItem(self._signal_hover, rect, dataKey, row, index)
         item.setPen(pen)
-        if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE or dataKey == CommonBox:
+        if dataKey == JVIA_HUMAN or dataKey == JVIA_VEHICLE or dataKey == JVIA_BIKE or dataKey == HeadBoundingBox or dataKey == FaceBoundingBox or dataKey == CommonBox:
             item.setAcceptHoverEvents(True)
         if dataKey in self.rectDict:
             self.rectDict[dataKey].append(item)
         else:
             print("unknow dateType: %s" %dataKey)
+            return
         scene.addItem(item)
         state = True if self.cbxDict[dataKey].checkState() > 0 else False
         item.setVisible(state)
@@ -126,6 +129,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def rectOpsPerson(self, checkState):
         self.rectOps(checkState, self.rectDict[JVIA_HUMAN])
     def rectOpsFace(self, checkState):
+        self.rectOps(checkState, self.rectDict[JVIA_FACE])
         self.rectOps(checkState, self.rectDict[FaceBoundingBox])
     def rectOpsBody(self, checkState):
         self.rectOps(checkState, self.rectDict[UpperBoundingBox])
@@ -146,7 +150,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         row = "%d" %self.listImages.row(item)
         objectList = self.dataManager.getRow(row)
         for index in range(len(objectList)):
-            meterDataDict = self.dataManager.getObj(row, index)
+            meterDataDict = self.dataManager.getObjMetadata(row, index)
             if UpperBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[UpperBoundingBox], UpperBoundingBox, row, index)
             if LowerBoundingBox in meterDataDict:
@@ -155,8 +159,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 self.addRect(scene, meterDataDict[HeadBoundingBox], HeadBoundingBox, row, index)
             if FaceBoundingBox in meterDataDict:
                 self.addRect(scene, meterDataDict[FaceBoundingBox], FaceBoundingBox, row, index)
-            if "ObjectBoundingBox" in meterDataDict:
-                self.addRect(scene, meterDataDict["ObjectBoundingBox"], meterDataDict["Type"], row, index)
+            if ObjectBoundingBox in meterDataDict:
+                self.addRect(scene, meterDataDict[ObjectBoundingBox], meterDataDict["Type"], row, index)
         self.mtxtResponse.setText(json.dumps(objectList, indent=4, ensure_ascii=False)) # 格式化输出json
 
     def getFilePath(self, fileName):
@@ -198,7 +202,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.btnStartTask.setEnabled(True)
 
     def checkBGWorker(self):
-        print("ComboBox change Index to %d" %self.combxSericeType.currentIndex())
         if self.combxSericeType.currentIndex() == 0:
             self.bgWorkder = IOESBGWorker()
         elif self.combxSericeType.currentIndex() == 1:
@@ -212,31 +215,42 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def updateServiceType(self, event):
         self.checkBGWorker()
 
+    def enableWidget(self, flag):
+        self.btnStartTask.setEnabled(flag)
+        self.btnBraws.setEnabled(flag)
+        self.btnMarkRect.setEnabled(flag)
+        self.btnDumpResult.setEnabled(flag)
+        self.combxModel.setEnabled(flag)
+        self.combxSericeType.setEnabled(flag)
+        self.combxBunchSize.setEnabled(flag)
+
     def startTask(self):
         url = self.edtURL.text()
         itemNum = self.listImages.count()
         if url == "" or itemNum == 0:
             return
-        self.btnStartTask.setEnabled(False)
-        self.dataManager.clearMap()     # 清掉前一批图片解析结果
+        self.enableWidget(False)
+        self.restoreState()
+
         self.bgWorkder.start()      #启动后台线程
-        
         self.bgWorkder.addTask(url, self.listImageName)
 
     def stopTask(self):
         self.bgWorkder.stop()
-        self.btnStartTask.setEnabled(True)
+        self.enableWidget(True)
 
+    def removePreviewWidget(self):
+        if self.previewWidget != None:
+            self.previewWidget.setParent(None)
+            self.previewWidget = None
     def flushPreviewWidget(self, SIG_TYPE, row, index):
         if SIG_TYPE == SIG_TYPE_ENTER:
             rect = getRect(PREVIEW_WIDGET_X, PREVIEW_WIDGET_Y, PREVIEW_WIDGET_WIDTH, PREVIEW_WIDGET_HEIGHT)
-            dataDict = self.dataManager.getObj(row, index)
+            dataDict = self.dataManager.getObjMetadata(row, index)
             if self.previewWidget == None:
                 self.previewWidget = PreviewWidget(rect, row, index, dataDict, self)
         elif SIG_TYPE == SIG_TYPE_LEAVE:
-            if self.previewWidget != None:
-                self.previewWidget.setParent(None)
-                self.previewWidget = None
+            self.removePreviewWidget()
         elif SIG_TYPE == SIG_TYPE_DOUBLE_CLICK:
             dataDict = self.dataManager.getObj(row, index)
             self.mtxtParseResult.setText(json.dumps(dataDict, indent=4, ensure_ascii=False)) # 格式化输出json

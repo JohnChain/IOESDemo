@@ -26,7 +26,7 @@ class IOESBGWorker(BGWorker):
                     break
             else:
                 self.freeCounter += 1
-                if self.freeCounter == 3:
+                if self.freeCounter == 2:
                     break
                 sleep(1)
         self.callback(SIG_TYPE_END, "")
@@ -42,16 +42,16 @@ class IOESBGWorker(BGWorker):
         for index in range(len(fileList)):
             if(not self.flagRun):
                 imageList.clear()
-                break
-            tempCount = tempCount + 1
-            if tempCount >= GLOBAL_BUNCH_LENGTH:
-                self.addJsonTask(url, imageList)
-                tempCount = 0
-                imageList = []
+                return
             filePath = fileList[index]
             imageCell = {"ImageID": "%d" %index}
             imageCell["Data"] = fileBase64(filePath)
             imageList.append(imageCell)
+            tempCount = tempCount + 1
+            if tempCount >= GLOBAL_BUNCH_LENGTH[0]:
+                self.addJsonTask(url, imageList)
+                tempCount = 0
+                imageList = []
         if len(imageList) > 0:  #最后一组不满8张
             self.addJsonTask(url, imageList)
 
@@ -63,6 +63,7 @@ class IOESBGWorker(BGWorker):
 
     def addJsonTask(self, url, imageList):
         output = {"Face": 1, "SubClass": 1}
-        mdict = {"Output": output, "ImageList": imageList}
+        mdict = {"Output": output, "Model": GLOBAL_MODEL[0], "ImageList": imageList}
+
         task = {"url": url, "body": mdict}
         self.taskList.append(task)

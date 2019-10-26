@@ -35,9 +35,9 @@ class IOESDataManager:
                 objectList = jsonDir["ObjectList"]
                 for obj in objectList:
                     imageId = obj["ImageID"]
-                    if imageId in self.imageResponse:
+                    if imageId in self.imageResponse: #已存在的imageID，追加入list
                         self.imageResponse[imageId].append(obj)
-                    else:
+                    else: #新的imageID，增加为list
                         self.imageResponse[imageId] = [obj]
                         id2brush[imageId] = BRUSH_Y
             else:
@@ -61,11 +61,18 @@ class IOESDataManager:
         else:
             return []
 
+    def getObjMetadata(self, imageID, index):
+        obj = self.getObj(imageID, index)
+        if "Metadata" in obj:
+            return obj["Metadata"]
+        else:
+            return {}
+
     def getObj(self, imageID, index):
         if imageID in self.imageResponse:
             objList = self.imageResponse[imageID]
-            if len(objList) > index and "Metadata" in objList[index]:
-                return objList[index]["Metadata"]
+            if len(objList) > index:
+                return objList[index]
             else:
                 return {}
         else:
@@ -208,21 +215,21 @@ class IOESDataManager:
                     return "Error: cannot find object type"
         return ""
 
-    def getObjectMapper(self, dataDict):
-        if ATTRIBUTE_Type in dataDict:
-            objType = dataDict[ATTRIBUTE_Type]
-            if objType == TYPE_CAR:
-                return TYPE_CAR, IOESCarMapping
-            elif objType == TYPE_PERSON:
-                return TYPE_PERSON, IOESPersonMapping
-            elif objType == TYPE_BIKE:
-                return TYPE_BIKE, IOESBikeMapping
-            else:
-                print("Error: unknow object type ", objType)
-                return None, None
-        else:
-            print("Error: cannot find object type")
-            return None, None
+    # def getObjectMapper(self, dataDict):
+    #     if ATTRIBUTE_Type in dataDict:
+    #         objType = dataDict[ATTRIBUTE_Type]
+    #         if objType == TYPE_CAR:
+    #             return TYPE_CAR, IOESCarMapping
+    #         elif objType == TYPE_PERSON:
+    #             return TYPE_PERSON, IOESPersonMapping
+    #         elif objType == TYPE_BIKE:
+    #             return TYPE_BIKE, IOESBikeMapping
+    #         else:
+    #             print("Error: unknow object type ", objType)
+    #             return None, None
+    #     else:
+    #         print("Error: cannot find object type")
+    #         return None, None
 
 if __name__ == "__main__":
     dataMapper = IOESDataManager()

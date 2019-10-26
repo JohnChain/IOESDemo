@@ -166,7 +166,7 @@ class PreviewWidget(QWidget):
     def setBikeInfo(self):
         self.commonSetter(IOESBikeMapping)
     def setFaceInfo(self):
-        pass
+        self.commonSetter(IOESFaceMapping)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

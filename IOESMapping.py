@@ -95,6 +95,20 @@ PERSON_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
 # 颜色数组（需特殊处理）
 PERSON_ATTRIBUTE_TrousersColor          = 'TrousersColor'
 PERSON_ATTRIBUTE_CoatColor              = 'CoatColor'
+#######################################################
+# 人脸
+# 需要映射项
+FACE_ATTRIBUTE_Gender = "Gender"
+FACE_ATTRIBUTE_Age = "Age"
+FACE_ATTRIBUTE_HasGlasses = "HasGlasses"
+FACE_ATTRIBUTE_HasHat = "HasHat"
+FACE_ATTRIBUTE_HasMask = "HasMask"
+FACE_ATTRIBUTE_HairStyle = "HairStyle"
+# 透传项
+# 坐标矩形框项（需特殊处理）
+FACE_ATTRIBUTE_HeadBoundingBox        = 'HeadBoundingBox'
+FACE_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
+# 颜色数组（需特殊处理）
 
 ThreeStateType = {
     "0": "无",
@@ -421,7 +435,44 @@ class IOESPersonMapping():
         PERSON_ATTRIBUTE_TrousersColor: ObjectColorType,
         PERSON_ATTRIBUTE_CoatColor: ObjectColorType,
     }
+class IOESFaceMapping():
+    listMappableShortText = [
+        FACE_ATTRIBUTE_Gender,
+        FACE_ATTRIBUTE_Age,
+        FACE_ATTRIBUTE_HasGlasses,
+        FACE_ATTRIBUTE_HasHat,
+        FACE_ATTRIBUTE_HasMask,
+        FACE_ATTRIBUTE_HairStyle,
 
+    ]
+    listMappableLongText = []
+    listMirrorableShortText = []
+    listMirrorableLongText = []
+    listBoxKey = [
+        PERSON_ATTRIBUTE_HeadBoundingBox,
+        PERSON_ATTRIBUTE_FaceBoundingBox,
+    ]
+    listColorKey = []
+    mapAttribute2Name = {
+        PERSON_ATTRIBUTE_Gender: "性别",
+        PERSON_ATTRIBUTE_Age: "年龄",
+        PERSON_ATTRIBUTE_HasGlasses: "眼镜",
+        PERSON_ATTRIBUTE_HasHat: "帽子",
+        PERSON_ATTRIBUTE_HasMask: "口罩",
+        PERSON_ATTRIBUTE_HairStyle: "发型",
+
+        PERSON_ATTRIBUTE_HeadBoundingBox: "头部位置",
+        PERSON_ATTRIBUTE_FaceBoundingBox: "面部位置",
+    }
+    mapMappable2Mapper = {
+        PERSON_ATTRIBUTE_Gender: GenderType,
+        PERSON_ATTRIBUTE_Age: AgeType,
+        PERSON_ATTRIBUTE_HasGlasses: ThreeStateType,
+        PERSON_ATTRIBUTE_HasHat: ThreeStateType,
+        PERSON_ATTRIBUTE_HasMask: ThreeStateType,
+        PERSON_ATTRIBUTE_HairStyle: HairStyle,
+        # 特殊映射(如二级内容)
+    }
 class IOESCarMapping():
     listMappableShortText = [
         CAR_ATTRIBUTE_Angle,
