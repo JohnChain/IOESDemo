@@ -201,7 +201,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             self.lblParsedImageNumber.setText("%d" %len(self.bgWorkder.taskList))
 
     def onBgWorkderExit(self, msg):
-        self.btnStartTask.setEnabled(True)
+        self.enableWidget(True)
 
     def checkBGWorker(self):
         if self.combxSericeType.currentIndex() == 0:
