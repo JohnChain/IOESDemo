@@ -21,6 +21,12 @@ class BaseDump():
     def insert(self, objType, listOneRow):
         ws = self.wsDict[objType]
         ws.append(listOneRow)
+    def insertImage(self, objType, img):
+        ws = self.wsDict[objType]
+        ws.add_image(img)
+
+    def getCurrentRow(self, objType):
+        return self.wsDict[objType].max_row
 
 if __name__ == "__main__":
     TYPE_PERSON     = "1"

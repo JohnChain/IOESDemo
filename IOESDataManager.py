@@ -4,10 +4,14 @@ import sys
 import json
 from IOESMapping import *
 from BaseDump import BaseDump
+from openpyxl.drawing.image import Image
+from IOESThread import IOESThread
+import openpyxl
 
 class IOESDataManager:
     def __init__(self):
         self.imageResponse = {}
+        self.threadAddTask = IOESThread()
 
     # 将server返回的json字串，整理为一个字典
     # {
@@ -88,7 +92,7 @@ class IOESDataManager:
             else:
                 listObj.append("?_?")
     def dumpPrepare(self, mapper):
-        listObj = ["图片路径"]
+        listObj = ["图片", "图片路径"]
         # 给每个sheet写列名称
         self.dumpPrepareList(mapper.listMappableShortText, mapper.mapAttribute2Name, listObj)
         self.dumpPrepareList(mapper.listMappableLongText, mapper.mapAttribute2Name, listObj)
@@ -157,32 +161,56 @@ class IOESDataManager:
         else:
             listObj.append("-")
 
-    def dumpCarInfo(self, dataDict, dumper, fileName):
+    def genImage(self, fileName, row):
+        img = openpyxl.drawing.image.Image(fileName)
+        img.height = 50
+        img.width = 50
+        img.anchor = "A%d" %row
+        return img
+    def dumpImage(self, objType, dumper, fileName, listFileDumped):
+        if fileName not in listFileDumped:
+            row = dumper.getCurrentRow(objType)
+            img = self.genImage(fileName, row)
+            dumper.insertImage(objType, img)
+            listFileDumped.append(fileName)
 
-        listObj = [fileName]
+    def dumpCarInfo(self, dataDict, listFileDumped, dumper, fileName):
+        listObj = ["", fileName] #空出第一列给原始图片
         # get common
         self.dumpCommonObj(dataDict, IOESCarMapping, listObj)
         # get safeBar
         self.dumpSafetyBelt(dataDict, IOESCarMapping.mapMappable2Mapper, listObj)
         dumper.insert(TYPE_CAR, listObj)
+        self.dumpImage(TYPE_CAR, dumper, fileName, listFileDumped)
         dumper.save()
 
-    def dumpPersonInfo(self, dataDict, dumper, fileName):
-        listObj = [fileName]
+    def dumpPersonInfo(self, dataDict, listFileDumped, dumper, fileName):
+        listObj = ["", fileName] #空出第一列给原始图片
         # get common
         self.dumpCommonObj(dataDict, IOESPersonMapping, listObj)
         dumper.insert(TYPE_PERSON, listObj)
+        self.dumpImage(TYPE_PERSON, dumper, fileName, listFileDumped)
         dumper.save()
 
-    def dumpBikeInfo(self, dataDict, dumper, fileName):
-        listObj = [fileName]
+    def dumpBikeInfo(self, dataDict, listFileDumped, dumper, fileName):
+        listObj = ["", fileName] #空出第一列给原始图片
         # get common
         self.dumpCommonObj(dataDict, IOESBikeMapping, listObj)
         dumper.insert(TYPE_BIKE, listObj)
+        self.dumpImage(TYPE_BIKE, dumper, fileName, listFileDumped)
         dumper.save()
+    
+    def addTask(self, url, fileList):
+        argc = 2
+        argv = [url, fileList]
+        self.threadAddTask.registFunction(self.addTaskInThead, argc, argv)
+        self.threadAddTask.start()
 
     def dump(self, listImageName, destFile):
         dumper = BaseDump(destFile, ObjectType)
+        listFileDumpedCar = []
+        listFileDumpedBike = []
+        listFileDumpedPerson = []
 
         listObj = self.dumpPrepare(IOESCarMapping)
         listObj.append(IOESCarMapping.mapAttribute2Name[CAR_ATTRIBUTE_SafetyBelt])
@@ -204,32 +232,16 @@ class IOESDataManager:
                 if ATTRIBUTE_Type in dataDict:
                     objType = dataDict[ATTRIBUTE_Type]
                     if objType == TYPE_CAR:
-                        self.dumpCarInfo(dataDict,dumper, fileName)
+                        self.dumpCarInfo(dataDict, listFileDumpedCar, dumper, fileName)
                     elif objType == TYPE_PERSON:
-                        self.dumpPersonInfo(dataDict, dumper, fileName)
+                        self.dumpPersonInfo(dataDict, listFileDumpedPerson, dumper, fileName)
                     elif objType == TYPE_BIKE:
-                        self.dumpBikeInfo(dataDict, dumper, fileName)
+                        self.dumpBikeInfo(dataDict, listFileDumpedBike, dumper, fileName)
                     else:
                         return "Error: unknow object type ", objType
                 else:
                     return "Error: cannot find object type"
         return ""
-
-    # def getObjectMapper(self, dataDict):
-    #     if ATTRIBUTE_Type in dataDict:
-    #         objType = dataDict[ATTRIBUTE_Type]
-    #         if objType == TYPE_CAR:
-    #             return TYPE_CAR, IOESCarMapping
-    #         elif objType == TYPE_PERSON:
-    #             return TYPE_PERSON, IOESPersonMapping
-    #         elif objType == TYPE_BIKE:
-    #             return TYPE_BIKE, IOESBikeMapping
-    #         else:
-    #             print("Error: unknow object type ", objType)
-    #             return None, None
-    #     else:
-    #         print("Error: cannot find object type")
-    #         return None, None
 
 if __name__ == "__main__":
     dataMapper = IOESDataManager()
