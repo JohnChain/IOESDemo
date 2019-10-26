@@ -12,6 +12,7 @@ class IOESDataManager:
     def __init__(self):
         self.imageResponse = {}
         self.threadAddTask = IOESThread()
+        self.isDumping = False
 
     # 将server返回的json字串，整理为一个字典
     # {
@@ -200,13 +201,11 @@ class IOESDataManager:
         self.dumpImage(TYPE_BIKE, dumper, fileName, listFileDumped)
         dumper.save()
     
-    def addTask(self, url, fileList):
-        argc = 2
-        argv = [url, fileList]
-        self.threadAddTask.registFunction(self.addTaskInThead, argc, argv)
-        self.threadAddTask.start()
-
-    def dump(self, listImageName, destFile):
+    def dump(self, argc, argv):
+        sginal_dump = argv[0]
+        listImageName = argv[1]
+        destFile = argv[2]
+        signalMsg = ""
         dumper = BaseDump(destFile, ObjectType)
         listFileDumpedCar = []
         listFileDumpedBike = []
@@ -226,7 +225,10 @@ class IOESDataManager:
         for oneRow in self.imageResponse.values():
             fileName = listImageName[index]
             index += 1
+            signalMsg = "%d" %index
             for obj in oneRow:
+                if not self.isDumping:
+                    break
                 listRowValue = []
                 dataDict = obj["Metadata"]
                 if ATTRIBUTE_Type in dataDict:
@@ -238,10 +240,32 @@ class IOESDataManager:
                     elif objType == TYPE_BIKE:
                         self.dumpBikeInfo(dataDict, listFileDumpedBike, dumper, fileName)
                     else:
-                        return "Error: unknow object type ", objType
+                        signalMsg = "Error: 未知的目标类型 ", objType
+                        self.isDumping = False
+                        break
                 else:
-                    return "Error: cannot find object type"
+                    signalMsg = "Error: 未发现有效目标"
+                    self.isDumping = False
+                    break
+            if not self.isDumping:
+                sginal_dump.emit(SIG_DUMP_FINISHED, signalMsg)
+                break
+            else:
+                sginal_dump.emit(SIG_DUMP_PROCESSING, signalMsg)
+        sginal_dump.emit(SIG_DUMP_FINISHED, signalMsg)
+        return
+
+    def stopDump(self):
+        self.isDumping = False
+
+    def startDump(self, sginal_dump, listImageName, destFile):
+        self.isDumping = True
+        argc = 3
+        argv = [sginal_dump, listImageName, destFile]
+        self.threadAddTask.registFunction(self.dump, argc, argv)
+        self.threadAddTask.start()
         return ""
+
 
 if __name__ == "__main__":
     dataMapper = IOESDataManager()

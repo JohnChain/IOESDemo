@@ -14,6 +14,7 @@ from PreviewWidget import PreviewWidget
 
 class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     _signal_hover = pyqtSignal(str, str, int)
+    _signal_dump = pyqtSignal(str, str)
     def __init__(self, parent=None):
         super(IOESDemoApp, self).__init__(parent)
         self.setupUi(self)
@@ -75,6 +76,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def registEvent(self):
         self._signal_hover.connect(self.flushPreviewWidget)
+        self._signal_dump.connect(self.updateDumpProgress)
         self.btnStartTask.clicked.connect(self.startTask)
         self.btnStopTask.clicked.connect(self.stopTask)
         self.btnDumpResult.clicked.connect(self.dumpResult)
@@ -236,6 +238,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.bgWorkder.addTask(url, self.listImageName)
 
     def stopTask(self):
+        self.dataManager.stopDump()
         self.bgWorkder.stop()
         self.enableWidget(True)
 
@@ -257,15 +260,21 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         else:
             print("unknow SIG_TYPE: ", SIG_TYPE)
 
+    def updateDumpProgress(self, SIG_TYPE, state):
+        if SIG_TYPE == SIG_DUMP_PROCESSING:
+            self.lblTimeCost.setText(state)
+        elif SIG_TYPE == SIG_DUMP_FINISHED:
+            showMessageBox(self, "导出数据", "导出结束：%s" %state)
+            self.enableWidget(True)
+        else:
+            print("updateDumpProgress unknow SIG_TYPE: ", SIG_TYPE)
+
     def dumpResult(self):
         flter = "WindowsOffice(*.xls *.xlsx)"
         outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
         # TODO: outFilePath QFileDialog.getSaveFileName return tuple instead of QString ?
-        rst = self.dataManager.dump(self.listImageName, outFilePath[0])
-        if rst == "":
-            showMessageBox(self, "导出数据", "导出完成")
-        else:
-            showMessageBox(self, "导出数据", "导出失败: %s" %rst)
+        rst = self.dataManager.startDump(self._signal_dump, self.listImageName, outFilePath[0])
+        self.enableWidget(False)
 
     def markRect(self):
         scene = self.gvPreview.scene()
