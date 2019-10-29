@@ -180,6 +180,14 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             self.previewImage(item)
         QWidget.resizeEvent(self, e)
 
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, '警告', '退出后当前任务将停止,\n你确认要退出吗？', QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            self.stopTask()
+            event.accept()
+        else:
+            event.ignore()
+
     def updateImage(self, image_path):
         pixmap = QPixmap(image_path)
         pixmapHight = pixmap.height()
