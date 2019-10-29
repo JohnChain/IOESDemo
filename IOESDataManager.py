@@ -169,7 +169,7 @@ class IOESDataManager:
         img.anchor = "A%d" %row
         return img
     def dumpImage(self, objType, dumper, fileName, listFileDumped):
-        if fileName not in listFileDumped:
+        if fileName not in listFileDumped and GLOBAL_FLAG_DUMP_WITH_PICTURE[0]:
             row = dumper.getCurrentRow(objType)
             img = self.genImage(fileName, row)
             dumper.insertImage(objType, img)
@@ -233,25 +233,29 @@ class IOESDataManager:
                 dataDict = obj["Metadata"]
                 if ATTRIBUTE_Type in dataDict:
                     objType = dataDict[ATTRIBUTE_Type]
-                    if objType == TYPE_CAR:
-                        self.dumpCarInfo(dataDict, listFileDumpedCar, dumper, fileName)
-                    elif objType == TYPE_PERSON:
-                        self.dumpPersonInfo(dataDict, listFileDumpedPerson, dumper, fileName)
-                    elif objType == TYPE_BIKE:
-                        self.dumpBikeInfo(dataDict, listFileDumpedBike, dumper, fileName)
-                    else:
-                        signalMsg = "Error: 未知的目标类型 ", objType
+                    try:
+                        if objType == TYPE_CAR:
+                            self.dumpCarInfo(dataDict, listFileDumpedCar, dumper, fileName)
+                        elif objType == TYPE_PERSON:
+                            self.dumpPersonInfo(dataDict, listFileDumpedPerson, dumper, fileName)
+                        elif objType == TYPE_BIKE:
+                            self.dumpBikeInfo(dataDict, listFileDumpedBike, dumper, fileName)
+                        else:
+                            signalMsg = "Error: 未知的目标类型 ", objType
+                            self.isDumping = False
+                            break
+                    except PermissionError:
+                        signalMsg = "Error: 写入文件受限，请检查目标文件是否已打开，或检查当前用户是否有权限写入该文件"
                         self.isDumping = False
                         break
                 else:
                     signalMsg = "Error: 未发现有效目标"
                     self.isDumping = False
                     break
-            if not self.isDumping:
-                sginal_dump.emit(SIG_DUMP_FINISHED, signalMsg)
-                break
-            else:
+            if self.isDumping:
                 sginal_dump.emit(SIG_DUMP_PROCESSING, signalMsg)
+            else:
+                break
         sginal_dump.emit(SIG_DUMP_FINISHED, signalMsg)
         return
 

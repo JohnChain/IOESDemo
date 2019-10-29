@@ -23,16 +23,15 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.initValues()
 
     def initStates(self):
-        self.setWindowTitle('KeenSenseDemo')
-        self.statusBar().showMessage(VERSION)
+        self.setWindowTitle(APP_NAME + "_" + VERSION)
         self.listImages.clear()
         self.edtImagePath.setReadOnly(True)
         self.edtURL.setText(DEFAULT_SERVICE_URL)
         self.initComBx()
  
     def initComBx(self):
-        self.combxSericeType.insertItem(0, "IOES")
-        self.combxSericeType.insertItem(1, "IAS")
+        self.combxSericeType.insertItem(0, PROJECT_IOES)
+        self.combxSericeType.insertItem(1, PROJECT_IAS)
         self.combxSericeType.setCurrentIndex (0)
 
         for idx in range(len(MODEL_LIST)):
@@ -91,9 +90,15 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.cbxFace.stateChanged.connect(self.rectOpsFace)
         self.cbxBody.stateChanged.connect(self.rectOpsBody)
         self.cbxHead.stateChanged.connect(self.rectOpsHead)
-
+        self.menuConfigDumpPicture.triggered.connect(self.updateMenuDumpPicture)
         self.combxModel.currentIndexChanged.connect(self.updateMode)
         self.combxBunchSize.currentIndexChanged.connect(self.updateBunchSize)
+
+    def updateMenuDumpPicture(self, event):
+        if self.menuConfigDumpPicture.isChecked():
+            GLOBAL_FLAG_DUMP_WITH_PICTURE[0] = True
+        else:
+            GLOBAL_FLAG_DUMP_WITH_PICTURE[0] = False
 
     def updateMode(self, event):
         key = self.combxModel.currentText()
@@ -294,17 +299,21 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         if SIG_TYPE == SIG_DUMP_PROCESSING:
             self.lblTimeCost.setText(state)
         elif SIG_TYPE == SIG_DUMP_FINISHED:
-            showMessageBox(self, "导出数据", "导出结束：%s" %state)
+            showMessageBox(self, MESSAGE_BOX_DUMP_TITLE, "导出结束：%s" %state)
             self.enableWidget(True)
         else:
             logger.error("updateDumpProgress unknow SIG_TYPE: ", SIG_TYPE)
 
     def dumpResult(self):
-        flter = "WindowsOffice(*.xls *.xlsx)"
-        outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
-        # TODO: outFilePath QFileDialog.getSaveFileName return tuple instead of QString ?
-        rst = self.dataManager.startDump(self._signal_dump, self.listImageName, outFilePath[0])
-        self.enableWidget(False)
+        if self.dataManager.count() > 0:
+            flter = "WindowsOffice(*.xls *.xlsx)"
+            outFilePath = getFilePath(self, filter= flter, caption="请选择导出文件")
+            if outFilePath[0] != "":
+                self.lblTimeCost.setText("0")
+                self.enableWidget(False)
+                rst = self.dataManager.startDump(self._signal_dump, self.listImageName, outFilePath[0])
+        else:
+            showMessageBox(self, MESSAGE_BOX_DUMP_TITLE, "暂无有效的数据待导出")
 
     def markRect(self):
         scene = self.gvPreview.scene()

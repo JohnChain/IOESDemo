@@ -6,8 +6,16 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-VERSION = "version: 2.2.4 2019102918"
+APP_NAME = "KeenSenseDemo"
+VERSION = "2.2.4_2019102919"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
+
+PROJECT_IOES = "IOES"
+PROJECT_IAS = "IAS"
+PROJECT_LIST = [
+    PROJECT_IOES,
+    PROJECT_IAS
+]
 MAX_BUNCH_LENGTH = 10
 MAX_THREAD = 10
 
@@ -90,9 +98,12 @@ MODEL_MAPPER= {
     MODEL_Car: 5,
 }
 
+MESSAGE_BOX_DUMP_TITLE = "导出数据"
+
 GLOBAL_BUNCH_LENGTH = [MAX_BUNCH_LENGTH]
 GLOBAL_THREAD = [MAX_THREAD]
 GLOBAL_MODEL = [MODEL_MAPPER[MODEL_FULL]]
+GLOBAL_FLAG_DUMP_WITH_PICTURE = [False]
 
 def showMessageBox(base, title, msg):
     QMessageBox.information(base, title, msg)
