@@ -18,6 +18,7 @@ VSCode Version 1.38.1
 Python 3.7.3    
 PyQT5  
 QT Designer 5.12.3  
+logzero 
 
 ## 安装依赖
 pip install PyQt5 -i https://pypi.douban.com/simple   
@@ -38,6 +39,7 @@ Windows: pyinstaller -F -w -i resource/logo.ico mainUI.py
 ![](resource/demo_osx.png)
 
 ## refs:
-https://www.riverbankcomputing.com/static/Docs/PyQt4/classes.html  
+https://www.riverbankcomputing.com/static/Docs/PyQt4/classes.html   
 https://openpyxl.readthedocs.io/en/stable/  
-https://www.cnblogs.com/hester/p/11460121.html
+https://www.cnblogs.com/hester/p/11460121.html  
+https://github.com/metachris/logzero    

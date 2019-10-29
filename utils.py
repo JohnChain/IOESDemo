@@ -1,8 +1,14 @@
 import os
 import base64
+import logzero
+from logzero import logger
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+
+if not os.path.exists("logs"):
+    os.mkdir("logs")
+logzero.logfile("logs/demo.log", maxBytes=1000000, backupCount=50)
 
 VERSION = "version: 2.2.3 2019102622"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"

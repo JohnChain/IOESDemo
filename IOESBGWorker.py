@@ -11,7 +11,7 @@ class IOESBGWorker(BGWorker):
     
     def run(self):
         if(self.flagRun):
-            print("already runing")
+            logger.info("already runing")
             return
         self.flagRun = True
         while(self.flagRun):
@@ -32,7 +32,7 @@ class IOESBGWorker(BGWorker):
         self.callback(SIG_TYPE_END, "")
         self.freeCounter = 0
         self.flagRun = False
-        print("Thread exited")
+        logger.info("Thread exited")
 
     def addTaskInThead(self, argc, argv):
         url = argv[0]

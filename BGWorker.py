@@ -21,11 +21,11 @@ class BGWorker(QThread):
         self.wait()
  
     def addTask(self, task):
-        print("here addTask")
+        logger.info("here addTask")
         self.taskList.append(task)
 
     def stop(self):
-        print("here call stop")
+        logger.info("here call stop")
         self.flagRun = False
         self.clearTask()
     
@@ -34,7 +34,7 @@ class BGWorker(QThread):
 
     def run(self):
         # 处理你要做的业务逻辑，这里是通过一个回调来处理数据，这里的逻辑处理写自己的方法
-        print("runing")
+        logger.info("runing")
 
     def callback(self, type, rstJson):
         if type == SIG_TYPE_DATA:

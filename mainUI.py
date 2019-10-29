@@ -97,12 +97,12 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def updateMode(self, event):
         key = self.combxModel.currentText()
         GLOBAL_MODEL[0] = MODEL_MAPPER[key]
-        print("current GLOBAL_MODEL: %d" %GLOBAL_MODEL[0])
+        logger.info("current GLOBAL_MODEL: %d" %GLOBAL_MODEL[0])
 
     def updateBunchSize(self, event):
         key = self.combxBunchSize.currentText()
         GLOBAL_BUNCH_LENGTH[0] = int(key)
-        print("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH[0])
+        logger.info("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH[0])
 
     def addRect(self, scene, box, dataKey, row, index):
         rect = dict2Rect(box)
@@ -114,7 +114,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         if dataKey in self.rectDict:
             self.rectDict[dataKey].append(item)
         else:
-            print("unknow dateType: %s" %dataKey)
+            logger.debug("unknow dateType: %s" %dataKey)
             return
         scene.addItem(item)
         state = True if self.cbxDict[dataKey].checkState() > 0 else False
@@ -209,7 +209,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         elif self.combxSericeType.currentIndex() == 1:
             self.bgWorkder = IASBGWorker()
         else:
-            print("undefined self.combxSericeType.currentIndex: [%d]%s" %(self.combxSericeType.currentIndex(), self.combxSericeType.currentText()))
+            logger.error("undefined self.combxSericeType.currentIndex: [%d]%s" %(self.combxSericeType.currentIndex(), self.combxSericeType.currentText()))
             return
         self.bgWorkder.bindSignal(SIG_TYPE_DATA, self.bgWorkderCallback)
         self.bgWorkder.bindSignal(SIG_TYPE_END, self.onBgWorkderExit)
@@ -258,7 +258,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             dataDict = self.dataManager.getObj(row, index)
             self.mtxtParseResult.setText(json.dumps(dataDict, indent=4, ensure_ascii=False)) # 格式化输出json
         else:
-            print("unknow SIG_TYPE: ", SIG_TYPE)
+            logger.error("unknow SIG_TYPE: ", SIG_TYPE)
 
     def updateDumpProgress(self, SIG_TYPE, state):
         if SIG_TYPE == SIG_DUMP_PROCESSING:
@@ -267,7 +267,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             showMessageBox(self, "导出数据", "导出结束：%s" %state)
             self.enableWidget(True)
         else:
-            print("updateDumpProgress unknow SIG_TYPE: ", SIG_TYPE)
+            logger.error("updateDumpProgress unknow SIG_TYPE: ", SIG_TYPE)
 
     def dumpResult(self):
         flter = "WindowsOffice(*.xls *.xlsx)"
