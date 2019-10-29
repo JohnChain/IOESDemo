@@ -6,11 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-if not os.path.exists("logs"):
-    os.mkdir("logs")
-logzero.logfile("logs/demo.log", maxBytes=1000000, backupCount=50)
-
-VERSION = "version: 2.2.3 2019102622"
+VERSION = "version: 2.2.4 2019102914"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 MAX_BUNCH_LENGTH = 10
 MAX_THREAD = 10
@@ -144,3 +140,8 @@ def genBody(filePath, id):
     imageList = {"ImageID": id}
     imageList["Data"] = fileBase64(filePath)
     mdir = {"Output": output, "ImageList": [imageList]}
+
+
+if not os.path.exists("logs"):
+    os.mkdir("logs")
+logzero.logfile("logs/demo.log", maxBytes=1000000, backupCount=50)

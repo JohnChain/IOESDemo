@@ -202,15 +202,13 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def onBgWorkderExit(self, msg):
         self.enableWidget(True)
+        self.groupFailPics()
 
     def checkBGWorker(self):
         if self.combxSericeType.currentIndex() == 0:
             self.bgWorkder = IOESBGWorker()
         elif self.combxSericeType.currentIndex() == 1:
             self.bgWorkder = IASBGWorker()
-        else:
-            logger.error("undefined self.combxSericeType.currentIndex: [%d]%s" %(self.combxSericeType.currentIndex(), self.combxSericeType.currentText()))
-            return
         self.bgWorkder.bindSignal(SIG_TYPE_DATA, self.bgWorkderCallback)
         self.bgWorkder.bindSignal(SIG_TYPE_END, self.onBgWorkderExit)
 
@@ -228,8 +226,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def startTask(self):
         url = self.edtURL.text()
-        itemNum = self.listImages.count()
-        if url == "" or itemNum == 0:
+        if url == "" or self.listImages.count() == 0:
             return
         self.enableWidget(False)
         self.restoreState()
@@ -241,6 +238,17 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.dataManager.stopDump()
         self.bgWorkder.stop()
         self.enableWidget(True)
+
+    def groupFailPics(self):
+        lenList = self.listImages.count()
+        for row in range(lenList):
+            item = self.listImages.item(row)
+            if item.background() != BRUSH_Y:
+                item.setHidden(True)
+                item2 = item.clone()
+                item2.setBackground(BRUSH_N)
+                self.listImages.addItem(item2)
+                logger.warn("Hide pic at row: %d/%d, named: %s" %(row, lenList, item.text()))
 
     def removePreviewWidget(self):
         if self.previewWidget != None:

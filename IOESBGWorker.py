@@ -40,7 +40,7 @@ class IOESBGWorker(BGWorker):
         tempCount = 0 # 辅助计算8张图片一组
         imageList = []
         for index in range(len(fileList)):
-            if(not self.flagRun):
+            if not self.flagRun:
                 imageList.clear()
                 return
             filePath = fileList[index]
