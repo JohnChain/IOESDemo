@@ -108,8 +108,8 @@ def getRectF(x, y, w, h):
 def getRect(x, y, w, h):
     return QRect(x, y, w, h)
 
-def dict2Rect(mDict):
-    return getRectF(mDict["x"], mDict["y"], mDict["w"], mDict["h"])
+def dict2Rect(mDict, percentage = 1.0):
+    return getRectF(mDict["x"] * percentage, mDict["y"] * percentage, mDict["w"] * percentage, mDict["h"] * percentage)
 
 def getDirPath(base, title):
     return QFileDialog.getExistingDirectory(base, title, "")

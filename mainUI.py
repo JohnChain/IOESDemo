@@ -46,6 +46,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
     def initValues(self):
         # 内部维护了一个字典，该字典中保存了结构化服务返回的所有图片的解析结果，
         # key为图片路径，value为图片中的所有目标信息(一个由多个字典组成的list，每个字典为一个目标)
+        self.scalePercentage = 1.0
         self.dataManager = IOESDataManager()
         # 存储所有image的全路径名称
         self.listImageName = []
@@ -105,7 +106,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         logger.info("current GLOBAL_BUNCH_LENGTH: %d" %GLOBAL_BUNCH_LENGTH[0])
 
     def addRect(self, scene, box, dataKey, row, index):
-        rect = dict2Rect(box)
+        rect = dict2Rect(box, percentage=self.scalePercentage)
         pen = TYPE_2_PEN[dataKey]
         item = MarkRectItem(self._signal_hover, rect, dataKey, row, index)
         item.setPen(pen)
@@ -167,11 +168,32 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
 
     def getFilePath(self, fileName):
         return self.edtImagePath.text() + "/" + fileName
+    # override parent function
+    def resizeEvent(self, e):
+        item = self.listImages.currentItem()
+        if item != None:
+            self.previewImage(item)
+        QWidget.resizeEvent(self, e)
 
     def updateImage(self, image_path):
         pixmap = QPixmap(image_path)
-        #scaledPixmap = pixmap.scaled(500, 1000)
-        self.pixmap_item = QGraphicsPixmapItem(pixmap)
+        pixmapHight = pixmap.height()
+        pixmapWidth = pixmap.width()
+        scalePixmap = float(pixmapWidth) / float(pixmapHight)
+        previewHight = self.gvPreview.height()
+        previewWidth = self.gvPreview.width()
+        scalePreview = float(previewWidth) / float(previewHight)
+        newWidth = 0.0
+        newHidth = 0.0
+        if scalePixmap > scalePreview:
+            newWidth = previewWidth
+            newHidth = newWidth / scalePixmap
+        else:
+            newHidth = previewHight
+            newWidth = newHidth * scalePixmap
+        self.scalePercentage = float(newWidth) / float(pixmapWidth)
+        scaledPixmap = pixmap.scaled(newWidth, newHidth)
+        self.pixmap_item = QGraphicsPixmapItem(scaledPixmap)
         self.scene = QGraphicsScene(self.gvPreview)
         #self.scene.setSceneRect(0, 0, 300, 300)
         self.scene.addItem(self.pixmap_item)
@@ -248,7 +270,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 item2 = item.clone()
                 item2.setBackground(BRUSH_N)
                 self.listImages.addItem(item2)
-                logger.warn("Hide pic at row: %d/%d, named: %s" %(row, lenList, item.text()))
+                logger.warning("Hide pic at row: %d/%d, named: %s" %(row, lenList, item.text()))
 
     def removePreviewWidget(self):
         if self.previewWidget != None:
