@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 APP_NAME = "KeenSenseDemo"
-VERSION = "2.2.4_2019102919"
+VERSION = "2.2.4_2019103015"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 
 PROJECT_IOES = "IOES"
