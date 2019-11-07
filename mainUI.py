@@ -91,6 +91,7 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
         self.cbxBody.stateChanged.connect(self.rectOpsBody)
         self.cbxHead.stateChanged.connect(self.rectOpsHead)
         self.menuConfigDumpPicture.triggered.connect(self.updateMenuDumpPicture)
+        self.menuConfigSelfCheck.triggered.connect(self.updateMenuSelfCheck)
         self.combxModel.currentIndexChanged.connect(self.updateMode)
         self.combxBunchSize.currentIndexChanged.connect(self.updateBunchSize)
 
@@ -99,6 +100,11 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             GLOBAL_FLAG_DUMP_WITH_PICTURE[0] = True
         else:
             GLOBAL_FLAG_DUMP_WITH_PICTURE[0] = False
+    def updateMenuSelfCheck(self, event):
+        if self.menuConfigSelfCheck.isChecked():
+            GLOBAL_FLAG_SELF_CHECK[0] = True
+        else:
+            GLOBAL_FLAG_SELF_CHECK[0] = False
 
     def updateMode(self, event):
         key = self.combxModel.currentText()
@@ -223,6 +229,8 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
                 showMessageBox(self, "更新图片列别异常", str(e))
 
     def bgWorkderCallback(self, rspJson):
+        if GLOBAL_FLAG_SELF_CHECK[0]:
+            return
         if rspJson != "" and rspJson[:5] != "Error":
             ret = self.dataManager.genMap(rspJson)
             if ret[JSON_PARSE_RET_CODE] == JSON_PARSE_RET_OK:

@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 APP_NAME = "KeenSenseDemo"
-VERSION = "2.2.4_2019103015"
+VERSION = "2.2.5_2019110720"
 DEFAULT_SERVICE_URL = "http://192.168.1.222:9098/images/recog"
 
 PROJECT_IOES = "IOES"
@@ -104,7 +104,7 @@ GLOBAL_BUNCH_LENGTH = [MAX_BUNCH_LENGTH]
 GLOBAL_THREAD = [MAX_THREAD]
 GLOBAL_MODEL = [MODEL_MAPPER[MODEL_FULL]]
 GLOBAL_FLAG_DUMP_WITH_PICTURE = [False]
-
+GLOBAL_FLAG_SELF_CHECK = [False]
 def showMessageBox(base, title, msg):
     QMessageBox.information(base, title, msg)
 

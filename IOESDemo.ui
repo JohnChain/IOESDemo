@@ -392,6 +392,7 @@
      <string>配置</string>
     </property>
     <addaction name="menuConfigDumpPicture"/>
+    <addaction name="menuConfigSelfCheck"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -501,6 +502,14 @@
    </property>
    <property name="text">
     <string>DumpWithPicture</string>
+   </property>
+  </action>
+  <action name="menuConfigSelfCheck">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SelfCheck</string>
    </property>
   </action>
  </widget>

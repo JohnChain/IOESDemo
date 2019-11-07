@@ -246,7 +246,11 @@ class Ui_IOESDemo(object):
         self.menuConfigDumpPicture = QtWidgets.QAction(IOESDemo)
         self.menuConfigDumpPicture.setCheckable(True)
         self.menuConfigDumpPicture.setObjectName("menuConfigDumpPicture")
+        self.menuConfigSelfCheck = QtWidgets.QAction(IOESDemo)
+        self.menuConfigSelfCheck.setCheckable(True)
+        self.menuConfigSelfCheck.setObjectName("menuConfigSelfCheck")
         self.menu.addAction(self.menuConfigDumpPicture)
+        self.menu.addAction(self.menuConfigSelfCheck)
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(IOESDemo)
@@ -292,3 +296,4 @@ class Ui_IOESDemo(object):
         self.menuCfgThread8.setText(_translate("IOESDemo", "8"))
         self.menuCfgThread12.setText(_translate("IOESDemo", "12"))
         self.menuConfigDumpPicture.setText(_translate("IOESDemo", "DumpWithPicture"))
+        self.menuConfigSelfCheck.setText(_translate("IOESDemo", "SelfCheck"))

@@ -6,13 +6,25 @@ import requests
 import json
 import traceback
 from utils import *
+import threading
+import time
 
 default_headers = {'content-type': "application/json"}
 class HttpOps:
     def doPost(self, url, body, header=default_headers):
-        response = requests.post(url, data=json.dumps(body), headers=header)
-        return response.status_code, response.text
+        if not GLOBAL_FLAG_SELF_CHECK[0]:
+            response = requests.post(url, data=json.dumps(body), headers=header)
+            return response.status_code, response.text
+        else:
+            t = threading.currentThread()
 
+            filetime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
+            fileName = "%s_tid%d.json" %(filetime, t.ident)
+            json_str = json.dumps(body, indent=4)
+            with open(fileName, 'w+') as json_file:
+                json_file.write(json_str)
+            time.sleep(1)
+            return 200, "{}"
     def post(self, url, body):
         try:
             status_code, jsonStr = self.doPost(url, body)
