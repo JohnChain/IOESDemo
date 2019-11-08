@@ -19,7 +19,7 @@ class HttpOps:
             t = threading.currentThread()
 
             filetime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
-            fileName = "%s_tid%d.json" %(filetime, t.ident)
+            fileName = "tid%d_%s.json" %(t.ident, filetime)
             json_str = json.dumps(body, indent=4)
             with open(fileName, 'w+') as json_file:
                 json_file.write(json_str)
