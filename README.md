@@ -38,7 +38,7 @@ pyuic5 IOESDemo.ui -o IOESDemo.py
 python3 mainUI.py
 
 ## 打包为单个可执行文件
-MacSO: pyinstaller -F -w -i resource/logo.icns mainUI.py
+MacSO: pyinstaller -F -w -i resource/logo.icns mainUI.py  
 Windows: pyinstaller -F -w -i resource/logo.ico mainUI.py
 ## 效果预览
 ![](resource/demo_osx.png)
