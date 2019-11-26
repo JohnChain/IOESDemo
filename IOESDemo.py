@@ -76,6 +76,7 @@ class Ui_IOESDemo(object):
         self.horizontalLayout_11.setStretch(1, 1)
         self.verticalLayout.addLayout(self.horizontalLayout_11)
         self.listImages = QtWidgets.QListWidget(self.centralwidget)
+        self.listImages.setAutoScroll(False)
         self.listImages.setObjectName("listImages")
         self.verticalLayout.addWidget(self.listImages)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
