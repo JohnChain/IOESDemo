@@ -85,14 +85,26 @@ class PreviewWidget(QWidget):
             return
 
     def setCommonMappable(self, attribute, attribute2Name, mappable2Mapper, addObjectInfo):
-        if attribute in self.dataDict:
-            key = attribute2Name[attribute]
-            mapper = mappable2Mapper[attribute]
-            tempValue = self.dataDict[attribute]
-            value = mapper[tempValue]
-            addObjectInfo(key, value)
-        else:
+        if attribute not in self.dataDict:
             logger.error("%s not in dataDict" %attribute)
+            return
+        key = attribute2Name[attribute]
+
+        #根据属性类型，找出属性值映射表
+        if attribute not in mappable2Mapper:
+            logger.error("%s not in mappable2Mapper" %attribute)
+            return
+        mapper = mappable2Mapper[attribute]
+
+        tempValue = self.dataDict[attribute] #去除json中属性对应的值
+        # 获取属性值映射表中的中文释义
+        if tempValue not in mapper:
+            logger.error("%s not defined yet!!!" %tempValue)
+            return
+        value = mapper[tempValue]
+
+        addObjectInfo(key, value)
+
     def setCommonMirrorable(self, attribute, attribute2Name, addObjectInfo):
         if attribute in self.dataDict:
             key = attribute2Name[attribute]
