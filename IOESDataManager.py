@@ -48,7 +48,7 @@ class IOESDataManager:
             else:
                 code = JSON_PARSE_RET_PEER_ERROR
                 if "error_msg" in jsonDir:
-                    reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_PEER_ERROR] + jsonDir[error_msg]
+                    reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_PEER_ERROR] + jsonDir["error_msg"]
                 else:
                     reason = JSON_PARSE_RET_MAPPER[JSON_PARSE_RET_PEER_ERROR] + "service not give reason"
         ret[JSON_PARSE_RET_CODE] = code

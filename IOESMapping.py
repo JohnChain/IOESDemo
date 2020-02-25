@@ -15,6 +15,7 @@ CAR_ATTRIBUTE_VehicleClass          = 'VehicleClass'
 CAR_ATTRIBUTE_HasPlate              = 'HasPlate'
 CAR_ATTRIBUTE_PlateClass            = 'PlateClass'
 CAR_ATTRIBUTE_PlateColor            = 'PlateColor'
+CAR_ATTRIBUTE_PlateNeatness         = 'PlateNeatness'
 CAR_ATTRIBUTE_Sunvisor              = 'Sunvisor'
 CAR_ATTRIBUTE_Paper                 = 'Paper'
 CAR_ATTRIBUTE_Decoration            = 'Decoration'
@@ -50,7 +51,10 @@ BIKE_ATTRIBUTE_HasBackpack = "HasBackpack"
 BIKE_ATTRIBUTE_HasGlasses = "HasGlasses"
 BIKE_ATTRIBUTE_HasCarrybag = "HasCarrybag"
 BIKE_ATTRIBUTE_HasUmbrella = "HasUmbrella"
+BIKE_ATTRIBUTE_HasPassenger = "HasPassenger"
 BIKE_ATTRIBUTE_CoatLength = "CoatLength"
+BIKE_ATTRIBUTE_SocialAttribute = "SocialAttribute"
+BIKE_ATTRIBUTE_Enterprise = "Enterprise"
 
 BIKE_ATTRIBUTE_HasPlate = "HasPlate"
 BIKE_ATTRIBUTE_HasHelmet = "HasHelmet"
@@ -84,6 +88,7 @@ PERSON_ATTRIBUTE_TrousersTexture = "TrousersTexture"
 PERSON_ATTRIBUTE_HasTrolley = "HasTrolley"
 PERSON_ATTRIBUTE_HasLuggage = "HasLuggage"
 # 透传项
+PERSON_ATTRIBUTE_LuggageColorNums       = 'LuggageColorNums'
 PERSON_ATTRIBUTE_CoatColorNums          = 'CoatColorNums'
 PERSON_ATTRIBUTE_TrousersColorNums      = 'TrousersColorNums'
 # 坐标矩形框项（需特殊处理）
@@ -95,6 +100,7 @@ PERSON_ATTRIBUTE_FaceBoundingBox        = 'FaceBoundingBox'
 # 颜色数组（需特殊处理）
 PERSON_ATTRIBUTE_TrousersColor          = 'TrousersColor'
 PERSON_ATTRIBUTE_CoatColor              = 'CoatColor'
+PERSON_ATTRIBUTE_LuggageColor           = 'LuggageColor'
 #######################################################
 # 人脸
 # 需要映射项
@@ -144,6 +150,25 @@ CoatType = {
     "2": "短袖",
     "-1": "未知",
 }
+SocialAttributeType = {
+    "1": "普通",
+    "2": "外卖车",
+    "3": "快递车",
+    "-1": "未知",
+}
+EnterpriseType = {
+    "1": "中通",
+    "2": "韵达",
+    "3": "圆通",
+    "4": "申通",
+    "5": "中国邮政",
+    "6": "顺丰",
+    "7": "京东",
+    "8": "百世汇通",
+    "9": "美团",
+    "10": "饿了么",
+    "-1": "未知",
+}
 TrousersType = {
     "1": "长裤",
     "2": "短裤",
@@ -151,28 +176,21 @@ TrousersType = {
     "-1": "未知",
 }
 ObjectColorType = {
-    "5263440": "深灰",
-    "0": "黑",
-    "11842740": "灰",
-    "343174": "棕",
-    "16724484": "蓝",
-    "8327170": "蓝（宝石蓝）",
-    "16743167": "粉",
-    "9983": "红",
-    "12423793": "蓝（浅灰蓝）",
-    "15311656": "蓝（淡蓝）",
-    "16777215": "白",
-    "5287936": "绿",
-    "65535": "黄",
-    "8761028": "棕（卡其）",
-    "9576596": "紫",
-    "16776448": "青",
-    "37887": "橙",
-    "11711154": "灰（银）",
-    "2111058": "棕",
-    "6579300": "灰",
-    "11306222": "粉",
-    "-1": "未知",
+    "1": "黑",
+    "2": "蓝",
+    "3": "棕",
+    "4": "绿",
+    "5": "灰",
+    "6": "橙",
+    "7": "粉",
+    "8": "紫",
+    "9": "红",
+    "10": "银",
+    "11": "白",
+    "12": "黄",
+    "13": "金",
+    "14": "混合色",
+    "0": "未知",
 }
 VehicleClassType = {
     "1":	"轿车",
@@ -221,6 +239,13 @@ PlateColorType = {
     "7": "渐变绿",
     "-1": "未知",
 }
+PlateNeatnessType = {
+    "1": "正常",
+    "2": "遮挡",
+    "3": "污损",
+    "4": "无牌",
+    "-1": "未知",
+}
 VehicleColorType = {
     "1": "黑",
     "2": "蓝",
@@ -235,7 +260,8 @@ VehicleColorType = {
     "11": "白",
     "12": "黄",
     "13": "金",
-    "-1": "未知",
+    "14": "混合色",
+    "0": "未知",
 }
 BikeClassType = {
     "1": "二轮摩托车",
@@ -291,7 +317,10 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_HasGlasses,
         BIKE_ATTRIBUTE_HasCarrybag,
         BIKE_ATTRIBUTE_HasUmbrella,
+        BIKE_ATTRIBUTE_HasPassenger,
         BIKE_ATTRIBUTE_CoatLength,
+        BIKE_ATTRIBUTE_SocialAttribute,
+        BIKE_ATTRIBUTE_Enterprise,
         BIKE_ATTRIBUTE_HasPlate,
         BIKE_ATTRIBUTE_HasHelmet,
         BIKE_ATTRIBUTE_HelmetColor,
@@ -319,7 +348,10 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_HasGlasses: "眼镜",
         BIKE_ATTRIBUTE_HasCarrybag: "手提包",
         BIKE_ATTRIBUTE_HasUmbrella: "打伞",
+        BIKE_ATTRIBUTE_HasPassenger: "载客",
         BIKE_ATTRIBUTE_CoatLength: "上衣类型",
+        BIKE_ATTRIBUTE_SocialAttribute: "社会属性",
+        BIKE_ATTRIBUTE_Enterprise: "所属企业",
         BIKE_ATTRIBUTE_HasPlate: "挂车牌",
         BIKE_ATTRIBUTE_HasHelmet: "戴头盔",
         BIKE_ATTRIBUTE_HelmetColor: "头盔颜色",
@@ -339,7 +371,10 @@ class IOESBikeMapping():
         BIKE_ATTRIBUTE_HasGlasses: ThreeStateType,
         BIKE_ATTRIBUTE_HasCarrybag: ThreeStateType,
         BIKE_ATTRIBUTE_HasUmbrella: ThreeStateType,
+        BIKE_ATTRIBUTE_HasPassenger: ThreeStateType,
         BIKE_ATTRIBUTE_CoatLength: CoatType,
+        BIKE_ATTRIBUTE_SocialAttribute: SocialAttributeType,
+        BIKE_ATTRIBUTE_Enterprise: EnterpriseType,
         BIKE_ATTRIBUTE_HasPlate: ThreeStateType,
         BIKE_ATTRIBUTE_HasHelmet: ThreeStateType,
         BIKE_ATTRIBUTE_HelmetColor: ObjectColorType,
@@ -371,6 +406,7 @@ class IOESPersonMapping():
     listMirrorableShortText = [
         PERSON_ATTRIBUTE_CoatColorNums, 
         PERSON_ATTRIBUTE_TrousersColorNums,
+        PERSON_ATTRIBUTE_LuggageColorNums,
     ]
     listMirrorableLongText = []
     listBoxKey = [
@@ -381,8 +417,9 @@ class IOESPersonMapping():
         PERSON_ATTRIBUTE_FaceBoundingBox,
     ]
     listColorKey = [
-        PERSON_ATTRIBUTE_TrousersColor,
         PERSON_ATTRIBUTE_CoatColor,
+        PERSON_ATTRIBUTE_TrousersColor,
+        PERSON_ATTRIBUTE_LuggageColor,
     ]
     mapAttribute2Name = {
         PERSON_ATTRIBUTE_Gender: "性别",
@@ -404,6 +441,7 @@ class IOESPersonMapping():
 
         PERSON_ATTRIBUTE_CoatColorNums: "上衣颜色数目",
         PERSON_ATTRIBUTE_TrousersColorNums: "下身颜色数目",
+        PERSON_ATTRIBUTE_LuggageColorNums: "行李箱颜色数",
 
         PERSON_ATTRIBUTE_ObjectBoundingBox: "位置",
         PERSON_ATTRIBUTE_HeadBoundingBox: "头部位置",
@@ -411,8 +449,9 @@ class IOESPersonMapping():
         PERSON_ATTRIBUTE_LowerBoundingBox: "下半身位置",
         PERSON_ATTRIBUTE_FaceBoundingBox: "面部位置",
 
-        PERSON_ATTRIBUTE_TrousersColor: "下身颜色数组",
         PERSON_ATTRIBUTE_CoatColor: "上衣颜色数组",
+        PERSON_ATTRIBUTE_TrousersColor: "下身颜色数组",
+        PERSON_ATTRIBUTE_LuggageColor: "行李箱颜色数组",
     }
     mapMappable2Mapper = {
         PERSON_ATTRIBUTE_Gender: GenderType,
@@ -435,6 +474,7 @@ class IOESPersonMapping():
         # 特殊映射(如二级内容)
         PERSON_ATTRIBUTE_TrousersColor: ObjectColorType,
         PERSON_ATTRIBUTE_CoatColor: ObjectColorType,
+        PERSON_ATTRIBUTE_LuggageColor: ObjectColorType,
     }
 class IOESFaceMapping():
     listMappableShortText = [
@@ -481,6 +521,7 @@ class IOESCarMapping():
         CAR_ATTRIBUTE_HasPlate,
         CAR_ATTRIBUTE_PlateClass,
         CAR_ATTRIBUTE_PlateColor,
+        CAR_ATTRIBUTE_PlateNeatness,
         CAR_ATTRIBUTE_Sunvisor,
         CAR_ATTRIBUTE_Paper,
         CAR_ATTRIBUTE_Decoration,
@@ -517,6 +558,7 @@ class IOESCarMapping():
         CAR_ATTRIBUTE_HasPlate: "车牌",
         CAR_ATTRIBUTE_PlateClass: "车牌种类",
         CAR_ATTRIBUTE_PlateColor: "车牌颜色",
+        CAR_ATTRIBUTE_PlateNeatness: "车牌污浊遮挡",
         CAR_ATTRIBUTE_Sunvisor: "遮阳板状态",
         CAR_ATTRIBUTE_Paper: "纸巾盒",
         CAR_ATTRIBUTE_Decoration: "摆饰",
@@ -542,6 +584,7 @@ class IOESCarMapping():
         CAR_ATTRIBUTE_HasPlate: ThreeStateType,
         CAR_ATTRIBUTE_PlateClass: PlateClassType,
         CAR_ATTRIBUTE_PlateColor: PlateColorType,
+        CAR_ATTRIBUTE_PlateNeatness: PlateNeatnessType,
         CAR_ATTRIBUTE_Sunvisor: ThreeStateType,
         CAR_ATTRIBUTE_Paper: ThreeStateType,
         CAR_ATTRIBUTE_Decoration: ThreeStateType,

@@ -99,7 +99,7 @@ class PreviewWidget(QWidget):
         tempValue = self.dataDict[attribute] #去除json中属性对应的值
         # 获取属性值映射表中的中文释义
         if tempValue not in mapper:
-            logger.error("%s not defined yet!!!" %tempValue)
+            logger.error("%s:%s not defined yet!!!" % (attribute,tempValue))
             return
         value = mapper[tempValue]
 
