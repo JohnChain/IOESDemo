@@ -89,13 +89,15 @@ MODEL_PBC = "行人、骑行、车辆检测识别"
 MODEL_Face = "单独人脸检测识别"
 MODEL_PB = "单独行人、骑行检测识别"
 MODEL_Car = "单独车辆检测识别"
-MODEL_LIST = [MODEL_FULL, MODEL_PBC, MODEL_Face, MODEL_PB, MODEL_Car]
+MODEL_NewFace = "人脸特征提取"
+MODEL_LIST = [MODEL_FULL, MODEL_PBC, MODEL_Face, MODEL_PB, MODEL_Car, MODEL_NewFace]
 MODEL_MAPPER= {
     MODEL_FULL: 1,
     MODEL_PBC: 2,
     MODEL_Face: 3,
     MODEL_PB: 4,
     MODEL_Car: 5,
+    MODEL_NewFace: 6,
 }
 
 MESSAGE_BOX_DUMP_TITLE = "导出数据"
