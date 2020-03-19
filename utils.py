@@ -154,6 +154,24 @@ def genBody(filePath, id):
     imageList["Data"] = fileBase64(filePath)
     mdir = {"Output": output, "ImageList": [imageList]}
 
+def is_wrong_pic_type(path):
+    current_type = path[path.rfind('.')+1:]
+    real_type = 'xxx'
+    if path.lower().endswith('.jpg') or path.lower().endswith('.png') or path.lower().endswith('.bmp') or path.lower().endswith('.gif'):
+        header = []
+        with open(path, 'rb') as f:
+            while(len(header) < 5):
+                header.append(f.read(1))
+        print(header)
+        if (header[0] == b'\xff' and header[1] == b'\xd8'):
+            real_type = 'jpg'
+        if (header[0] == b'\x89' and header[1] == b'\x50' and header[2] == b'\x4e' and header[3] == b'\x47' and header[4] == b'\x0D'):
+            real_type = 'png'
+        if (header[0] == b'B' and header[1] == b'M'):
+            real_type = 'bmp'
+        if (header[0] == b'\x47' and header[1] and b'\x49' and header[2] == b'\x46' and header[3] == b'\x38'):
+            real_type = 'gif'
+    return current_type != real_type, real_type
 
 if not os.path.exists("logs"):
     os.mkdir("logs")

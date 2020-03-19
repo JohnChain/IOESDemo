@@ -3,6 +3,7 @@
 import fix_qt_import_error
 import sys
 import json
+import imghdr
 import IOESDemo
 from utils import *
 from IOESDataManager import IOESDataManager
@@ -195,6 +196,22 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             event.ignore()
 
     def updateImage(self, image_path):
+        if os.path.exists(image_path):
+            fmt = imghdr.what(image_path)
+            if fmt == None:
+                isWrongType, real_type = is_wrong_pic_type(image_path)
+                if isWrongType:
+                    fmt = real_type
+                else:
+                    showMessageBox(self, sys._getframe().f_code.co_name, "!!! corrupted picture: %s" %image_path)
+                    return
+            pixmap = QPixmap(image_path, format = fmt)
+            pixmapHight = pixmap.height()
+            pixmapWidth = pixmap.width()
+            print("[%s]isNull:%d pixmapHight: %f, pixmapWidth: %f, fmt: %s" %(image_path, pixmap.isNull(), pixmapHight, pixmapWidth, fmt))
+        else:
+            showMessageBox(self, sys._getframe().f_code.co_name, "!!! picture % not found" %(image_path))
+            return
         pixmap = QPixmap(image_path)
         pixmapHight = pixmap.height()
         pixmapWidth = pixmap.width()
