@@ -208,7 +208,6 @@ class IOESDemoApp(QMainWindow, IOESDemo.Ui_IOESDemo):
             pixmap = QPixmap(image_path, format = fmt)
             pixmapHight = pixmap.height()
             pixmapWidth = pixmap.width()
-            print("[%s]isNull:%d pixmapHight: %f, pixmapWidth: %f, fmt: %s" %(image_path, pixmap.isNull(), pixmapHight, pixmapWidth, fmt))
         else:
             showMessageBox(self, sys._getframe().f_code.co_name, "!!! picture %s not found" %(image_path))
             return
